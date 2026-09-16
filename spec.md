@@ -1,11 +1,7 @@
-# Template AI Spec *(spec.md — commit trước hạn chốt spec: 21:00 17/9, tại CP4 · quality bar chốt từ thời điểm nộp)*
 
-> Cấu trúc phủ đúng "SPEC 8 phần" của chương trình: Bằng chứng (§1-§2) · Lát cắt (§4) · Canvas (đính kèm CP1) · Augment/Automate (§4) · 4 đường đi của trải nghiệm (§6) · Kiểu lỗi (§5) · Kiểm thử (§7) · Phân công (§8). Hướng dẫn viết từng mục: `02-guide.md`.
-
-```markdown
-# AI SPEC — [Tên lát cắt] · Nhóm [XX] · Zone [X]
+# AI SPEC — Bản tin Việc cần làm từ Discord (Actionable Digest) · Nhóm FireFox · Zone 5
 Hướng: [ ] A — VLearn  [X] B — Trợ lý Học viên  [ ] C — Làn mở
-Loại: [ ] Tối ưu tính năng có sẵn  [ ] Tính năng mới
+Loại: [ ] Tối ưu tính năng có sẵn  [X] Tính năng mới
 
 ## §1. User & Job
 - Job executor + workflow (đính kèm worksheet JTBD / ảnh sơ đồ): Học viên K4 sử dụng Discord để theo dõi thông tin học tập và phối hợp làm việc nhóm.
@@ -132,4 +128,3 @@ Lớp: ① không có căn cứ · ② căn cứ mơ hồ / độ tin cậy th�
 | Thời điểm | Đổi gì | Vì sao (trỏ về feedback/case nào) |
 |---|---|---|
 | 16/09 (CP2) | Điền §4 (lát cắt, non-goals, mức Mock, augment, 6 nguyên tắc HAX), §5 (10 kịch bản lỗi), §6 (4 đường đi + ③④); đổi `prototype/` → `codebase/` | Yêu cầu mốc CP2: bản mẫu tương tác + cập nhật spec theo prototype |
-```
