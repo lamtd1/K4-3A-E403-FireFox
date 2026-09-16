@@ -1,81 +1,224 @@
-
 # AI SPEC — Bản tin Việc cần làm từ Discord (Actionable Digest) · Nhóm FireFox · Zone 5
-Hướng: [ ] A — VLearn  [X] B — Trợ lý Học viên  [ ] C — Làn mở
-Loại: [ ] Tối ưu tính năng có sẵn  [X] Tính năng mới
+
+- **Hướng:** [ ] A — VLearn · [X] B — Trợ lý Học viên · [ ] C — Làn mở
+- **Loại:** [ ] Tối ưu tính năng có sẵn · [X] Tính năng mới
+
+---
 
 ## §1. User & Job
-- Job executor + workflow (đính kèm worksheet JTBD / ảnh sơ đồ): Học viên K4 sử dụng Discord để theo dõi thông tin học tập và phối hợp làm việc nhóm.
-- Core JTBD (không tên sản phẩm/AI trong câu): Khi thông tin học tập và làm việc nhóm được phân tán trên nhiều channel, học viên muốn nhanh chóng nhận biết và tổng hợp các thông tin cần hành động như task, deadline và thay đổi lịch/phòng để không bỏ lỡ việc quan trọng và hoàn thành công việc đúng hạn.
-- Problem statement (KHÔNG chữ AI): Học viên phải liên tục kiểm tra và tự lọc lượng lớn tin nhắn trên nhiều channel Discord để tìm task, deadline, thông báo và thay đổi lịch/phòng học; thông tin quan trọng dễ bị trôi hoặc lẫn với hội thoại khác, dẫn đến mất thời gian và có nguy cơ bỏ lỡ hoặc phát hiện muộn công việc cần thực hiện.
-- Evidence (chuẩn A và/hoặc B — log đầy đủ trong repo): 
-Từ khảo sát n = 9 học viên:
 
-  6/9 (66,7%) xác nhận đã từng bỏ lỡ hoặc phát hiện muộn thông tin quan trọng.
-  7/9 (77,8%) phải theo dõi từ 3 channel trở lên.
-  9/9 (100%) kiểm tra Discord ít nhất 3 lần/ngày; 3/9 kiểm tra trên 7 lần/ngày.
-  8/9 (88,9%) mất ít nhất 5 phút/ngày chỉ để đọc và lọc tin liên quan đến học tập.
-  6/9 (66,7%) cho biết khó khăn là phải kiểm tra nhiều channel.
-  5/9 (55,6%) cho biết tin quan trọng dễ bị trôi; 5/9 (55,6%) khó phân biệt tin nào cần làm ngay.
-  4/9 (44,4%) gặp khó khăn trong việc nhớ deadline.
-  Khi hỏi về công cụ tự tổng hợp task/deadline/thay đổi lịch-phòng: 7/9 trả lời “Có”, 2/9 “Có thể”, tức 100% ít nhất sẵn sàng cân nhắc dùng thử.
+### 1.1 Job executor + workflow
 
-Dữ liệu mining k4_messages.csv cũng cho thấy quy mô thông tin đáng kể: 1.092 messages từ 202 tác giả trên 10 channel chỉ trong khoảng 3 ngày (12–14/09); lần lượt có 288, 348 và 456 messages/ngày. Trong đó có nhiều nội dung liên quan trực tiếp tới task, deadline và workshop/lịch học.  
+**Job executor:** Học viên K4 (chương trình AI Thực Chiến) dùng Discord để theo dõi thông tin học tập và phối hợp làm việc nhóm.
+
+**Workflow hiện tại:**
+
+1. Mở Discord nhiều lần trong ngày (9/9 kiểm tra ≥3 lần/ngày).
+2. Lần lượt mở từng channel đang theo dõi (7/9 theo dõi ≥3 channel).
+3. Đọc lướt, tự lọc tin nào là task / deadline / đổi lịch-phòng giữa các tin tán gẫu và hỏi đáp.
+4. Tự ghi nhớ hoặc tự chép sang ghi chú / lịch cá nhân.
+5. Làm việc theo thông tin đã lọc — nếu bỏ sót ở bước 3 thì phát hiện muộn hoặc bỏ lỡ.
+
+### 1.2 Core JTBD
+
+> Khi thông tin học tập và làm việc nhóm được phân tán trên nhiều channel, học viên muốn nhanh chóng nhận biết và tổng hợp các thông tin cần hành động như task, deadline và thay đổi lịch/phòng để không bỏ lỡ việc quan trọng và hoàn thành công việc đúng hạn.
+
+### 1.3 Problem statement
+
+> Học viên phải liên tục kiểm tra và tự lọc lượng lớn tin nhắn trên nhiều channel Discord để tìm task, deadline, thông báo và thay đổi lịch/phòng học; thông tin quan trọng dễ bị trôi hoặc lẫn với hội thoại khác, dẫn đến mất thời gian và có nguy cơ bỏ lỡ hoặc phát hiện muộn công việc cần thực hiện.
+
+| Ai | Đang làm gì | Vướng ở đâu | Hậu quả |
+|---|---|---|---|
+| Học viên K4 | Theo dõi task, deadline, thay đổi lịch/phòng trên Discord | Thông tin nằm rải ở ≥3 channel (7/9); tin quan trọng bị trôi (5/9); khó phân biệt tin nào cần làm ngay (5/9) | Mất ≥5 phút/ngày chỉ để đọc và lọc (8/9); đã từng bỏ lỡ hoặc phát hiện muộn thông tin quan trọng (6/9) |
+
+### 1.4 Evidence
+
+| Chuẩn | Yêu cầu | Trạng thái hiện tại |
+|---|---|---|
+| **A** — Khảo sát | ≥20 người ngoài nhóm · ≥50% xác nhận · log đủ câu hỏi + từng câu trả lời nguyên văn | n = 9 học viên; tỷ lệ xác nhận 66,7% (≥50%); log: _cần bổ sung file_ |
+| **B** — Mining | Số đếm được · ≥5 ví dụ nguyên văn · phương pháp đếm kiểm lại được | ⚠️ Có số đếm; ví dụ nguyên văn + phương pháp: _cần bổ sung_ |
+
+#### A. Khảo sát (n = 9 học viên)
+
+- **Log:** `evidence/survey_log.csv` — _cần bổ sung: toàn bộ câu hỏi + từng câu trả lời nguyên văn_
+
+| # | Chỉ số | Kết quả | % |
+|---|---|---|---|
+| 1 | Đã từng bỏ lỡ hoặc phát hiện muộn thông tin quan trọng | 6/9 | 66,7% |
+| 2 | Phải theo dõi từ 3 channel trở lên | 7/9 | 77,8% |
+| 3 | Kiểm tra Discord ≥3 lần/ngày | 9/9 | 100% |
+| 4 | Kiểm tra Discord >7 lần/ngày | 3/9 | 33,3% |
+| 5 | Mất ≥5 phút/ngày chỉ để đọc và lọc tin học tập | 8/9 | 88,9% |
+| 6 | Khó khăn: phải kiểm tra nhiều channel | 6/9 | 66,7% |
+| 7 | Khó khăn: tin quan trọng dễ bị trôi | 5/9 | 55,6% |
+| 8 | Khó khăn: khó phân biệt tin nào cần làm ngay | 5/9 | 55,6% |
+| 9 | Khó khăn: nhớ deadline | 4/9 | 44,4% |
+| 10 | Muốn dùng công cụ tự tổng hợp task/deadline/thay đổi lịch-phòng | 7/9 "Có" · 2/9 "Có thể" · 0/9 "Không" | 77,8% · 22,2% · 0% |
+
+#### B. Mining chatlog Discord (`k4_messages.csv`)
+
+- **File dữ liệu:** `evidence/k4_messages.csv` — _cần commit vào repo_
+- **Phạm vi:** 10 channel · 12/09 – 14/09 (3 ngày)
+
+| Chỉ số | Giá trị |
+|---|---|
+| Tổng số messages | 1.092 |
+| Số tác giả khác nhau | 202 |
+| Số channel | 10 |
+| Messages/ngày (12/09 · 13/09 · 14/09) | 288 · 348 · 456 |
+| Trung bình messages/ngày | 364 |
+| Số messages chứa task / deadline / lịch-phòng | _cần đếm theo phương pháp bên dưới_ |
+
+**Phương pháp đếm (kiểm lại được):**
+
+1. Tổng messages = số dòng của `k4_messages.csv` (trừ header).
+2. Số tác giả = số giá trị khác nhau của cột tác giả; số channel = số giá trị khác nhau của cột channel.
+3. Messages/ngày = nhóm theo ngày của cột timestamp.
+4. Messages cần hành động = _cần ghi rõ: bộ từ khóa (VD: "deadline", "hạn", "nộp", "phòng", "đổi lịch", "CP1"…) hoặc quy tắc gán nhãn tay + script/notebook dùng để đếm_.
+
+**Ví dụ nguyên văn (≥5):** _cần bổ sung từ `k4_messages.csv`_
+
+| # | Channel | Thời gian | Tác giả (vai trò) | Nội dung nguyên văn | Loại |
+|---|---|---|---|---|---|
+| 1 | | | | | Deadline / Task / Lịch-Phòng |
+| 2 | | | | | |
+| 3 | | | | | |
+| 4 | | | | | |
+| 5 | | | | | |
+
+---
 
 ## §2. Impact & quyết định chọn
-- Bảng impact ≥3 ứng viên (bao nhiêu người · tần suất · tốn gì mỗi lần · khả thi):
-| Ứng viên | Bao nhiêu người | Tần suất / Evidence | Tốn gì mỗi lần | Khả thi |
+
+### 2.1 Bảng impact
+
+| Ứng viên | Bao nhiêu người | Tần suất | Tốn gì mỗi lần | Khả thi |
 |---|---|---|---|---|
-| Tổng hợp & ưu tiên thông tin quan trọng từ nhiều channel | 6/9 (66,7%) phải kiểm tra nhiều channel; 5/9 khó xác định tin cần làm ngay | Discord được kiểm tra ≥3 lần/ngày bởi 9/9 | 8/9 mất ≥5 phút/ngày để đọc/lọc; nguy cơ bỏ sót thông tin | Cao – dữ liệu message đã có |
-| Theo dõi task & deadline | 4/9 (44,4%) từng báo bỏ lỡ/phát hiện muộn deadline; 4/9 bỏ lỡ task | Lặp lại theo Lab/task/daily standup | Trễ/quên task, phải nhờ người khác nhắc | Cao – có thể trích deadline/task từ message |
-| Theo dõi thay đổi lịch/phòng học | 3/9 (33,3%) báo từng bỏ lỡ thay đổi phòng; 1/9 bỏ lỡ thay đổi lịch | Theo workshop/lịch học | Có thể đến sai phòng hoặc bỏ lỡ workshop | Trung bình–cao |
+| **① Tổng hợp & ưu tiên thông tin cần hành động từ nhiều channel** | 6/9 (66,7%) từng bỏ lỡ/phát hiện muộn · 6/9 khó vì nhiều channel · 5/9 khó xác định tin cần làm ngay | 9/9 kiểm tra ≥3 lần/ngày; ~364 messages/ngày trên 10 channel | 8/9 mất ≥5 phút/ngày để đọc/lọc; nguy cơ bỏ sót tin quan trọng | Cao — dữ liệu message đã có |
+| **② Chỉ theo dõi task & deadline** | 4/9 (44,4%) bỏ lỡ/phát hiện muộn deadline · 4/9 bỏ lỡ task · 4/9 khó nhớ deadline | Lặp lại theo mỗi Lab / task / daily standup | Trễ hoặc quên task, phải nhờ người khác nhắc | Cao — trích deadline/task từ message |
+| **③ Chỉ theo dõi thay đổi lịch/phòng học** | 3/9 (33,3%) bỏ lỡ thay đổi phòng · 1/9 (11,1%) bỏ lỡ thay đổi lịch | Theo mỗi buổi workshop / lịch học | Đến sai phòng hoặc bỏ lỡ workshop | Trung bình – cao |
 
-- Ứng viên ĐÃ LOẠI + vì sao:
-Chỉ theo dõi thay đổi lịch/phòng học → loại khỏi vai trò bài toán chính vì phạm vi ảnh hưởng nhỏ hơn: chỉ 3/9 báo từng bỏ lỡ thay đổi phòng và 1/9 thay đổi lịch. Đây vẫn nên là một loại thông tin được hệ thống nhận diện, nhưng chưa đủ mạnh để trở thành core problem riêng.
+### 2.2 So sánh bằng số
 
-Chỉ nhắc deadline/task → không chọn làm phạm vi duy nhất vì dữ liệu cho thấy vấn đề rộng hơn deadline: người dùng còn gặp tin quan trọng bị trôi (5/9), khó xác định tin cần làm ngay (5/9) và phải kiểm tra nhiều channel (6/9).
-- Ứng viên CHỌN + vì sao (bằng số):
-Tổng hợp và ưu tiên các thông tin học tập cần hành động từ nhiều channel Discord, tập trung vào task, deadline và thay đổi lịch/phòng học.
-6/9 (66,7%) người khảo sát đã từng bỏ lỡ/phát hiện muộn thông tin quan trọng; 6/9 gặp khó khăn vì phải kiểm tra nhiều channel; 5/9 cho rằng tin quan trọng dễ bị trôi; 5/9 khó xác định tin cần làm ngay; và 8/9 mất ít nhất 5 phút/ngày để đọc/lọc tin. Đặc biệt, 7/9 muốn dùng thử giải pháp tự tổng hợp và 2/9 trả lời “Có thể”, nghĩa là cả 9/9 không từ chối ý tưởng.
+| Chỉ số | ① Tổng hợp nhiều channel | ② Chỉ task & deadline | ③ Chỉ lịch/phòng |
+|---|---|---|---|
+| Số người gặp vấn đề (cao nhất) | **6/9** | 4/9 | 3/9 |
+| Phủ pain "tin quan trọng bị trôi" (5/9) | ✓ | ✗ | ✗ |
+| Phủ pain "khó xác định tin cần làm ngay" (5/9) | ✓ | Một phần | ✗ |
+| Phủ pain "phải kiểm tra nhiều channel" (6/9) | ✓ | ✗ | ✗ |
+| Phủ pain "nhớ deadline" (4/9) | ✓ | ✓ | ✗ |
+| Phủ pain "bỏ lỡ đổi phòng/lịch" (3/9, 1/9) | ✓ | ✗ | ✓ |
+
+### 2.3 Ứng viên đã loại + vì sao
+
+| Ứng viên loại | Lý do bằng số |
+|---|---|
+| ② Chỉ theo dõi task & deadline | Chỉ 4/9 gặp vấn đề deadline/task, trong khi vấn đề rộng hơn: 5/9 tin quan trọng bị trôi, 5/9 khó xác định tin cần làm ngay, 6/9 khó vì nhiều channel — các pain này ② không giải quyết. Được giữ lại làm **1 loại thẻ** trong ①. |
+| ③ Chỉ theo dõi thay đổi lịch/phòng | Phạm vi ảnh hưởng nhỏ nhất: 3/9 bỏ lỡ đổi phòng, 1/9 bỏ lỡ đổi lịch — chưa đủ mạnh làm core problem riêng. Được giữ lại làm **1 loại thẻ** trong ①. |
+
+### 2.4 Ứng viên chọn + vì sao
+
+**Chọn ①: Tổng hợp và ưu tiên các thông tin học tập cần hành động từ nhiều channel Discord** — tập trung vào 3 loại: task, deadline, thay đổi lịch/phòng học.
+
+| Lý do | Số liệu |
+|---|---|
+| Nhiều người bị ảnh hưởng nhất | 6/9 (66,7%) từng bỏ lỡ/phát hiện muộn thông tin quan trọng |
+| Pain gốc là nhiều channel | 6/9 khó vì phải kiểm tra nhiều channel; 7/9 theo dõi ≥3 channel |
+| Tin quan trọng lẫn với hội thoại | 5/9 tin quan trọng bị trôi; 5/9 khó xác định tin cần làm ngay |
+| Tốn thời gian lặp lại hằng ngày | 8/9 mất ≥5 phút/ngày; 9/9 kiểm tra ≥3 lần/ngày; ~364 messages/ngày |
+| Nhu cầu dùng thử | 7/9 "Có" + 2/9 "Có thể" → 9/9 không từ chối |
+| Bao trùm ② và ③ | Deadline, Task, Lịch-Phòng là 3 loại thẻ trong cùng một bản tin |
+
+---
 
 ## §3. Giải pháp tương tự đã nghiên cứu
-- [Sản phẩm 1]: flow / đáng học / đáng né / mình khác gì
-- [Sản phẩm 2]: ...
+
+- **[Sản phẩm 1]:** flow / đáng học / đáng né / mình khác gì
+- **[Sản phẩm 2]:** ...
+
+---
 
 ## §4. Thiết kế
-- Prototype: `codebase/prototype_actionable_digest.html` (trang HTML/CSS/JS tĩnh, mở trực tiếp bằng trình duyệt — clickable prototype).
-- Lát cắt MỘT CÂU (1 user · 1 việc · 1 quyết định AI · 1 kết quả):
-  Học viên K4 mở bản tin "Việc cần làm" → AI quyết định tin nhắn nào trong các channel đã chọn là thông tin cần hành động (Deadline / Task / Đổi lịch-phòng), trích tiêu đề + thời hạn kèm độ tin cậy và trích dẫn gốc → học viên xác nhận / sửa / bỏ qua để đưa mục đó vào lịch cá nhân.
-- Non-goals (≥3 thứ KHÔNG build):
-  1. Không tự động gửi tin, trả lời hay react trên Discord thay người dùng.
-  2. Không đồng bộ thật sang Google Calendar / không gửi push notification ở vòng hackathon (lịch chỉ nằm trong ứng dụng).
-  3. Không làm chatbot hỏi-đáp hay tóm tắt toàn bộ hội thoại — chỉ trích thông tin cần hành động.
-  4. Không đọc DM hoặc channel người dùng không tích chọn.
-  5. Không quản lý task nhóm (giao việc, theo dõi tiến độ thành viên).
-- Mức prototype nhắm tới: [ ] Sketch [X] Mock [ ] Working
-  | Thành phần | Mock hay thật | Ghi chú |
-  |---|---|---|
-  | Đọc tin nhắn từ Discord | Mock | 3 thẻ hard-code, dựa trên tin thật trong `k4_messages.csv` |
-  | AI phân loại + trích tiêu đề/thời hạn | Mock | Kết quả viết sẵn trong HTML, chưa gọi model |
-  | Độ tin cậy (cao / cần kiểm tra) | Mock | Gán tay theo vai trò người gửi (BTC/Coach = cao, học viên = thấp) |
-  | Trích dẫn gốc + link "Xem tin gốc ↗" | Mock | Trích dẫn là text tĩnh, link chưa trỏ tới message thật |
-  | Chọn channel → lọc thẻ, empty state | Thật (JS phía client) | |
-  | Lọc theo loại (Tất cả / Deadline / Lịch-Phòng / Task) | Thật (JS phía client) | |
-  | Xác nhận / Sửa inline / Bỏ qua | Thật (JS phía client) | Không lưu, tải lại trang là mất |
-  | Modal "Xem Lịch cụ thể" + thêm mục vừa xác nhận vào timeline | Thật (JS phía client) | Các mốc CP1–CP6 có sẵn là dữ liệu tĩnh |
-- Automation: [X] augment [ ] conditional [ ] automate — lý do theo cost-of-error:
-  Chi phí sai sót cao và bất đối xứng: bỏ sót hoặc ghi sai giờ một deadline (VD: CP1 trễ hạn = 0 điểm) hay ghi sai phòng thì học viên chịu hậu quả ngay và không sửa lại được. Tin nhắn còn mơ hồ (học viên nhắc lại tin, giờ tương đối "lát nữa", "tối nay"). Vì vậy AI chỉ **đề xuất**: không mục nào vào lịch nếu người dùng chưa bấm "✓ Xác nhận vào Lịch". Khi có số đo golden set, có thể cân nhắc *conditional* (tự thêm mục có độ tin cậy cao từ #announcement) — hiện chưa làm.
-- §4b. Nguyên tắc đã áp dụng (≥4 — HAX/PAIR, xem guide):
-  | Nguyên tắc | Áp cụ thể vào đâu trong prototype |
-  |---|---|
-  | HAX G1 — Cho biết hệ thống làm được gì | Banner xanh dưới bảng chọn kênh: "AI lọc các thông tin cần hành động (Task/Deadline/Đổi phòng) chỉ từ các kênh bạn đã tích chọn"; 3 tab loại cố định giới hạn phạm vi đầu ra |
-  | HAX G2 — Cho biết hệ thống làm tốt đến đâu | Badge độ tin cậy trên mỗi thẻ: xanh "✓ Độ tin cậy cao (Admin/Coach)" vs vàng viền nét đứt "⚠️ Cần kiểm tra lại (Học viên)" + viền trái màu vàng cho thẻ độ tin cậy thấp; banner "AI chỉ đề xuất — bạn luôn là người duyệt cuối cùng" |
-  | HAX G11 — Giải thích vì sao hệ thống làm vậy | Khung "Căn cứ xác minh (Source of Truth)" trong mỗi thẻ: trích nguyên văn tin gốc + tên người gửi + channel · giờ gửi + link "Xem tin gốc ↗" |
-  | HAX G9 — Hỗ trợ sửa sai hiệu quả | Nút "✎ Sửa" (thẻ low-confidence đổi thành "✎ Đặt giờ chính xác") mở ô sửa inline tiêu đề + thời hạn ngay trên thẻ, "Lưu thay đổi" cập nhật tức thì |
-  | HAX G8 — Hỗ trợ bỏ qua hiệu quả | Nút "✕ Bỏ qua" ẩn thẻ bằng 1 click, không cần xác nhận thêm |
-  | HAX G17 — Cung cấp điều khiển tổng thể | Bảng "Bước 1: Chọn các kênh Discord cần duyệt" (nút "⚙️ Kênh đang quét" trên header) — người dùng quyết định AI được đọc kênh nào |
 
-## §5. Kiểu lỗi — 4 lớp chỗ khó + kịch bản (≥8) [bảng theo guide §2.5]
-Lớp: ① không có căn cứ · ② căn cứ mơ hồ / độ tin cậy thấp · ③ ngoài phạm vi · ④ đặc thù domain K4/Discord
+**Prototype:** [`codebase/prototype_actionable_digest.html`](codebase/prototype_actionable_digest.html) — trang HTML/CSS/JS tĩnh, mở trực tiếp bằng trình duyệt (clickable prototype).
+
+### 4.1 Lát cắt một câu
+
+> **Khi mở bản tin "Việc cần làm", học viên K4 duyệt các tin nhắn Discord từ những channel đã chọn, AI quyết định tin nào là Deadline / Task / Đổi lịch-phòng (kèm thời hạn, độ tin cậy và trích dẫn gốc), và kết quả là học viên xác nhận — hoặc sửa rồi xác nhận — mục đó vào lịch cá nhân.**
+
+| 1 user | 1 việc | 1 quyết định AI | 1 kết quả |
+|---|---|---|---|
+| Học viên K4 | Duyệt tin nhắn từ các channel Discord đã chọn | Tin nào là Deadline / Task / Đổi lịch-phòng; thời hạn là gì; độ tin cậy cao hay cần kiểm tra | Mục được học viên xác nhận nằm trong lịch cá nhân |
+
+**Khớp bản build:**
+
+| Thành phần lát cắt | Vị trí trong prototype |
+|---|---|
+| Chọn channel | Bảng "Bước 1: Chọn các kênh Discord cần duyệt" — [dòng 664](codebase/prototype_actionable_digest.html#L664) |
+| Quyết định AI (loại + thời hạn + độ tin cậy + trích dẫn) | 3 thẻ trong "📌 Bản tin Việc Cần Làm" — [dòng 754](codebase/prototype_actionable_digest.html#L754), [809](codebase/prototype_actionable_digest.html#L809), [861](codebase/prototype_actionable_digest.html#L861) |
+| Kết quả vào lịch cá nhân | Nút "✓ Xác nhận vào Lịch" → modal "📅 Xem Lịch cụ thể" — [dòng 924](codebase/prototype_actionable_digest.html#L924) |
+
+### 4.2 Non-goals
+
+| # | KHÔNG build | Bản build tuân thủ thế nào |
+|---|---|---|
+| 1 | Tự động gửi tin, trả lời hay react trên Discord thay người dùng | Prototype không có nút/chức năng nào ghi ngược lên Discord |
+| 2 | Đồng bộ thật sang Google Calendar / push notification | Lịch chỉ là modal timeline trong trang |
+| 3 | Chatbot hỏi-đáp hoặc tóm tắt toàn bộ hội thoại | Không có ô chat; chỉ có 3 loại thẻ cố định |
+| 4 | Đọc DM hoặc channel người dùng không tích chọn | Bỏ tích channel → thẻ của channel đó bị ẩn ngay |
+| 5 | Quản lý task nhóm (giao việc, theo dõi tiến độ thành viên) | Không có tính năng giao việc hay xem tiến độ người khác |
+
+### 4.3 Mức prototype
+
+**[ ] Sketch · [X] Mock · [ ] Working**
+
+| Thành phần | Mock / Thật | Ghi chú |
+|---|---|---|
+| Đọc tin nhắn từ Discord | Mock | 3 thẻ hard-code, dựa trên tin trong `k4_messages.csv` |
+| AI phân loại + trích tiêu đề/thời hạn | Mock | Kết quả viết sẵn trong HTML, chưa gọi model |
+| Độ tin cậy (cao / cần kiểm tra) | Mock | Gán tay theo vai trò người gửi (BTC/Coach = cao, học viên = thấp) |
+| Trích dẫn gốc + link "Xem tin gốc ↗" | Mock | Trích dẫn là text tĩnh, link chưa trỏ tới message thật |
+| Chọn channel → lọc thẻ, empty state | Thật (JS phía client) | |
+| Lọc theo loại (Tất cả / Deadline / Lịch-Phòng / Task) | Thật (JS phía client) | |
+| Xác nhận / Sửa inline / Bỏ qua | Thật (JS phía client) | Không lưu, tải lại trang là mất |
+| Modal "Xem Lịch cụ thể" + thêm mục vừa xác nhận vào timeline | Thật (JS phía client) | Các mốc CP1–CP6 có sẵn là dữ liệu tĩnh |
+
+### 4.4 Automation
+
+**[X] Augment · [ ] Conditional · [ ] Automate**
+
+**Lý do theo cost-of-error:**
+
+| Kiểu sai của AI | Hậu quả với học viên | Sửa lại được không? | Chi phí sai |
+|---|---|---|---|
+| Bỏ sót một deadline | Nộp muộn — VD CP1 trễ hạn = 0 điểm | Không — phát hiện khi đã quá hạn | **Cao** |
+| Ghi sai giờ/ngày deadline | Tin tưởng giờ sai → nộp muộn | Không, nếu không đối chiếu tin gốc | **Cao** |
+| Ghi sai phòng / lịch | Đến sai phòng, bỏ lỡ workshop | Khó — chỉ biết khi đã đến nơi | **Cao** |
+| Coi tin tán gẫu là task | Lịch có mục thừa | Có — bấm "✕ Bỏ qua" | Thấp |
+
+**Kết luận:**
+
+- Lỗi có chi phí cao là lỗi *sai hoặc bỏ sót*, và tin nhắn nguồn thường mơ hồ (học viên nhắc lại tin, giờ tương đối "lát nữa", "tối nay") → không để AI tự đưa mục vào lịch.
+- AI chỉ **đề xuất**; không mục nào vào lịch nếu học viên chưa bấm "✓ Xác nhận vào Lịch". Mọi thẻ đều có trích dẫn gốc để đối chiếu trước khi xác nhận.
+- Chỉ cân nhắc **conditional** (tự thêm mục có độ tin cậy cao từ #announcement) khi golden set đạt quality bar — hiện chưa làm.
+
+### 4.5 Nguyên tắc đã áp dụng (HAX Toolkit — Microsoft)
+
+| Nguyên tắc | Áp cụ thể vào đâu trong prototype | Cách kiểm chứng (bấm gì → thấy gì) |
+|---|---|---|
+| **G1** — Make clear what the system can do | Banner xanh "AI lọc các thông tin cần hành động (Task/Deadline/Đổi phòng) chỉ từ các kênh bạn đã tích chọn" — [dòng 725](codebase/prototype_actionable_digest.html#L725); 3 tab loại cố định — [dòng 741](codebase/prototype_actionable_digest.html#L741) | Mở trang → banner nằm ngay dưới bảng chọn kênh |
+| **G2** — Make clear how well the system can do | Badge xanh "✓ Độ tin cậy cao (Admin/Coach)" — [dòng 758](codebase/prototype_actionable_digest.html#L758); badge vàng viền nét đứt "⚠️ Cần kiểm tra lại (Học viên)" + viền trái vàng + "Thời hạn gợi ý" — [dòng 866](codebase/prototype_actionable_digest.html#L866) | So sánh Card 1 (xanh) với Card 3 (vàng) |
+| **G11** — Make clear why the system did what it did | Khung "Căn cứ xác minh (Source of Truth)": trích nguyên văn tin gốc + người gửi + channel · giờ + link "Xem tin gốc ↗" — [dòng 774](codebase/prototype_actionable_digest.html#L774) | Mỗi thẻ đều có khung trích dẫn dưới hạn chót |
+| **G9** — Support efficient correction | Nút "✎ Sửa" / "✎ Đặt giờ chính xác" mở ô sửa inline tiêu đề + thời hạn — [dòng 787](codebase/prototype_actionable_digest.html#L787), [906](codebase/prototype_actionable_digest.html#L906) | Bấm "✎ Sửa" → sửa → "Lưu thay đổi" → thẻ cập nhật |
+| **G8** — Support efficient dismissal | Nút "✕ Bỏ qua" ẩn thẻ bằng 1 click — [dòng 803](codebase/prototype_actionable_digest.html#L803) | Bấm "✕ Bỏ qua" → thẻ biến mất |
+| **G17** — Provide global controls | Bảng "Bước 1: Chọn các kênh Discord cần duyệt" + nút "⚙️ Kênh đang quét" trên header — [dòng 653](codebase/prototype_actionable_digest.html#L653), [664](codebase/prototype_actionable_digest.html#L664) | Bỏ tích #general → Card 3 biến mất, bộ đếm kênh giảm |
+
+---
+
+## §5. Kiểu lỗi — 4 lớp chỗ khó + kịch bản
+
+**Các lớp:** ① không có căn cứ · ② căn cứ mơ hồ / độ tin cậy thấp · ③ ngoài phạm vi · ④ đặc thù domain K4/Discord
+
 | # | Lớp | Kịch bản (input) | Lỗi có thể xảy ra | Hành vi mong muốn / cách UI xử lý |
 |---|---|---|---|---|
 | 1 | ① | Các channel đã chọn không có tin nào cần hành động (chỉ tán gẫu) | AI "bịa" task để bản tin không trống | Không tạo thẻ; hiện empty state "📭 Không có thông báo hoặc task nào…" + nút "Mở lại cài đặt kênh" |
@@ -89,42 +232,98 @@ Lớp: ① không có căn cứ · ② căn cứ mơ hồ / độ tin cậy th�
 | 9 | ④ | Nhiều mốc CP trong 1 tin (CP1 19:30, CP2 21:00) | Gộp thành 1 thẻ hoặc nhầm giờ giữa các CP | Tách thành nhiều thẻ, mỗi thẻ 1 mốc, mỗi thẻ trích đúng câu chứa mốc đó |
 | 10 | ④ | Cùng 1 thông báo được BTC đăng ở #announcement và học viên chia sẻ lại ở #general | Tạo 2 thẻ trùng nhau | Gộp thành 1 thẻ, ưu tiên nguồn chính thức (độ tin cậy cao hơn) |
 
-## §6. Bốn đường đi của trải nghiệm
-Điểm vào chung: mở prototype → bảng "Bước 1: Chọn các kênh" (mặc định #announcement, #thong-bao-lop, #general) → [điểm gọi AI] quét tin nhắn các kênh đã chọn → bản tin "📌 Bản tin Việc Cần Làm" hiện các thẻ.
+---
 
-- **Happy path (AI tự tin cao)** — Card 1 (Deadline CP1, #announcement) và Card 2 (Đổi phòng E403, #thong-bao-lop):
-  1. Thẻ có badge xanh "✓ Độ tin cậy cao (Admin/Coach)", tiêu đề + hạn chót rõ ràng, khung trích dẫn tin gốc.
-  2. Người dùng đọc trích dẫn để đối chiếu → bấm "✓ Xác nhận vào Lịch".
-  3. Thẻ chuyển viền xanh, hiện "✓ Đã xác nhận & thêm vào lịch", các nút ẩn đi.
-  4. Kết thúc: bấm "📅 Xem Lịch cụ thể" → mục vừa xác nhận xuất hiện đầu timeline, gắn nhãn xanh "(Vừa xác nhận)".
-- **Low-confidence (②)** — Card 3 (Task khai báo Willing User, nguồn học viên ở #general):
-  1. Thẻ có viền trái vàng + badge "⚠️ Cần kiểm tra lại (Học viên)"; thời hạn ghi là "Thời hạn gợi ý" và đưa ra khoảng ("Trước 19:30 (Mốc CP1) hoặc muộn nhất CP5") thay vì một giờ chắc chắn.
-  2. Nút sửa đổi tên thành "✎ Đặt giờ chính xác" để đẩy người dùng chốt thông tin trước khi xác nhận.
-  3. Người dùng đặt giờ → Lưu → Xác nhận vào Lịch, hoặc Bỏ qua nếu không liên quan.
-- **Failure / không căn cứ (①)**:
-  1. Khi không có tin cần hành động trong các kênh đã chọn (hoặc người dùng bỏ tích hết kênh / bỏ qua hết thẻ), hệ thống **không bịa thẻ** mà hiện empty state "📭 Không có thông báo hoặc task nào thuộc các kênh Discord bạn đã chọn".
-  2. Lối ra: nút "Mở lại cài đặt kênh" đưa người dùng quay lại Bước 1 để mở rộng phạm vi quét.
-  3. Với tin có nhắc việc nhưng không nêu hạn (§5 #2): thiết kế là để trống thời hạn + gắn "Cần kiểm tra lại" — *chưa có thẻ minh họa riêng trong prototype*.
-- **Correction (user sửa)**:
-  1. Trên bất kỳ thẻ nào, bấm "✎ Sửa" → ô sửa inline hiện ngay dưới trích dẫn gốc (tiêu đề + thời hạn), trích dẫn vẫn hiển thị để đối chiếu.
-  2. Sửa → "Lưu thay đổi" → tiêu đề/thời hạn trên thẻ cập nhật tức thì → bấm "✓ Xác nhận vào Lịch".
-  3. Sửa ở mức phạm vi: bỏ tích channel ở bảng "⚙️ Kênh đang quét" → thẻ từ channel đó ẩn ngay; "✕ Bỏ qua" loại một thẻ sai.
-  4. (Sau hackathon) ghi lại cặp *giá trị AI → giá trị user sửa* làm dữ liệu bổ sung golden set.
-- **Khi bị đòi ngoài phạm vi (③)**: Không có ô chat tự do — người dùng chỉ thao tác trên 3 loại thẻ cố định (tab Deadline / Lịch-Phòng / Task), banner nêu rõ AI chỉ lọc 3 loại này từ kênh đã chọn. Tin hỏi đáp kỹ thuật, tán gẫu hay kênh chưa chọn không sinh thẻ (§5 #6, #7).
-- **Case đặc thù domain (④)**: Độ tin cậy dựa vào vai trò người gửi trên server K4 (BTC/Coach/TA > học viên) và channel chính thức (#announcement, #thong-bao-lop > #general); thông báo đổi phòng giữ nguyên phạm vi áp dụng ("cụm 1-3") trong trích dẫn; timeline gắn sẵn các mốc CP1–CP6 của hackathon để người dùng đối chiếu với mục vừa xác nhận.
+## §6. Bốn đường đi của trải nghiệm
+
+**Điểm vào chung:** mở prototype → bảng "Bước 1: Chọn các kênh" (mặc định #announcement, #thong-bao-lop, #general) → **[điểm gọi AI]** quét tin nhắn các kênh đã chọn → "📌 Bản tin Việc Cần Làm" hiện các thẻ.
+
+### 6.1 Tổng quan
+
+| Đường đi | Khi nào xảy ra | Hệ thống phản hồi | Kết thúc ở đâu | Thể hiện trong prototype |
+|---|---|---|---|---|
+| **Happy path** | AI tự tin cao — tin từ BTC/Coach ở channel chính thức, có thời hạn rõ | Thẻ badge xanh + hạn chót + trích dẫn gốc | Mục nằm trong timeline "📅 Xem Lịch cụ thể" | Card 1 (Deadline CP1), Card 2 (Đổi phòng E403) |
+| **Low-confidence ②** | Tin từ học viên, giờ tương đối/mơ hồ | Thẻ badge vàng "⚠️ Cần kiểm tra lại", "Thời hạn gợi ý", nút "✎ Đặt giờ chính xác" | Học viên chốt giờ rồi xác nhận, hoặc bỏ qua | Card 3 (Khai báo Willing User) |
+| **Failure / không căn cứ ①** | Không có tin cần hành động trong các kênh đã chọn | Không bịa thẻ; empty state "📭" + nút "Mở lại cài đặt kênh" | Quay lại Bước 1 để mở rộng kênh | Empty state (bỏ tích hết kênh hoặc bỏ qua hết thẻ) |
+| **Correction** | AI trích sai tiêu đề/thời hạn, hoặc thẻ không liên quan | Sửa inline / Bỏ qua / bỏ tích channel | Mục đã sửa được xác nhận vào lịch | Nút "✎ Sửa", "✕ Bỏ qua", bảng chọn kênh — trên mọi thẻ |
+
+### 6.2 Happy path — AI tự tin cao
+
+*Card 1 (Deadline CP1, #announcement) và Card 2 (Đổi phòng E403, #thong-bao-lop)*
+
+| Bước | Người dùng | Hệ thống |
+|---|---|---|
+| 1 | Mở trang | Hiện Card 1 với badge xanh "✓ Độ tin cậy cao (Admin)", hạn chót "19:30 · 16/09/2026", trích dẫn tin của @BTC_Minh |
+| 2 | Đọc trích dẫn để đối chiếu → bấm "✓ Xác nhận vào Lịch" | Thẻ chuyển viền xanh, hiện "✓ Đã xác nhận & thêm vào lịch", các nút ẩn đi |
+| 3 | Bấm "📅 Xem Lịch cụ thể" | Mục vừa xác nhận xuất hiện đầu timeline, nhãn xanh "(Vừa xác nhận)" |
+
+### 6.3 Low-confidence ②
+
+*Card 3 (Task khai báo Willing User, nguồn học viên ở #general)*
+
+| Bước | Người dùng | Hệ thống |
+|---|---|---|
+| 1 | Thấy thẻ | Viền trái vàng + badge "⚠️ Cần kiểm tra lại (Học viên)"; "Thời hạn gợi ý: Trước 19:30 (Mốc CP1) hoặc muộn nhất CP5" — đưa ra khoảng, không khẳng định 1 giờ |
+| 2 | Bấm "✎ Đặt giờ chính xác" | Mở ô sửa inline tiêu đề + thời hạn, trích dẫn gốc vẫn hiển thị |
+| 3a | Nhập giờ → "Lưu thay đổi" → "✓ Xác nhận vào Lịch" | Thẻ cập nhật, chuyển trạng thái đã xác nhận |
+| 3b | Hoặc bấm "✕ Bỏ qua" nếu không liên quan | Thẻ bị ẩn |
+
+### 6.4 Failure / không căn cứ ①
+
+| Bước | Người dùng | Hệ thống |
+|---|---|---|
+| 1 | Bỏ tích hết channel (hoặc bỏ qua hết thẻ) — mô phỏng trường hợp không có tin cần hành động | **Không bịa thẻ**; hiện empty state "📭 Không có thông báo hoặc task nào thuộc các kênh Discord bạn đã chọn" |
+| 2 | Bấm "Mở lại cài đặt kênh" | Mở lại bảng Bước 1 để chọn thêm kênh |
+
+*Thiết kế bổ sung (chưa có thẻ minh họa riêng trong prototype):* tin nhắc việc nhưng không nêu hạn (§5 #2) → để trống thời hạn + gắn "⚠️ Cần kiểm tra lại", không tự điền giờ.
+
+### 6.5 Correction — user sửa
+
+| Bước | Người dùng | Hệ thống |
+|---|---|---|
+| 1 | Bấm "✎ Sửa" trên bất kỳ thẻ nào | Ô sửa inline hiện dưới trích dẫn gốc (tiêu đề + thời hạn) |
+| 2 | Sửa → "Lưu thay đổi" | Tiêu đề/thời hạn trên thẻ cập nhật tức thì |
+| 3 | Bấm "✓ Xác nhận vào Lịch" | Mục được đưa vào timeline |
+| 4 | Sửa ở mức phạm vi: bỏ tích một channel ở "⚙️ Kênh đang quét" | Thẻ từ channel đó ẩn ngay |
+| 5 | "✕ Bỏ qua" một thẻ sai | Thẻ bị loại khỏi bản tin |
+
+**Hạn chế đã biết:** ở bước 3, timeline hiện đang thêm giá trị AI đề xuất ban đầu thay vì giá trị vừa sửa.
+
+**Sau hackathon:** ghi lại cặp *giá trị AI → giá trị user sửa* làm dữ liệu bổ sung golden set.
+
+### 6.6 Khi bị đòi ngoài phạm vi ③
+
+- Không có ô chat tự do — người dùng chỉ thao tác trên 3 loại thẻ cố định (tab Deadline / Lịch-Phòng / Task).
+- Banner nêu rõ AI chỉ lọc 3 loại này từ kênh đã chọn.
+- Tin hỏi đáp kỹ thuật, tán gẫu hay kênh chưa chọn không sinh thẻ (§5 #6, #7).
+
+### 6.7 Case đặc thù domain ④
+
+- Độ tin cậy dựa vào vai trò người gửi trên server K4 (BTC/Coach/TA > học viên) và channel chính thức (#announcement, #thong-bao-lop > #general).
+- Thông báo đổi phòng giữ nguyên phạm vi áp dụng ("cụm 1-3") trong trích dẫn.
+- Timeline gắn sẵn các mốc CP1–CP6 của hackathon để người dùng đối chiếu với mục vừa xác nhận.
+
+---
 
 ## §7. Kiểm thử
-- Chiều chất lượng + định nghĩa kiểm chứng được:
-- Golden set (≥20 case theo cơ cấu trong guide §2.6, file trong eval/):
-- Quality bar (chốt từ hạn chốt spec của khoá, giữ nguyên sau đó): "Đạt khi ≥ ___% qua bộ, và ___"
-- Kết quả các lượt chạy (bảng % — cập nhật đến trước CP6):
+
+- **Chiều chất lượng + định nghĩa kiểm chứng được:**
+- **Golden set** (≥20 case theo cơ cấu trong guide §2.6, file trong `eval/`):
+- **Quality bar** (chốt từ hạn chốt spec của khoá, giữ nguyên sau đó): "Đạt khi ≥ ___% qua bộ, và ___"
+- **Kết quả các lượt chạy** (bảng % — cập nhật đến trước CP6):
+
+---
 
 ## §8. Phân công & kế hoạch
-- Phân công có tên: spec / evidence / prompt / code / demo
-- Willing users (≥2 tên) + kế hoạch vòng validation *(bonus, nếu làm)*:
-- Multi-prototype (nếu làm): trục khác biệt của ≥2 phương án + lý do chọn:
+
+- **Phân công có tên:** spec / evidence / prompt / code / demo
+- **Willing users** (≥2 tên) + kế hoạch vòng validation *(bonus, nếu làm)*:
+- **Multi-prototype** (nếu làm): trục khác biệt của ≥2 phương án + lý do chọn:
+
+---
 
 ## §9. Changelog
+
 | Thời điểm | Đổi gì | Vì sao (trỏ về feedback/case nào) |
 |---|---|---|
-| 16/09 (CP2) | Điền §4 (lát cắt, non-goals, mức Mock, augment, 6 nguyên tắc HAX), §5 (10 kịch bản lỗi), §6 (4 đường đi + ③④); đổi `prototype/` → `codebase/` | Yêu cầu mốc CP2: bản mẫu tương tác + cập nhật spec theo prototype |
+
