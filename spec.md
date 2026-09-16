@@ -57,7 +57,7 @@
 
 #### B. Mining chatlog Discord (`k4_messages.csv`)
 
-- **File dữ liệu:** `evidence/k4_messages.csv` — _cần commit vào repo_
+- **File dữ liệu:** `evidence/k4_messages.csv`
 - **Phạm vi:** 10 channel · 12/09 – 14/09 (3 ngày)
 
 | Chỉ số | Giá trị |
@@ -76,15 +76,20 @@
 3. Messages/ngày = nhóm theo ngày của cột timestamp.
 4. Messages cần hành động = _cần ghi rõ: bộ từ khóa (VD: "deadline", "hạn", "nộp", "phòng", "đổi lịch", "CP1"…) hoặc quy tắc gán nhãn tay + script/notebook dùng để đếm_.
 
-**Ví dụ nguyên văn (≥5):** _cần bổ sung từ `k4_messages.csv`_
+**Ví dụ nguyên văn (≥5):** trích từ `k4_messages.csv`, tra lại được bằng `msg_id`
 
 | # | Channel | Thời gian | Tác giả (vai trò) | Nội dung nguyên văn | Loại |
 |---|---|---|---|---|---|
-| 1 | | | | | Deadline / Task / Lịch-Phòng |
-| 2 | | | | | |
-| 3 | | | | | |
-| 4 | | | | | |
-| 5 | | | | | |
+| 1 · `M21817` | channel_12 | 13/09 08:42 | D3694 (BTC/staff) | "🚀 THÔNG BÁO WORKSHOP 02 / … vào tối 13/9 ( hôm nay ) chúng ta sẽ đi vào Buổi WS 2 với chủ đề : Problem → MVP Canvas / … 🕗 Thời gian: 20:00 — tối nay, ngày 13/09 / 📍 Hình thức: Online qua Zoom" | Lịch-Phòng |
+| 2 · `M09449` | channel_12 | 13/09 21:49 | D9617 (BTC) | "📢 THÔNG BÁO LỰA CHỌN ĐỀ TÀI / … Các mốc thời gian quan trọng: / - 22:00 Chủ [HV], ngày 13/09/2026: Công khai ngân hàng đề tài. / - 23:59 Chủ [HV], ngày 20/09/2026: Hạn cuối lựa chọn và đăng ký đề tài - Hoàn thiện các delieverables Gate 1." | Deadline |
+| 3 · `M16114` | channel_05 | 13/09 11:21 | D8938 (BTC/Lab Coach) | "@everyone  mn ơi, ngày mai bài lab sẽ cần sử dụng đến CVAT nhé. / … Mọi người tranh thủ kiểm tra và cài đặt trước để ngày mai có thể làm bài lab thuận lợi nhất nha!" | Task |
+| 4 · `M47011` | channel_06 | 12/09 09:39 | D8938 (BTC/Lab Coach) | "@everyone / Để BTC và các Lab Coach thuận tiện trong việc nhận diện, quản lý học viên và theo dõi điểm cộng, mọi người vui lòng đổi tên theo cú pháp: / Mã Nhóm - Họ và tên - 5 số cuối mã sinh viên" | Task |
+| 5 · `M80655` | channel_11 | 13/09 09:05 | D5251 (Học viên) | "[@user] Cho mình hỏi là: Email cá nhân nhận lịch mã số 02, sau đó nhận thêm mã số 03. Còn email outlook thì ngược lại nhận lịch mã số 03, sau đó nhận mã số 02. Vậy mình nên học theo lịch nào?" | Lịch-Phòng |
+| 6 · `M72484` | channel_10 | 12/09 23:53 | D5559 (Học viên) | "Hạn nộp Lab02" | Deadline |
+| 7 · `M88027` | channel_11 | 13/09 00:08 | D3115 (Học viên) | "cho em hỏi Lab2 có được extend thời gian submit thêm không v ạ? Em lỡ nộp muộn 1 phút không submit bài được ạ" | Deadline |
+| 8 · `M98666` | channel_10 | 14/09 15:39 | D7506 (Học viên) | "[@BOT] thời gian mở daily standup và kết thúc là khi nào vậy? hôm qua mình gửi sớm daily standup thì không được, chiều nay quá deadline thì nó lại blocked mình." | Deadline |
+
+*Ghi chú: tác giả trong dataset đã ẩn danh (mã `Dxxxx`); vai trò suy ra từ nội dung tin (gửi `@everyone` / `[@role]`, tự nhận phụ trách chương trình → BTC/staff; đặt câu hỏi → học viên). " / " thay cho xuống dòng, "…" là đoạn lược bớt của tin dài.*
 
 ---
 
