@@ -1,2 +1,11 @@
 # Data
 k4_messages.csv
+CP3_TASKS.md
+docs
+
+# Local planning docs (not part of graded repo structure)
+spec-cp3.md
+tasks-cp3.md
+
+# Claude Code tool state (worktrees, session metadata)
+.claude/
