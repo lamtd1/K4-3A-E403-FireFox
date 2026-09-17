@@ -57,7 +57,7 @@ def run_one_case(case, api_key):
     try:
         raw = call_gemini(prompt, api_key)
         return parse_response(raw)
-    except (ValueError, RuntimeError) as e:
+    except (ValueError, RuntimeError, OSError) as e:
         return {"__error__": str(e)}
 
 
