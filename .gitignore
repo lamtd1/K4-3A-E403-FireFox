@@ -24,5 +24,5 @@ venv/
 env/
 .pytest_cache/
 
-# Logs: cho phép codebase/logs/ được lưu
-!codebase/logs/
+# Logs: không commit nội dung log gọi LLM
+codebase/logs/

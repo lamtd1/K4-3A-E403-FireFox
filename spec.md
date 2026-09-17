@@ -382,7 +382,12 @@ Bộ dữ liệu kiểm thử chuẩn gồm **22 test case độc lập**, tự 
 | Lượt chạy | Thời điểm | Model sử dụng | Tổng case | Số case Đạt | Tỷ lệ Đạt (%) | C5 (Grounding) | L3 (Từ chối) | Trạng thái Quality Bar |
 |---|---|---|:---:|:---:|:---:|:---:|:---:|:---:|
 | **Lượt 1 (Run 1)** | 13:51 · 17/09 | `ag/gemini-3.7-flash-low` | 22 | **14** | **63.64%** | **100% (22/22)** | **100% (2/2)** | ⚠️ **Chưa đạt** (thiếu 3 case so với mốc 75%) |
-| **Lượt 2 (Run 2)** | *Dự kiến trước CP5* | `ag/gemini-3.7-flash-low` (Prompt v2) | 22 | *Mục tiêu $\ge 17$* | *Mục tiêu $\ge 77.3\%$* | *100%* | *100%* | *Đang tối ưu* |
+| **Lượt 2 (Run 2 — sau khi vá `prompt.py`)** | 20:21 · 17/09 | `ag/gemini-3.7-flash-low` (Prompt v2) | 22 | **22** | **100.0%** | **100% (22/22)** | **100% (2/2)** | ✅ **Đạt, vượt xa mốc 75%** |
+| Kiểm chứng lại #1 | 20:2x · 17/09 | `ag/gemini-3.7-flash-low` (Prompt v2, không sửa gì) | 22 | 22 | 100.0% | 100% | 100% | ✅ Đạt |
+| Kiểm chứng lại #2 | 20:2x · 17/09 | `ag/gemini-3.7-flash-low` (Prompt v2, không sửa gì) | 22 | 22 | 100.0% | 100% | 100% | ✅ Đạt |
+| Kiểm chứng lại #3 | 20:2x · 17/09 | `ag/gemini-3.7-flash-low` (Prompt v2, không sửa gì) | 22 | **21** | **95.45%** | 100% | 100% | ✅ Đạt (case `G17` trượt do model không hoàn toàn deterministic) |
+
+**Trung bình 4 lần chạy độc lập với Prompt v2: ~98.9%** — vượt xa mốc cam kết $\ge 75.0\%$ ở §7.3. Chi tiết đầy đủ từng lần chạy (bảng case-by-case, phân tích nguyên nhân) nằm ở [`eval/run_results.md`](eval/run_results.md) mục 7.
 
 #### Tự khai báo các lỗi và hạn chế trong Lượt 1 (Self-declaration)
 
@@ -413,6 +418,17 @@ Theo báo cáo kiểm thử tại [`eval/runs/run1_raw.json`](eval/runs/run1_raw
        + AI tiếp tục gán `confidence = "high"` thay vì `"low"` $\rightarrow$ **C4 Fail** (không tuân thủ quy tắc hạ cấp độ tin cậy với nguồn bot).
 
 > **Kế hoạch khắc phục cho Lượt 2:** Tinh chỉnh `codebase/core/prompt.py` nhằm: (a) Bổ sung chỉ dẫn phân biệt mốc thưởng incentive/XP với deadline đóng cổng thực tế (hạn lặp lại hàng ngày để `due = null`); (b) Hướng dẫn AI nhận diện tin nhắc nhở thường lệ để trích xuất với `due = null` & `confidence = "low"`; (c) Thêm quy tắc bóc tách đúng việc chính, không sinh thẻ task rác từ các đoạn hướng dẫn phụ trong thông báo; (d) **Quy định dứt khoát: Mọi tin nhắn có `author_role = "bot"` bắt buộc phải gán `confidence = "low"`**.
+
+#### Kết quả sau khi áp dụng Prompt v2 (Lượt 2) và tự khai báo hạn chế còn lại
+
+Toàn bộ 4 điểm khắc phục trên đã được đưa vào `codebase/core/prompt.py` (bổ sung mục 2, 5, 6, 8 của `SYSTEM_PROMPT`). Kết quả: từ **63.64% (14/22)** lên **100% (22/22)** ở lần chạy chính, và duy trì **95.45%–100%** qua 3 lần chạy kiểm chứng độc lập tiếp theo (không sửa gì thêm giữa các lần) — trung bình **~98.9%**, vượt xa mốc cam kết ở §7.3.
+
+**Tự khai báo hạn chế còn tồn đọng (không che giấu):**
+
+1. **Model không hoàn toàn deterministic ở case biên:** case `G17` (yêu cầu đổi tài khoản Discord trong hồ sơ Phoenix) pass ở 3/4 lần chạy nhưng trượt ở lần kiểm chứng #3 — do model trả `items = []` thay vì tạo `TASK`. Đây là dao động ngẫu nhiên của LLM, không phải lỗi logic prompt mới phát sinh; nhóm chưa có cơ chế ràng buộc để loại trừ hoàn toàn dao động này (ví dụ: gọi lại nhiều lần và lấy đa số — chưa triển khai).
+2. **Golden Set 22 case chưa phủ hết mọi domain edge-case:** ví dụ case "tin bị đính chính lùi giờ" (§5 kịch bản #5) và case "phạm vi áp dụng theo cụm/nhóm" (§5 kịch bản #8) chưa có case tương ứng riêng trong `eval/golden_set.json` — mới được mô tả ở mức thiết kế (§5, §6.7), chưa có test case định lượng xác nhận.
+3. **`codebase/app.py` / UI chưa có cơ chế retry tự động khi router LLM tạm thời mất kết nối** (đã gặp thực tế khi vận hành: router nội bộ có lúc trả `Connection refused`) — hiện xử lý bằng cách báo lỗi cho người dùng, chưa tự động thử lại.
+4. **Chưa đo latency trung bình chính thức so với ngưỡng $\le 6.0s$ ở §7.3 mục 5** trên toàn bộ 22 case của Lượt 2 (mới quan sát định tính: đa số case trong khoảng 2–8s, một số case cá biệt lên tới 20–60s khi router quá tải) — cần đo và ghi nhận chính thức ở CP5.
 
 ---
 
@@ -463,4 +479,5 @@ Nhóm đã khai báo và kết nối với **2 Willing Users** từ mốc CP1 (�
 | **16/09 · 21:00 (CP2)** | Hoàn thiện mục §4 Thiết kế, §5 Ma trận rủi ro 4 lớp và §6 Bốn nhánh trải nghiệm người dùng; xây dựng prototype tĩnh `prototype/prototype_actionable_digest.html` áp dụng 6 nguyên tắc HAX. | Đảm bảo luồng tương tác Human-in-the-Loop bấm thử được, phục vụ nghiệm thu Checkpoint 2. |
 | **17/09 · 16:00 (CP3)** | Tích hợp Module AI lõi `codebase/core/extractor.py` kết nối LLM thật; hoàn thành bộ Golden Set 22 case (`eval/golden_set.json`); xây dựng runner `codebase/scripts/run_eval.py` và chạy đánh giá Lượt 1 đạt 14/22 case (63.64%); ghi nhận audit log. | Đo lường định lượng lần đầu trên dữ liệu chuẩn theo yêu cầu Checkpoint 3. |
 | **17/09 · 21:00 (CP4)** | Bổ sung phân tích 2 sản phẩm tương tự (§3); hoàn thiện định nghĩa 5 tiêu chí C1–C5 (§7); **chính thức khóa cứng cam kết Quality Bar $\ge 75.0\%$**; tự khai báo nguyên nhân 8 case trượt Lượt 1; chốt phân công nhân sự và kế hoạch validation (§8). | Hoàn thiện toàn diện tài liệu AI Spec và đóng băng ngưỡng chất lượng phục vụ nghiệm thu Checkpoint 4. |
+| **17/09 · 21:00 (CP4 — cập nhật cuối)** | Vá `codebase/core/prompt.py` (Prompt v2) theo đúng kế hoạch khắc phục đã ghi ở Lượt 1; chạy lại Golden Set 22 case 4 lần độc lập: 100%, 100%, 100%, 95.45% (trung bình ~98.9%), vượt xa mốc $\ge 75.0\%$ đã khóa; cập nhật §7.4 với số liệu Lượt 2 thật và tự khai báo 4 hạn chế còn tồn đọng (dao động non-deterministic ở `G17`, golden set chưa phủ hết edge-case §5, chưa có retry tự động khi router LLM mất kết nối, chưa đo latency chính thức). | Ghi nhận kết quả thật sau khi sửa prompt trước khi khóa cứng spec.md và nộp form CP4; không hạ ngưỡng đã cam kết, chỉ báo cáo trung thực số liệu vượt ngưỡng. |
 

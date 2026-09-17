@@ -1,14 +1,14 @@
 {
   "metadata": {
-    "run_timestamp": "2026-09-17 20:21:00",
+    "run_timestamp": "2026-09-17 20:28:21",
     "provider": "openai-compatible",
     "model": "ag/gemini-3.7-flash-low",
     "commit_hash": "06a1d7d",
     "total_cases": 22,
-    "passed_cases": 22,
-    "failed_cases": 0,
-    "pass_rate": 100.0,
-    "total_duration_sec": 148.5,
+    "passed_cases": 21,
+    "failed_cases": 1,
+    "pass_rate": 95.45,
+    "total_duration_sec": 103.72,
     "group_stats": {
       "L1_source": {
         "total": 3,
@@ -28,7 +28,7 @@
       },
       "common": {
         "total": 9,
-        "passed": 9
+        "passed": 8
       },
       "rare": {
         "total": 3,
@@ -36,10 +36,10 @@
       }
     },
     "criteria_fails": {
-      "C1": 0,
-      "C2": 0,
-      "C3": 0,
-      "C4": 0,
+      "C1": 1,
+      "C2": 1,
+      "C3": 1,
+      "C4": 1,
       "C5": 0
     }
   },
@@ -83,7 +83,7 @@
         "passed": true,
         "failure_reasons": []
       },
-      "latency_ms": 3360.21,
+      "latency_ms": 4017.61,
       "error": null
     },
     {
@@ -116,11 +116,11 @@
         "items": [
           {
             "type": "DEADLINE",
-            "title": "Hạn nộp bài Lab trên lớp (thường là 23:59 cùng ngày)",
+            "title": "Hạn chót nộp bài Lab trên lớp",
             "due": null,
             "location": null,
             "confidence": "low",
-            "review_reason": "Bot hiển thị thông tin tự động về quy định hạn chót chung, không gắn với ngày cụ thể",
+            "review_reason": "Bot tự động hiển thị quy định chung và không gắn với bài Lab cụ thể",
             "evidence": {
               "msg_id": "M57630",
               "quote": "Bài Lab trên lớp sẽ được chấm sau khi hết deadline thường là 23:59 cùng ngày nhé"
@@ -137,7 +137,7 @@
         "passed": true,
         "failure_reasons": []
       },
-      "latency_ms": 23451.27,
+      "latency_ms": 4150.99,
       "error": null
     },
     {
@@ -179,7 +179,7 @@
         "passed": true,
         "failure_reasons": []
       },
-      "latency_ms": 3676.22,
+      "latency_ms": 3698.46,
       "error": null
     },
     {
@@ -219,7 +219,7 @@
         "items": [
           {
             "type": "SCHEDULE",
-            "title": "Xác nhận lịch học (mâu thuẫn giữa lịch mã số 02 và 03)",
+            "title": "Lịch học (mã số 02 hoặc 03)",
             "due": null,
             "location": null,
             "confidence": "low",
@@ -240,7 +240,7 @@
         "passed": true,
         "failure_reasons": []
       },
-      "latency_ms": 8711.2,
+      "latency_ms": 5839.49,
       "error": null
     },
     {
@@ -275,7 +275,7 @@
         "passed": true,
         "failure_reasons": []
       },
-      "latency_ms": 2830.82,
+      "latency_ms": 3433.92,
       "error": null
     },
     {
@@ -312,7 +312,7 @@
             "due": null,
             "location": null,
             "confidence": "low",
-            "review_reason": "Tin nhắn từ học viên, không rõ bài nào và không có hạn cụ thể",
+            "review_reason": "Không rõ bài nào và không có hạn cụ thể",
             "evidence": {
               "msg_id": "SYN001",
               "quote": "Mọi người nhớ nộp bài nha, hình như sắp hết hạn rồi đó."
@@ -329,7 +329,7 @@
         "passed": true,
         "failure_reasons": []
       },
-      "latency_ms": 3425.44,
+      "latency_ms": 3395.61,
       "error": null
     },
     {
@@ -364,7 +364,7 @@
         "passed": true,
         "failure_reasons": []
       },
-      "latency_ms": 3709.43,
+      "latency_ms": 3345.27,
       "error": null
     },
     {
@@ -399,7 +399,7 @@
         "passed": true,
         "failure_reasons": []
       },
-      "latency_ms": 2773.82,
+      "latency_ms": 2627.82,
       "error": null
     },
     {
@@ -437,7 +437,7 @@
         "items": [
           {
             "type": "SCHEDULE",
-            "title": "Công khai ngân hàng đề tài chính thức",
+            "title": "Công khai ngân hàng đề tài",
             "due": "2026-09-13T22:00",
             "location": null,
             "confidence": "high",
@@ -470,7 +470,7 @@
         "passed": true,
         "failure_reasons": []
       },
-      "latency_ms": 6077.34,
+      "latency_ms": 4916.57,
       "error": null
     },
     {
@@ -508,7 +508,7 @@
         "items": [
           {
             "type": "DEADLINE",
-            "title": "Báo cáo Daily Standup (Khung giờ 0h-10h sáng)",
+            "title": "Khung giờ nộp daily standup để được cộng XP (0h - 10h sáng)",
             "due": null,
             "location": null,
             "confidence": "high",
@@ -520,7 +520,7 @@
           },
           {
             "type": "DEADLINE",
-            "title": "Nộp Mentor Duty (Trước 12h00 các buổi mentor duty)",
+            "title": "Hạn nộp mentor duty để được cộng XP (Trước 12h00 các buổi mentor duty)",
             "due": null,
             "location": null,
             "confidence": "high",
@@ -541,7 +541,7 @@
         "passed": true,
         "failure_reasons": []
       },
-      "latency_ms": 4373.22,
+      "latency_ms": 6188.96,
       "error": null
     },
     {
@@ -574,7 +574,7 @@
         "items": [
           {
             "type": "SCHEDULE",
-            "title": "Tham gia Buổi Workshop 02: Problem → MVP Canvas",
+            "title": "Tham gia Buổi WS 2: Problem → MVP Canvas",
             "due": "2026-09-13T20:00",
             "location": "Online qua Zoom",
             "confidence": "high",
@@ -595,7 +595,7 @@
         "passed": true,
         "failure_reasons": []
       },
-      "latency_ms": 2420.57,
+      "latency_ms": 2183.91,
       "error": null
     },
     {
@@ -628,7 +628,7 @@
         "items": [
           {
             "type": "TASK",
-            "title": "Kiểm tra và cài đặt trước CVAT cho bài lab ngày mai",
+            "title": "Cài đặt và kiểm tra CVAT chuẩn bị cho bài lab",
             "due": null,
             "location": null,
             "confidence": "high",
@@ -649,7 +649,7 @@
         "passed": true,
         "failure_reasons": []
       },
-      "latency_ms": 32063.66,
+      "latency_ms": 4936.7,
       "error": null
     },
     {
@@ -682,7 +682,7 @@
         "items": [
           {
             "type": "TASK",
-            "title": "Đổi tên theo cú pháp Mã Nhóm - Họ và tên - 5 số cuối mã sinh viên",
+            "title": "Đổi tên tài khoản theo đúng cú pháp quy định",
             "due": null,
             "location": null,
             "confidence": "high",
@@ -703,7 +703,7 @@
         "passed": true,
         "failure_reasons": []
       },
-      "latency_ms": 3605.89,
+      "latency_ms": 4237.34,
       "error": null
     },
     {
@@ -757,7 +757,7 @@
         "passed": true,
         "failure_reasons": []
       },
-      "latency_ms": 3870.34,
+      "latency_ms": 2375.07,
       "error": null
     },
     {
@@ -790,14 +790,14 @@
         "items": [
           {
             "type": "TASK",
-            "title": "Vào lại link mời mới Discord để hệ thống tự nhận diện",
+            "title": "Vào lại link mời Discord mới để hệ thống tự nhận diện",
             "due": null,
-            "location": null,
+            "location": "Discord",
             "confidence": "high",
             "review_reason": null,
             "evidence": {
               "msg_id": "M31002",
-              "quote": "vào lại đúng link mời mới theo thông báo nhé [link:discord.com] để hệ thống tự nhận diện nha."
+              "quote": "Các bạn lưu ý là vào lại đúng link mời mới theo thông báo nhé [link:discord.com] để hệ thống tự nhận diện nha."
             }
           }
         ]
@@ -811,7 +811,7 @@
         "passed": true,
         "failure_reasons": []
       },
-      "latency_ms": 3611.28,
+      "latency_ms": 6494.19,
       "error": null
     },
     {
@@ -844,7 +844,7 @@
         "items": [
           {
             "type": "TASK",
-            "title": "Kiểm tra hồ sơ cá nhân trên Phoenix khớp với Discord trong server",
+            "title": "Kiểm tra hồ sơ cá nhân trên Phoenix khớp với Discord",
             "due": null,
             "location": "Phoenix",
             "confidence": "high",
@@ -865,7 +865,7 @@
         "passed": true,
         "failure_reasons": []
       },
-      "latency_ms": 3628.94,
+      "latency_ms": 4785.54,
       "error": null
     },
     {
@@ -895,31 +895,20 @@
         ]
       },
       "actual": {
-        "items": [
-          {
-            "type": "TASK",
-            "title": "Vào Hồ sơ cá nhân yêu cầu đổi tài khoản Discord để được cấp role Learner",
-            "due": null,
-            "location": null,
-            "confidence": "high",
-            "review_reason": null,
-            "evidence": {
-              "msg_id": "M23868",
-              "quote": "[HV] vào Hồ sơ cá nhân > Tôi cần đổi tài khoản Discord để AD duyệt cấp role Learner trong server Discord cho tài khoản Discord hiện tại nhé"
-            }
-          }
-        ]
+        "items": []
       },
       "metrics": {
-        "c1_count": true,
-        "c2_type": true,
-        "c3_due": true,
-        "c4_confidence": true,
+        "c1_count": false,
+        "c2_type": false,
+        "c3_due": false,
+        "c4_confidence": false,
         "c5_evidence": true,
-        "passed": true,
-        "failure_reasons": []
+        "passed": false,
+        "failure_reasons": [
+          "C1 Fail: số lượng item thực tế (0) != kỳ vọng (1)"
+        ]
       },
-      "latency_ms": 4025.38,
+      "latency_ms": 4635.96,
       "error": null
     },
     {
@@ -956,10 +945,10 @@
             "due": "2026-09-20T23:59",
             "location": null,
             "confidence": "low",
-            "review_reason": "Tin nhắn do bot tự động hiển thị, không phải người có thẩm quyền xác nhận trực tiếp",
+            "review_reason": "Bot tự động hiển thị lại thông tin/thẻ trạng thái, không phải thông báo gốc trực tiếp từ staff",
             "evidence": {
               "msg_id": "M01982",
-              "quote": "· Deadline 23:59:00 20/9/2026"
+              "quote": "Gate 1 — Chốt đề tài\nactive\n+100 XP / member\n· Deadline 23:59:00 20/9/2026"
             }
           }
         ]
@@ -973,7 +962,7 @@
         "passed": true,
         "failure_reasons": []
       },
-      "latency_ms": 5818.0,
+      "latency_ms": 2202.85,
       "error": null
     },
     {
@@ -1013,7 +1002,7 @@
         "items": [
           {
             "type": "DEADLINE",
-            "title": "Nộp mentor duty",
+            "title": "Hạn nộp mentor duty",
             "due": "2026-09-15T12:00",
             "location": null,
             "confidence": "high",
@@ -1034,7 +1023,7 @@
         "passed": true,
         "failure_reasons": []
       },
-      "latency_ms": 5323.37,
+      "latency_ms": 5655.63,
       "error": null
     },
     {
@@ -1074,7 +1063,7 @@
         "items": [
           {
             "type": "TASK",
-            "title": "Đổi tên tài khoản theo đúng cú pháp quy định",
+            "title": "Đổi tên hiển thị theo cú pháp quy định",
             "due": null,
             "location": null,
             "confidence": "high",
@@ -1095,7 +1084,7 @@
         "passed": true,
         "failure_reasons": []
       },
-      "latency_ms": 4617.14,
+      "latency_ms": 4410.34,
       "error": null
     },
     {
@@ -1135,7 +1124,7 @@
         "items": [
           {
             "type": "DEADLINE",
-            "title": "Nộp daily hàng ngày (khung giờ 0h-10h sáng để được +XP)",
+            "title": "Nộp daily hàng ngày trong khung giờ 0h-10h sáng để được cộng XP",
             "due": null,
             "location": null,
             "confidence": "low",
@@ -1156,7 +1145,7 @@
         "passed": true,
         "failure_reasons": []
       },
-      "latency_ms": 3841.79,
+      "latency_ms": 4230.24,
       "error": null
     },
     {
@@ -1191,7 +1180,7 @@
         "passed": true,
         "failure_reasons": []
       },
-      "latency_ms": 2714.95,
+      "latency_ms": 5377.16,
       "error": null
     }
   ]
