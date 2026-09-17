@@ -1,0 +1,113 @@
+{
+  "metadata": {
+    "run_timestamp": "2026-09-17 11:42:08",
+    "provider": "gemini",
+    "model": "gemini-3.6-flash",
+    "commit_hash": "09fe112",
+    "total_cases": 2,
+    "passed_cases": 1,
+    "failed_cases": 1,
+    "pass_rate": 50.0,
+    "total_duration_sec": 8.27,
+    "group_stats": {
+      "L1_source": {
+        "total": 2,
+        "passed": 1
+      }
+    },
+    "criteria_fails": {
+      "C1": 1,
+      "C2": 1,
+      "C3": 1,
+      "C4": 1,
+      "C5": 0
+    }
+  },
+  "results": [
+    {
+      "case_id": "G01",
+      "group": "L1_source",
+      "source": "real:M72484,M28485",
+      "description": "Hỏi hạn Lab02 nhưng bot xác nhận không có ngày giờ trong dữ liệu",
+      "input": {
+        "now": "2026-09-12 23:55",
+        "messages": [
+          {
+            "msg_id": "M72484",
+            "channel": "channel_10",
+            "author_role": "student",
+            "created_at": "2026-09-12 23:53",
+            "content": "Hạn nộp Lab02"
+          },
+          {
+            "msg_id": "M28485",
+            "channel": "channel_10",
+            "author_role": "bot",
+            "created_at": "2026-09-12 23:54",
+            "content": "Chào bạn! Rất tiếc là hiện tại mình không có thông tin về ngày giờ cụ thể cho hạn nộp **Lab02** trong dữ liệu hiện tại.\n\nĐể biết chính xác nhất, bạn hãy kiểm tra tại các \"nguồn sự thật\" sau đây nhé:\n\n1.  **Kênh Discord:** Check ngay mục `#📣-thông-báo` (dành cho hoạt động Build) hoặc `#📢-thông-báo-lớp-học` (dành cho hoạt động trên lớp). Đây là nơi BTC cập nhật mọi mốc thời gian quan trọng đó!\n2.  **Lịch sự kiện trên Phoenix:** Bạn truy cập [Phoenix Events](https://phoenix.note.transformerlabs.ai/events) để xem timeline của chương trình.\n3.  **Nền tảng Vlearn:** Đăng nhập vào [vlearn.dev](https://vlearn.dev) để xem chi tiết bài tập và thời hạn nộp bài.\n\nNếu bạn đã check các chỗ trên mà vẫn chưa rõ, hãy nhắn tin vào kênh thảo luận chung hoặc tag nhẹ các anh chị **@Mod** để được hỗ trợ giải đáp nhanh nhất nha! Chúc bạn làm Lab thật tốt! 💪✨"
+          }
+        ]
+      },
+      "expected": {
+        "items": []
+      },
+      "actual": {
+        "items": []
+      },
+      "metrics": {
+        "c1_count": true,
+        "c2_type": true,
+        "c3_due": true,
+        "c4_confidence": true,
+        "c5_evidence": true,
+        "passed": true,
+        "failure_reasons": []
+      },
+      "latency_ms": 3685.34,
+      "error": null
+    },
+    {
+      "case_id": "G02",
+      "group": "L1_source",
+      "source": "real:M57630",
+      "description": "Bot nêu giờ thường lệ nhưng không có ngày cụ thể",
+      "input": {
+        "now": "2026-09-12 12:52",
+        "messages": [
+          {
+            "msg_id": "M57630",
+            "channel": "channel_10",
+            "author_role": "bot",
+            "created_at": "2026-09-12 12:51",
+            "content": "Bài Lab trên lớp sẽ được chấm sau khi hết deadline thường là 23:59 cùng ngày nhé"
+          }
+        ]
+      },
+      "expected": {
+        "items": [
+          {
+            "type": "DEADLINE",
+            "due": null,
+            "confidence": "low"
+          }
+        ]
+      },
+      "actual": {
+        "items": []
+      },
+      "metrics": {
+        "c1_count": false,
+        "c2_type": false,
+        "c3_due": false,
+        "c4_confidence": false,
+        "c5_evidence": true,
+        "passed": false,
+        "failure_reasons": [
+          "C1 Fail: số lượng item thực tế (0) != kỳ vọng (1)"
+        ]
+      },
+      "latency_ms": 4082.44,
+      "error": null
+    }
+  ]
+}

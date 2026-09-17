@@ -1,6 +1,5 @@
 # Data
 k4_messages.csv
-CP3_TASKS.md
 docs
 
 # Local planning docs (not part of graded repo structure)
@@ -10,5 +9,20 @@ tasks-cp3.md
 # Claude Code tool state (worktrees, session metadata)
 .claude/
 
-# Python bytecode cache
+# Environment & Secrets
+.env
+*.env
+codebase/.env
+codebase/*.env
+
+# Python cache & virtual environments
 __pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.pytest_cache/
+
+# Logs: cho phép codebase/logs/ được lưu
+!codebase/logs/
