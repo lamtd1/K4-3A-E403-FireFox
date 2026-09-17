@@ -444,7 +444,9 @@ Bộ dữ liệu kiểm thử chuẩn gồm **22 test case độc lập**, tự 
 | Lượt chạy | Thời điểm | Model sử dụng | Tổng case | Số case Đạt | Tỷ lệ Đạt (%) | C5 (Grounding) | L3 (Từ chối) | Trạng thái Quality Bar |
 |---|---|---|:---:|:---:|:---:|:---:|:---:|:---:|
 | **Lượt 1 (Run 1)** | 13:51 · 17/09 | `ag/gemini-3.7-flash-low` | 22 | **14** | **63.64%** | **100% (22/22)** | **100% (2/2)** | ⚠️ **Chưa đạt** (thiếu 3 case so với mốc 75%) |
-| **Lượt 2 (Run 2)** | *Dự kiến trước CP5* | `ag/gemini-3.7-flash-low` (Prompt v2) | 22 | *Mục tiêu $\ge 17$* | *Mục tiêu $\ge 77.3\%$* | *100%* | *100%* | *Đang tối ưu* |
+| **Lượt 2 (Run 2)** | 18:26 · 17/09 | `gemini-3.6-flash` + `gemini-3.5-flash` fallback (Prompt v2) | 22 | **22** | **100.0%** | **100% (22/22)** | **100% (2/2)** | ✅ **Đạt** |
+
+Lượt đầy đủ ban đầu đạt 17/22; 5 case còn lại (`G14`, `G15`, `G18`, `G19`, `G21`) không nhận được output do API trả `429/503`. Nhóm chỉ retry các case có `actual.error` bằng model fallback, sau đó chấm lại toàn bộ bằng hậu kiểm hiện tại. Script hợp nhất từ chối thay case nếu lượt base đã có output nghiệp vụ, nhằm tránh cherry-pick. Chi tiết và giới hạn được ghi tại [`eval/run2_results.md`](eval/run2_results.md); dữ liệu audit nằm trong [`eval/runs/run2_consolidated.json`](eval/runs/run2_consolidated.json).
 
 #### Tự khai báo các lỗi và hạn chế trong Lượt 1 (Self-declaration)
 
