@@ -650,6 +650,10 @@
         </div>
       </div>
       <div class="header-actions">
+        <input type="password" id="gemini-key-input" placeholder="Dán Gemini API Key…"
+          style="background:#0f172a;border:1px solid var(--card-border);color:#e2e8f0;padding:7px 10px;border-radius:8px;font-size:12.5px;width:200px;">
+        <button class="btn-header primary" onclick="runRealScan()">🔄 Quét lại kênh (AI thật)</button>
+        <span id="scan-status" style="font-size:11.5px;color:var(--text-muted);"></span>
         <button class="btn-header" onclick="toggleChannelPanel()">
           <span>⚙️ Kênh đang quét:</span>
           <strong id="active-channel-count" style="color: var(--accent-blue);">3 kênh</strong>
@@ -749,6 +753,7 @@
 
     <!-- Cards Feed -->
     <div class="cards-container" id="cards-wrapper">
+      <div id="mock-cards">
 
       <!-- Card 1: From #announcement -->
       <div class="action-card" id="card-1" data-channel="announcement" data-type="DEADLINE">
@@ -908,6 +913,8 @@
           </div>
         </div>
       </div>
+      </div>
+      <div id="ai-cards"></div>
 
       <!-- Empty state when all filtered out -->
       <div class="empty-state" id="empty-state">
@@ -1154,6 +1161,84 @@
     `;
       timeline.insertBefore(newItem, timeline.firstChild);
     }
+  </script>
+
+  <script src="ai-client.js"></script>
+  <script src="sample_messages.data.js"></script>
+  <script src="prompt_text.data.js"></script>
+  <script>
+    const PROMPT_TEXT = window.DIGEST_PROMPT_TEXT;
+
+    function getSelectedChannels() {
+      return Array.from(document.querySelectorAll('.channel-checkbox:checked')).map(cb => cb.value);
+    }
+
+    function cardTypeToBadge(type) {
+      return { DEADLINE: 'badge-deadline', TASK: 'badge-task', SCHED: 'badge-sched' }[type] || 'badge-task';
+    }
+
+    function cardTypeToLabel(type) {
+      return { DEADLINE: '🚨 Deadline', TASK: '📋 Task', SCHED: '📍 Đổi Phòng / Địa điểm' }[type] || type;
+    }
+
+    function renderAiCards(cards) {
+      const wrapper = document.getElementById('ai-cards');
+      wrapper.innerHTML = '';
+      cards.forEach((card, i) => {
+        const el = document.createElement('div');
+        el.className = 'action-card';
+        el.dataset.channel = 'ai';
+        el.dataset.type = card.type;
+        const confClass = card.confidence === 'high' ? 'conf-high' : 'conf-low';
+        const confLabel = card.confidence === 'high' ? '✓ Độ tin cậy cao (AI thật)' : '⚠️ Cần kiểm tra lại (AI thật)';
+        el.innerHTML = `
+          <div class="card-top">
+            <div class="tags-group">
+              <span class="badge-type ${cardTypeToBadge(card.type)}">${cardTypeToLabel(card.type)}</span>
+              <span class="badge-confidence ${confClass}">${confLabel}</span>
+            </div>
+          </div>
+          <div class="card-content">
+            <h3>${card.title}</h3>
+            <div class="meta-time"><span>⏰ Hạn:</span><span class="highlight">${card.deadline_text || 'Chưa xác định'}</span></div>
+            <div class="source-box">
+              <div class="source-label"><span>Căn cứ xác minh (Source of Truth) — msg_id: ${card.msg_id}</span></div>
+              <div class="source-quote">"${card.quote}"</div>
+            </div>
+          </div>
+        `;
+        wrapper.appendChild(el);
+      });
+      document.getElementById('empty-state').style.display = cards.length === 0 ? 'block' : 'none';
+    }
+
+    async function runRealScan() {
+      const status = document.getElementById('scan-status');
+      const apiKey = document.getElementById('gemini-key-input').value.trim();
+      if (!apiKey) {
+        status.textContent = 'Cần dán API key trước khi quét.';
+        return;
+      }
+      sessionStorage.setItem('gemini_api_key', apiKey);
+      const selectedChannels = getSelectedChannels();
+      const messages = filterMessagesByChannel(window.SAMPLE_MESSAGES, selectedChannels);
+      document.getElementById('mock-cards').style.display = 'none';
+      status.textContent = 'Đang gọi Gemini…';
+      try {
+        const cards = await classifyMessages(messages, apiKey, PROMPT_TEXT);
+        renderAiCards(cards);
+        status.textContent = `Xong — ${cards.length} card từ ${messages.length} tin.`;
+      } catch (e) {
+        document.getElementById('ai-cards').innerHTML = '';
+        document.getElementById('empty-state').style.display = 'block';
+        status.textContent = `Lỗi: ${e.message}`;
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const saved = sessionStorage.getItem('gemini_api_key');
+      if (saved) document.getElementById('gemini-key-input').value = saved;
+    });
   </script>
 
 </body>

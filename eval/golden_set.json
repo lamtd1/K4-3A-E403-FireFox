@@ -1,0 +1,151 @@
+[
+  {
+    "id": "GS-01", "bucket": "class1", "source": "synthetic",
+    "selected_channels": ["random"],
+    "messages": [],
+    "expected": { "type": "NONE", "count": 0 },
+    "notes": "Kênh đã chọn không có tin nào cần hành động — không được bịa card cho có."
+  },
+  {
+    "id": "GS-02", "bucket": "class1", "source": "real", "msg_id": "M72484",
+    "selected_channels": ["general"],
+    "messages": [{"msg_id": "M72484", "channel": "general", "author_role": "hoc_vien", "created_at_vn": "2026-09-12 23:53", "content": "Hạn nộp Lab02"}],
+    "expected": { "type": "TASK", "deadline_text_empty": true, "escalate": true },
+    "notes": "Nêu tên bài nhưng không nêu ngày/giờ — không được tự bịa hạn chót."
+  },
+  {
+    "id": "GS-03", "bucket": "class2", "source": "synthetic",
+    "selected_channels": ["general"],
+    "messages": [{"msg_id": "SYN-03", "channel": "general", "author_role": "hoc_vien", "created_at_vn": "2026-09-16 18:15", "content": "nhóm nào chưa có willing user thì tìm sớm đi nhé, lát nộp CP1 phải khai tên rồi đấy"}],
+    "expected": { "type": "TASK", "confidence": "low" },
+    "notes": "Giờ ước lượng kiểu 'lát' từ học viên — phải confidence=low, không đổi 'lát' thành giờ chính xác như thể chắc chắn."
+  },
+  {
+    "id": "GS-04", "bucket": "class2", "source": "synthetic",
+    "selected_channels": ["general"],
+    "messages": [{"msg_id": "SYN-04", "channel": "general", "author_role": "hoc_vien", "created_at_vn": "2026-09-12 10:00", "content": "mọi người nhớ nộp form khảo sát trước cuối tuần này nha"}],
+    "expected": { "type": "TASK", "confidence": "low" },
+    "notes": "'Cuối tuần này' phải quy đổi theo thời điểm gửi (12/09, thứ Bảy) — không phải theo ngày chạy eval."
+  },
+  {
+    "id": "GS-05", "bucket": "class2", "source": "synthetic",
+    "selected_channels": ["thong-bao-lop"],
+    "messages": [
+      {"msg_id": "SYN-05A", "channel": "thong-bao-lop", "author_role": "btc", "created_at_vn": "2026-09-16 17:00", "content": "CP1 chốt 19:30 hôm nay: Nộp Canvas 4 ô + link repo."},
+      {"msg_id": "SYN-05B", "channel": "thong-bao-lop", "author_role": "btc", "created_at_vn": "2026-09-16 18:30", "content": "Sửa lại: CP1 lùi sang 20:00 nhé mọi người."}
+    ],
+    "expected": { "type": "DEADLINE", "count": 1 },
+    "notes": "Tin đính chính (SYN-05B) phải thắng — chỉ 1 card, không giữ cả bản cũ 19:30."
+  },
+  {
+    "id": "GS-06", "bucket": "class3", "source": "synthetic",
+    "selected_channels": ["lab-qa"],
+    "messages": [{"msg_id": "SYN-06", "channel": "lab-qa", "author_role": "hoc_vien", "created_at_vn": "2026-09-13 14:00", "content": "lỗi import pandas fix sao ạ"}],
+    "expected": { "type": "NONE", "count": 0 },
+    "notes": "Câu hỏi kỹ thuật thuần tuý, ngoài phạm vi 3 loại thẻ (đã duyệt ở spec.md §5 dòng 6)."
+  },
+  {
+    "id": "GS-07", "bucket": "class3", "source": "synthetic", "filter_only": true,
+    "selected_channels": ["announcement", "thong-bao-lop", "general"],
+    "messages": [{"msg_id": "SYN-07", "channel": "random", "author_role": "hoc_vien", "created_at_vn": "2026-09-13 20:00", "content": "hôm nay ai rảnh chơi game không"}],
+    "expected": { "type": "NONE", "count": 0 },
+    "notes": "#random không nằm trong kênh đã chọn — phải bị lọc ở tầng ứng dụng trước khi gọi AI, không phải AI tự quyết định bỏ qua."
+  },
+  {
+    "id": "GS-08", "bucket": "class4", "source": "synthetic",
+    "selected_channels": ["thong-bao-lop"],
+    "messages": [{"msg_id": "SYN-08", "channel": "thong-bao-lop", "author_role": "coach", "created_at_vn": "2026-09-16 17:45", "content": "Các nhóm cụm 1-3 di chuyển hết sang phòng E403 để họp chung với Coach nhé!"}],
+    "expected": { "type": "SCHED", "confidence": "high", "scope_must_contain": "cụm 1-3" },
+    "notes": "Phải giữ nguyên 'cụm 1-3' trong title/quote — không viết như áp dụng cho mọi học viên."
+  },
+  {
+    "id": "GS-09", "bucket": "class4", "source": "real", "msg_id": "M09449",
+    "selected_channels": ["announcement"],
+    "messages": [{"msg_id": "M09449", "channel": "announcement", "author_role": "btc", "created_at_vn": "2026-09-13 21:49", "content": "📢 THÔNG BÁO LỰA CHỌN ĐỀ TÀI — Các mốc thời gian quan trọng: 22:00 Chủ [HV] 13/09/2026: Công khai ngân hàng đề tài; 23:59 Chủ [HV] 20/09/2026: Hạn cuối lựa chọn và đăng ký đề tài."}],
+    "expected": { "type": "DEADLINE", "count": 2, "confidence": "high" },
+    "notes": "1 tin chứa 2 mốc khác nhau — phải tách thành 2 card riêng, không gộp hoặc chỉ lấy 1."
+  },
+  {
+    "id": "GS-10", "bucket": "class4", "source": "synthetic",
+    "selected_channels": ["announcement", "general"],
+    "messages": [
+      {"msg_id": "SYN-10A", "channel": "announcement", "author_role": "btc", "created_at_vn": "2026-09-14 09:00", "content": "Deadline Lab2 gia hạn tới 23:59 hôm nay theo thông báo chính thức."},
+      {"msg_id": "SYN-10B", "channel": "general", "author_role": "hoc_vien", "created_at_vn": "2026-09-14 09:10", "content": "Deadline Lab2 gia hạn tới 23:59 hôm nay theo thông báo chính thức."}
+    ],
+    "expected": { "type": "DEADLINE", "count": 1, "priority_source_channel": "announcement" },
+    "notes": "Cùng nội dung xuất hiện ở 2 kênh — chỉ 1 card, ưu tiên nguồn #announcement (author_role btc) làm quote chính."
+  },
+  {
+    "id": "GS-11", "bucket": "common", "source": "real", "msg_id": "M16114",
+    "selected_channels": ["lab-qa"],
+    "messages": [{"msg_id": "M16114", "channel": "lab-qa", "author_role": "lab_coach", "created_at_vn": "2026-09-13 11:21", "content": "@everyone mn ơi, ngày mai bài lab sẽ cần sử dụng đến CVAT nhé."}],
+    "expected": { "type": "TASK", "confidence": "high" },
+    "notes": "Task thường gặp, nguồn chính thức, hạn tương đối 'ngày mai' rõ ràng."
+  },
+  {
+    "id": "GS-12", "bucket": "common", "source": "real", "msg_id": "M47011",
+    "selected_channels": ["announcement"],
+    "messages": [{"msg_id": "M47011", "channel": "announcement", "author_role": "lab_coach", "created_at_vn": "2026-09-12 09:39", "content": "@everyone — Để BTC và các Lab Coach thuận tiện trong việc nhận diện, quản lý học viên và theo dõi điểm cộng, mọi người vui lòng đổi tên theo cú pháp: Mã Nhóm - Họ và tên - 5 số cuối mã sinh viên."}],
+    "expected": { "type": "TASK", "confidence": "high", "deadline_text_empty": true },
+    "notes": "Task liên tục, không có hạn cụ thể — không được tự bịa deadline cho việc không có hạn."
+  },
+  {
+    "id": "GS-13", "bucket": "common", "source": "real", "msg_id": "M80655",
+    "selected_channels": ["general"],
+    "messages": [
+      {"msg_id": "M80655", "channel": "general", "author_role": "hoc_vien", "created_at_vn": "2026-09-13 09:05", "content": "Cho mình hỏi là: Email cá nhân nhận lịch mã số 02, sau đó nhận thêm mã số 03. Còn email outlook thì ngược lại nhận lịch mã số 03, sau đó nhận mã số 02."},
+      {"msg_id": "M58634", "channel": "general", "author_role": "hoc_vien", "created_at_vn": "2026-09-13 09:12", "content": "Bạn dùng lịch có chữ UPDATED á"}
+    ],
+    "expected": { "type": "NONE", "count": 0 },
+    "notes": "Câu hỏi cá nhân + câu trả lời từ một học viên khác (không phải nguồn chính thức) — không phải Deadline/Task/Lịch-Phòng cho cả lớp."
+  },
+  {
+    "id": "GS-14", "bucket": "common", "source": "real", "msg_id": "M88027",
+    "selected_channels": ["general"],
+    "messages": [{"msg_id": "M88027", "channel": "general", "author_role": "hoc_vien", "created_at_vn": "2026-09-13 00:08", "content": "cho em hỏi Lab2 có được extend thời gian submit thêm không v ạ? Em lỡ nộp muộn 1 phút không submit bài được ạ"}],
+    "expected": { "type": "NONE", "escalate": true },
+    "notes": "Xin ngoại lệ cá nhân — bot không có thẩm quyền quyết định, phải escalate cho TA thay vì tự trả lời."
+  },
+  {
+    "id": "GS-15", "bucket": "common", "source": "real", "msg_id": "M98666",
+    "selected_channels": ["general"],
+    "messages": [{"msg_id": "M98666", "channel": "general", "author_role": "hoc_vien", "created_at_vn": "2026-09-14 15:39", "content": "[@BOT] thời gian mở daily standup và kết thúc là khi nào vậy? hôm qua mình gửi sớm daily standup thì không được, chiều nay quá deadline thì nó lại blocked mình."}],
+    "expected": { "type": "NONE", "escalate": true },
+    "notes": "Hỏi bot thông tin không có trong các tin đã chọn — phải escalate, không được đoán giờ mở/đóng standup."
+  },
+  {
+    "id": "GS-16", "bucket": "common", "source": "real", "msg_id": "M22827",
+    "selected_channels": ["general"],
+    "messages": [{"msg_id": "M22827", "channel": "general", "author_role": "btc", "created_at_vn": "2026-09-12 08:28", "content": "Bình thường nhé [HV], ngày bắt đầu ghi nhận XP daily standup là 14/9 nhé"}],
+    "expected": { "type": "DEADLINE", "confidence": "high" },
+    "notes": "Trả lời từ BTC (D9617) dù đăng ở kênh không chính thức — độ tin cậy tính theo vai trò người gửi, không chỉ theo kênh."
+  },
+  {
+    "id": "GS-17", "bucket": "common", "source": "real", "msg_id": "M13974",
+    "selected_channels": ["general"],
+    "messages": [{"msg_id": "M13974", "channel": "general", "author_role": "hoc_vien", "created_at_vn": "2026-09-12 07:30", "content": "[@BOT] cho mình hỏi việc mình được điểm danh hay chưa có thể check ở đâu ạ"}],
+    "expected": { "type": "NONE", "escalate": true },
+    "notes": "Câu hỏi tình trạng điểm danh cá nhân — bot không có quyền truy cập dữ liệu cá nhân, phải escalate."
+  },
+  {
+    "id": "GS-18", "bucket": "common", "source": "real", "msg_id": "M21817",
+    "selected_channels": ["announcement"],
+    "messages": [{"msg_id": "M21817", "channel": "announcement", "author_role": "btc", "created_at_vn": "2026-09-13 08:42", "content": "🚀 THÔNG BÁO WORKSHOP 02 — vào tối 13/9 (hôm nay) chúng ta sẽ đi vào Buổi WS 2 với chủ đề: Problem → MVP Canvas. Thời gian: 20:00 — tối nay, ngày 13/09; Hình thức: Online qua Zoom."}],
+    "expected": { "type": "SCHED", "confidence": "high" },
+    "notes": "Thông báo lịch chính thức, giờ/ngày đã nêu rõ trong chính tin — case dễ, dùng làm baseline happy-path."
+  },
+  {
+    "id": "GS-19", "bucket": "edge", "source": "synthetic",
+    "selected_channels": ["general"],
+    "messages": [{"msg_id": "SYN-19", "channel": "general", "author_role": "hoc_vien", "created_at_vn": "2026-09-13 22:00", "content": "@everyone Cảm ơn cả nhà đã tham gia workshop hôm nay rất nhiệt tình ạ 🎉"}],
+    "expected": { "type": "NONE", "count": 0 },
+    "notes": "Có tag @everyone nhưng nội dung thuần cảm ơn/xã giao — không được coi định dạng @everyone là dấu hiệu của việc cần hành động."
+  },
+  {
+    "id": "GS-20", "bucket": "edge", "source": "synthetic",
+    "selected_channels": ["lab-qa"],
+    "messages": [{"msg_id": "SYN-20", "channel": "lab-qa", "author_role": "hoc_vien", "created_at_vn": "2026-09-13 15:00", "content": "cho em hỏi lỗi CUDA out of memory ở lab hôm nay xử sao ạ, với hạn nộp Lab2 là bao giờ vậy ạ?"}],
+    "expected": { "type": "NONE", "escalate": true },
+    "notes": "1 tin gộp cả câu hỏi kỹ thuật (ngoài phạm vi) và câu hỏi logistics (không có nguồn xác nhận trong tin đã chọn) — không được trả lời phần kỹ thuật, không được bịa hạn Lab2, phải escalate phần logistics."
+  }
+]
