@@ -12,9 +12,10 @@ import re
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parent.parent
+# File này nằm ở codebase/scripts/build_golden_set.py -> lùi 2 cấp mới ra thư mục gốc repo.
+ROOT = Path(__file__).resolve().parent.parent.parent
 CSV_PATH = ROOT / "k4_messages.csv"
-OUTPUT_PATH = Path(__file__).resolve().parent / "golden_set.json"
+OUTPUT_PATH = ROOT / "eval" / "golden_set.json"
 
 STAFF_AUTHORS = {"D3694", "D9617", "D8938"}
 

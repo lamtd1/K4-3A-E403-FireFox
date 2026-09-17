@@ -27,7 +27,8 @@ if sys.platform == "win32":
         pass
 
 # Đảm bảo đường dẫn import hoạt động từ thư mục gốc
-ROOT_DIR = Path(__file__).resolve().parent.parent
+# File này nằm ở codebase/scripts/run_eval.py -> lùi 2 cấp mới ra thư mục gốc repo.
+ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 CODEBASE_DIR = ROOT_DIR / "codebase"
 if str(CODEBASE_DIR) not in sys.path:
     sys.path.insert(0, str(CODEBASE_DIR))

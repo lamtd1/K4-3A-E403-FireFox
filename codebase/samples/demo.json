@@ -1,26 +1,75 @@
 {
-  "now": "2026-09-13 09:00",
+  "now": "2026-09-14 09:00",
   "messages": [
     {
-      "msg_id": "M21817",
-      "channel": "channel_12",
+      "msg_id": "M47011",
+      "channel": "channel_06",
       "author_role": "staff",
-      "created_at": "2026-09-13 08:42",
-      "content": "🚀 THÔNG BÁO WORKSHOP 02: Problem → MVP Canvas. Tối nay chúng ta sẽ có buổi WS2 hướng dẫn chi tiết cách hoàn thiện Canvas và xác định lát cắt giải pháp. 🕗 Thời gian: 20:00 — tối nay, ngày 13/09. 📍 Hình thức: Online qua Zoom (link ghim ở thông báo phòng)."
+      "created_at": "2026-09-12 09:39",
+      "content": "@everyone\n\nĐể BTC và các Lab Coach thuận tiện trong việc nhận diện, quản lý học viên và theo dõi điểm cộng, mọi người vui lòng đổi tên theo cú pháp:\n\n  Mã Nhóm - Họ và tên - 5 số cuối mã sinh viên\n\nVí dụ: T001 - [HV]\n\nMọi người kiểm tra và đổi lại tên giúp mình nhé. Việc thống nhất cách đặt tên sẽ giúp BTC và các Lab Coach dễ dàng theo dõi thông tin và ghi nhận điểm cộng của mọi người hơn.\n\nCảm ơn mọi người! ❤️"
+    },
+    {
+      "msg_id": "M12505",
+      "channel": "channel_07",
+      "author_role": "staff",
+      "created_at": "2026-09-12 09:40",
+      "content": "@everyone\n\nĐể BTC và các Lab Coach thuận tiện trong việc nhận diện, quản lý học viên và theo dõi điểm cộng, mọi người vui lòng đổi tên theo cú pháp:\n\n  Mã Nhóm - Họ và tên - 5 số cuối mã sinh viên\n\nVí dụ: T001 - [HV]\n\nMọi người kiểm tra và đổi lại tên giúp mình nhé. Việc thống nhất cách đặt tên sẽ giúp BTC và các Lab Coach dễ dàng theo dõi thông tin và ghi nhận điểm cộng của mọi người hơn.\n\nCảm ơn mọi người! ❤️"
+    },
+    {
+      "msg_id": "M49744",
+      "channel": "channel_03",
+      "author_role": "staff",
+      "created_at": "2026-09-12 18:02",
+      "content": "THÔNG BÁO HOÀN THIỆN CÁC BƯỚC ONBOARDING VÀO CHƯƠNG TRÌNH\n\nChào mừng các bạn đã đến với Chương trình AI20K - Build Phase Cohort 4A. Để hoàn tất quá trình onboarding và bắt đầu chặng đường 6 tuần tới, BTC thông tin đến các bạn học viên hoàn thiện hồ sơ và lập đội bắt đầu thực chiến.\n\nCác bạn học viên đăng nhập vào nền tảng Phoenix bằng link mời dưới đây và **Tiếp tục với Github** cùng email đã đăng ký với chương trình.\n\n> Link tham gia chương trình (link cập nhật mới nhất):\n> https://phoenix.note.transformerlabs.ai/invite/qYw_GaXnbiPxczQy5cNkMEPNuRrlYjSy_rQgOeiLfRI\n\n**Hoàn thành đủ các bước:**\n1. Vào nền tảng bằng lời mời\n2. Xác minh danh tính\n3. Kết nối và xác minh Discord\n4. Hoàn tất hồ sơ năng lực\n5. Lập đội / tham gia đội\n\n🗓️ **Thời hạn hoàn thành và ghép đội tự do đến 21:00 13/9**\nSau thời gian trên hệ thống sẽ tự động ghép đội ngẫu nhiên.\n\n*Lưu ý:* Trường hợp tài khoản Github đang liên kết với nhiều email, hãy cài đặt email đăng ký với chương trình thành `Primary` tại https://github.com/settings/emails trước khi truy cập vào link mời.\n\nMọi vấn đề thắc mắc trong quá trình onboarding các bạn vui lòng tạo ticket để được hỗ trợ.\n> Cách thức tạo ticket: gõ command `/ticket create` tại kênh [link:discord.com]\n\n@everyone"
+    },
+    {
+      "msg_id": "M72484",
+      "channel": "channel_10",
+      "author_role": "student",
+      "created_at": "2026-09-12 23:53",
+      "content": "Hạn nộp Lab02"
+    },
+    {
+      "msg_id": "M80655",
+      "channel": "channel_11",
+      "author_role": "student",
+      "created_at": "2026-09-13 09:05",
+      "content": "[@user] Cho mình hỏi là: Email cá nhân nhận lịch mã số 02, sau đó nhận thêm mã số 03. Còn email outlook thì ngược lại nhận lịch mã số 03, sau đó nhận mã số 02. Vậy mình nên học theo lịch nào?"
     },
     {
       "msg_id": "M16114",
       "channel": "channel_05",
       "author_role": "staff",
       "created_at": "2026-09-13 11:21",
-      "content": "@everyone mn ơi, ngày mai bài lab sẽ cần sử dụng đến CVAT nhé. Link hướng dẫn cài đặt và đăng ký tài khoản mình đã gửi trong drive. Mọi người tranh thủ kiểm tra và cài đặt trước để ngày mai có thể làm bài lab thuận lợi nhất nha!"
+      "content": "@everyone  mn ơi, ngày mai bài lab sẽ cần sử dụng đến CVAT nhé.\n\nBạn nào hiện tại chưa cài được CVAT hoặc đang gặp vấn đề trong quá trình cài đặt/sử dụng thì có thể nhắn tin cho bọn mình để được hỗ trợ nhé. Mọi người tranh thủ kiểm tra và cài đặt trước để ngày mai có thể làm bài lab thuận lợi nhất nha!"
     },
     {
-      "msg_id": "M88027",
-      "channel": "channel_11",
+      "msg_id": "M33002",
+      "channel": "channel_02",
       "author_role": "student",
-      "created_at": "2026-09-13 00:08",
-      "content": "cho em hỏi Lab2 có được extend thời gian submit thêm không v ạ? Em lỡ nộp muộn 1 phút không submit bài được ạ"
+      "created_at": "2026-09-13 12:01",
+      "content": "Hạn tìm đồng đội đến bao giờ thế mọi người ơi!!!"
+    },
+    {
+      "msg_id": "M82237",
+      "channel": "channel_04",
+      "author_role": "staff",
+      "created_at": "2026-09-13 14:47",
+      "content": "Recording WS01: Kick off\n[link:zoom.us] \nPasscode: [PASSCODE]\n\nLưu ý: Tài liệu lưu hành nội bộ chương trình AI20K Build Phase\n[@role]"
+    },
+    {
+      "msg_id": "M09449",
+      "channel": "channel_12",
+      "author_role": "staff",
+      "created_at": "2026-09-13 21:49",
+      "content": "📢 THÔNG BÁO LỰA CHỌN ĐỀ TÀI\n\nBTC đã hoàn tất việc sắp xếp thành viên và danh sách các team. Ngân hàng đề tài chính thức sẽ được công khai lúc 22h00 hôm nay, Chủ [HV], ngày 13/09/2026.\n\nSau khi ngân hàng đề được công bố, các team cần chủ động tổ chức trao đổi nội bộ và thống nhất với đầy đủ thành viên trước khi đăng ký. Không nên để một cá nhân tự lựa chọn khi team chưa thảo luận kỹ.\n\nKhi đánh giá đề tài, team cần cân nhắc:\n\n> Mức độ phù hợp với năng lực và định hướng của các thành viên.\n> \n> Khả năng xây dựng sản phẩm có thể triển khai và demo trong thời gian khóa học.\n> \n> Khả năng tiếp cận dữ liệu, tài liệu, công cụ và hạ tầng.\n> \n> Yêu cầu về AI Agent, human-in-the-loop, đánh giá chất lượng và an toàn.\n> \n> Phạm vi công việc và phương án phân công giữa các thành viên.\n\nQuy định đăng ký:\n\nĐọc kỹ các thông tin trong sheet đề tài\n\n> **Nội dung trong ngân hàng là gợi ý để nhóm lựa chọn và tinh chỉnh theo tình hình thực tế khi khảo sát, trao đổi trực tiếp với người dùng trong quá trình phát triển sản phẩm.**\n> \n> **Mỗi đề tài chỉ nhận tối đa 2 team đăng ký.**\n> \n> **Team cần thống nhất thứ tự ưu tiên giữa các đề tài.**\n> \n> **Trường hợp team muốn đề xuất đề tài mới, cần được BTC duyệt bằng việc tạo ticket.**\n\n\nCác mốc thời gian quan trọng:\n\n- 22:00 Chủ [HV], ngày 13/09/2026: Công khai ngân hàng đề tài.\n- 23:59 Chủ [HV], ngày 20/09/2026: Hạn cuối lựa chọn và đăng ký đề tài - Hoàn thiện các delieverables Gate 1.\n\nSau ngày 20/09/2026: BTC sẽ không tiếp nhận hoặc hỗ trợ thêm các yêu cầu liên quan đến việc lựa chọn hoặc đề xuất đề tài.\n\nCác team vui lòng chủ động sắp xếp thời gian thảo luận, lựa chọn nghiêm túc và hoàn tất đăng ký đúng thời hạn.\n\n[@role]"
+    },
+    {
+      "msg_id": "SYN001",
+      "channel": "channel_general",
+      "author_role": "student",
+      "created_at": "2026-09-14 08:58",
+      "content": "Mọi người nhớ nộp bài nha, hình như sắp hết hạn rồi đó."
     }
   ]
 }

@@ -3,8 +3,10 @@
 Phần bàn giao của **Nguyễn Minh Lương** gồm:
 
 - `golden_set.json`: bộ 22 case tự chứa toàn bộ input và nhãn kỳ vọng.
-- `build_golden_set.py`: chép nguyên văn tin thật từ `../k4_messages.csv`, sinh JSON và kiểm tra cơ cấu.
 - `CROSS_REVIEW.md`: phiếu để một thành viên khác đọc chéo 5 case trước lượt eval đầu tiên.
+- `runs/`: kết quả raw của từng lượt chạy (sinh ra bởi `codebase/scripts/run_eval.py`).
+
+Script build/chạy eval nằm ở `codebase/scripts/` (không đặt trong `eval/` để thư mục này chỉ chứa dữ liệu + kết quả theo đúng cấu trúc nộp bài).
 
 ## Cơ cấu đã khóa
 
@@ -35,7 +37,7 @@ Có **21 case thật** và **1 case synthetic**. File JSON đã chứa nguyên v
 Chạy từ thư mục gốc repository:
 
 ```powershell
-python eval/build_golden_set.py
+python codebase/scripts/build_golden_set.py
 python -m json.tool eval/golden_set.json > $null
 ```
 

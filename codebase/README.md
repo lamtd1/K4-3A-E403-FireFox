@@ -1,6 +1,12 @@
-# Module AI Lõi — Actionable Digest (`codebase/core/`)
+# Actionable Digest — codebase
 
-Module phụ trách trích xuất thông tin cần hành động (Deadline, Task, Lịch/Phòng) từ tin nhắn Discord bằng LLM thật (Gemini / OpenAI / Anthropic), tuân thủ nghiêm ngặt hợp đồng dữ liệu tại Mục 0 trong `CP3_TASKS.md`.
+- `core/`: module AI lõi (trích xuất Deadline/Task/Lịch-Phòng từ tin nhắn Discord bằng LLM thật, tuân thủ hợp đồng dữ liệu tại Mục 0 trong `CP3_TASKS.md`).
+- `web/`: giao diện người dùng (HTML + JS thuần), gọi AI thật qua server, không lộ API key ra trình duyệt.
+- `app.py`: server Flask phục vụ `web/` và expose `POST /api/extract`.
+- `samples/demo.json`: tin nhắn mẫu để chạy thử UI.
+- `scripts/`: script dòng lệnh (build/chạy golden set) — không phải một phần của prototype, chỉ dùng nội bộ nhóm.
+
+LLM gọi qua chuẩn OpenAI-compatible chat-completions (`LLM_BASE_URL` + `LLM_MODEL` + `LLM_API_KEY`) — dùng được với OpenAI, Groq, router nội bộ, hoặc Gemini/Anthropic qua lớp tương thích OpenAI của chính họ.
 
 ---
 
@@ -24,14 +30,23 @@ pip install -r codebase/requirements.txt
 # Tạo file .env từ template (nếu chưa có):
 Copy-Item codebase\.env.example codebase\.env
 
-# Mở file codebase/.env và điền GEMINI_API_KEY hoặc OPENAI_API_KEY
+# Mở file codebase/.env và điền LLM_BASE_URL, LLM_MODEL, LLM_API_KEY
 ```
 
 ---
 
-## 2. Hướng dẫn sử dụng
+## 2. Chạy giao diện thật (Server + UI)
 
-### 2.1 Chạy thử từ dòng lệnh (CLI)
+```powershell
+python codebase/app.py 5000
+```
+
+Mở `http://127.0.0.1:5000` — trang sẽ tự tải tin nhắn mẫu (`samples/demo.json`), chọn kênh cần quét rồi bấm
+"🔄 Quét bằng AI". Server tự gọi `core.extract()`, API key không bao giờ rời khỏi máy chủ.
+
+---
+
+## 3. Chạy thử `extract()` từ dòng lệnh (không cần server)
 
 **Cách 1: Chạy từ thư mục gốc của repo (Khuyên dùng)**
 ```powershell
@@ -46,8 +61,7 @@ $env:PYTHONIOENCODING='utf-8'
 python -m core.extractor samples/demo.json
 ```
 
-
-### 2.2 Tích hợp vào Server / API (Dành cho Lâm & Phong)
+**Gọi trực tiếp từ code Python khác:**
 ```python
 from core.extractor import extract
 
@@ -70,7 +84,7 @@ print(result)
 
 ---
 
-## 3. Chạy kiểm thử tự động (Unit Tests)
+## 4. Chạy kiểm thử tự động (Unit Tests)
 
 **Từ thư mục gốc repo:**
 ```powershell
@@ -85,7 +99,17 @@ python -m pytest tests -v
 
 ---
 
-## 4. Nhật ký cuộc gọi LLM (Logs)
+## 5. Chạy golden set eval (script nằm ở `codebase/scripts/`)
+
+```powershell
+python codebase/scripts/run_eval.py
+```
+
+Đọc `eval/golden_set.json`, gọi `extract()` cho từng case, chấm 5 tiêu chí C1–C5, lưu kết quả raw vào `eval/runs/`.
+
+---
+
+## 6. Nhật ký cuộc gọi LLM (Logs)
 Mọi lời gọi tới LLM đều được tự động lưu vào `codebase/logs/llm_calls.jsonl` gồm 8 trường:
 - `timestamp`, `provider`, `model`, `prompt`, `raw_response`, `parsed`, `latency_ms`, `error`.
 - Đã được tự động che giấu / loại bỏ các chuỗi API Key để đảm bảo an toàn bảo mật.
