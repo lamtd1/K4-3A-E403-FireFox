@@ -1185,29 +1185,40 @@
       return { DEADLINE: '🚨 Deadline', TASK: '📋 Task', SCHED: '📍 Đổi Phòng / Địa điểm' }[type] || type;
     }
 
-    function renderAiCards(cards) {
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str == null ? '' : String(str);
+      return div.innerHTML;
+    }
+
+    function renderAiCards(cards, sourceMessages) {
       const wrapper = document.getElementById('ai-cards');
       wrapper.innerHTML = '';
+      const channelByMsgId = {};
+      (sourceMessages || []).forEach(m => { channelByMsgId[m.msg_id] = m.channel; });
       cards.forEach((card, i) => {
         const el = document.createElement('div');
         el.className = 'action-card';
-        el.dataset.channel = 'ai';
+        // Dùng channel thật của tin nguồn để thẻ AI tham gia đúng bộ lọc kênh/loại hiện có
+        // (không dùng nhãn cố định "ai" — nhãn đó không khớp bất kỳ giá trị channel-checkbox nào,
+        // nên thẻ sẽ biến mất vĩnh viễn ngay khi người dùng bấm lọc kênh hoặc lọc loại).
+        el.dataset.channel = channelByMsgId[card.msg_id] || '';
         el.dataset.type = card.type;
         const confClass = card.confidence === 'high' ? 'conf-high' : 'conf-low';
         const confLabel = card.confidence === 'high' ? '✓ Độ tin cậy cao (AI thật)' : '⚠️ Cần kiểm tra lại (AI thật)';
         el.innerHTML = `
           <div class="card-top">
             <div class="tags-group">
-              <span class="badge-type ${cardTypeToBadge(card.type)}">${cardTypeToLabel(card.type)}</span>
+              <span class="badge-type ${cardTypeToBadge(card.type)}">${escapeHtml(cardTypeToLabel(card.type))}</span>
               <span class="badge-confidence ${confClass}">${confLabel}</span>
             </div>
           </div>
           <div class="card-content">
-            <h3>${card.title}</h3>
-            <div class="meta-time"><span>⏰ Hạn:</span><span class="highlight">${card.deadline_text || 'Chưa xác định'}</span></div>
+            <h3>${escapeHtml(card.title)}</h3>
+            <div class="meta-time"><span>⏰ Hạn:</span><span class="highlight">${escapeHtml(card.deadline_text) || 'Chưa xác định'}</span></div>
             <div class="source-box">
-              <div class="source-label"><span>Căn cứ xác minh (Source of Truth) — msg_id: ${card.msg_id}</span></div>
-              <div class="source-quote">"${card.quote}"</div>
+              <div class="source-label"><span>Căn cứ xác minh (Source of Truth) — msg_id: ${escapeHtml(card.msg_id)}</span></div>
+              <div class="source-quote">"${escapeHtml(card.quote)}"</div>
             </div>
           </div>
         `;
@@ -1231,15 +1242,23 @@
       const selectedChannels = getSelectedChannels();
       const messages = filterMessagesByChannel(window.SAMPLE_MESSAGES, selectedChannels);
       document.getElementById('mock-cards').style.display = 'none';
+      if (messages.length === 0) {
+        // Không có tin nào trong các kênh đã chọn — không gọi API thật cho một prompt rỗng
+        // (mirror hành vi run_one_case() trong eval/run_eval.py: filter rỗng → trả [] ngay, không tốn lệnh gọi).
+        renderAiCards([], messages);
+        status.textContent = 'Không có tin nào trong các kênh đã chọn — chưa gọi AI.';
+        return;
+      }
       status.textContent = `Đang gọi ${model}…`;
       try {
         const cards = await classifyMessages(messages, apiKey, PROMPT_TEXT, baseUrl, model);
-        renderAiCards(cards);
+        renderAiCards(cards, messages);
         status.textContent = `Xong — ${cards.length} card từ ${messages.length} tin.`;
       } catch (e) {
         document.getElementById('ai-cards').innerHTML = '';
-        document.getElementById('empty-state').style.display = 'block';
-        status.textContent = `Lỗi: ${e.message}`;
+        document.getElementById('mock-cards').style.display = '';
+        document.getElementById('empty-state').style.display = 'none';
+        status.textContent = `Lỗi: ${e.message} — đang hiện lại thẻ mẫu.`;
       }
     }
 

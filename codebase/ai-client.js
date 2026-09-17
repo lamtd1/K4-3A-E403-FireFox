@@ -37,6 +37,9 @@ function parseGeminiResponse(rawResponseText) {
     throw new Error('Model phải trả về một mảng card, kể cả khi rỗng');
   }
   cards.forEach((card, i) => {
+    if (typeof card !== 'object' || card === null) {
+      throw new Error(`Card #${i} không phải object hợp lệ`);
+    }
     for (const field of REQUIRED_FIELDS) {
       if (!(field in card)) {
         throw new Error(`Card #${i} thiếu field bắt buộc "${field}"`);

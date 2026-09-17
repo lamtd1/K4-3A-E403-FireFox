@@ -50,6 +50,8 @@ def parse_response(raw_response_text):
         raise ValueError("Model phải trả về một mảng card, kể cả khi rỗng")
 
     for i, card in enumerate(cards):
+        if not isinstance(card, dict):
+            raise ValueError(f"Card #{i} không phải object hợp lệ")
         for field in REQUIRED_FIELDS:
             if field not in card:
                 raise ValueError(f'Card #{i} thiếu field bắt buộc "{field}"')
