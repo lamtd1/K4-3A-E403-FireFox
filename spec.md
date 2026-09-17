@@ -138,8 +138,22 @@
 
 ## §3. Giải pháp tương tự đã nghiên cứu
 
-- **[Sản phẩm 1]:** flow / đáng học / đáng né / mình khác gì
-- **[Sản phẩm 2]:** ...
+### 3.1 Sản phẩm 1: Discord Scheduled Events & Reminder Bots (Dyno / Carl-bot)
+
+- **Flow:** Ban tổ chức hoặc học viên phải chủ động thao tác thủ công: Admin mở form tạo Event trên server Discord, hoặc người dùng gõ lệnh bot như `/remindme in 2 hours [nội dung]`. Đến giờ hẹn, bot sẽ ping `@everyone` hoặc gửi tin nhắn DM nhắc nhở.
+- **Đáng học:** Tích hợp trực tiếp ngay trong giao diện Discord; cơ chế thông báo (push notification/ping) thu hút sự chú ý tức thì trước giờ diễn ra sự kiện.
+- **Đáng né:** Hoàn toàn phụ thuộc vào việc con người phải nhớ để tạo thủ công. Nếu BTC chỉ thông báo nhanh một dòng trong luồng chat mà không tạo Event thì học viên vẫn bị trôi tin. Ngoài ra, việc các bot gửi tin nhắn nhắc nhở vào channel dễ gây loãng và làm tăng tình trạng "ngập lụt thông báo" (notification fatigue).
+- **Mình khác gì:** Sentinel áp dụng cơ chế **trích xuất thụ động thông minh (AI-driven passive extraction)**. Học viên không cần chờ đợi ai tạo event và không cần tự gõ lệnh bot. AI tự động "lắng nghe" và quét qua toàn bộ tin nhắn ở các kênh học viên theo dõi, tự phát hiện công việc ẩn trong hội thoại tự nhiên, trích xuất thời hạn và cho phép học viên xác nhận vào lịch chỉ với 1 click.
+
+### 3.2 Sản phẩm 2: Slack AI (Channel Recaps & Action Item Summaries)
+
+- **Flow:** Người dùng chọn khoảng thời gian (hôm nay, 7 ngày qua) và bấm nút "Summarize Channel" $\rightarrow$ Slack AI tổng hợp hội thoại thành các đoạn văn xuôi ngắn kèm danh sách bullet points các việc cần làm (Action items) rồi hiển thị trong một pop-up.
+- **Đáng học:** Giao diện tổng kết cô đọng, dễ đọc lướt; giúp người dùng nắm nhanh diễn biến trao đổi sau một thời gian không online.
+- **Đáng né:** Đầu ra là văn bản tự do (unstructured text) — không có mốc thời gian ISO chuẩn hóa để đồng bộ thẳng vào lịch học tập; thường gặp hiện tượng ảo giác (hallucination) thời hạn khi các thành viên tranh luận nhiều mốc giờ khác nhau; không có cơ chế phân biệt thẩm quyền người nói (tin của sếp/giảng viên bị đối xử ngang hàng với tin đồn đoán của đồng nghiệp).
+- **Mình khác gì:**
+  - **Cấu trúc hóa triệt để (Structured Data):** Phân định rạch ròi 3 nhóm việc (`DEADLINE`, `TASK`, `SCHEDULE`) với mốc `due` chuẩn ISO (`YYYY-MM-DDTHH:MM`), sẵn sàng nạp vào timeline/lịch mà không cần gõ lại.
+  - **Phân cấp tin cậy theo vai trò (Authority-based Confidence):** Nhận diện vai trò tác giả (`staff` vs `student`) để gắn nhãn `high` (thông báo chính thức) hoặc `low` (thảo luận của học viên, cần kiểm tra lại).
+  - **Xác thực chống ảo giác (Anti-hallucination Grounding):** Bắt buộc hiển thị khung căn cứ trích dẫn nguyên văn (`evidence.quote`) từ tin nhắn gốc để học viên đối chiếu trước khi xác nhận, đi kèm bộ hậu kiểm tự động giáng cấp nếu AI tự bịa quote.
 
 ---
 
@@ -310,25 +324,128 @@
 
 ---
 
-## §7. Kiểm thử
+## §7. Kiểm thử & Khóa Ngưỡng Chất Lượng (Quality Bar)
 
-- **Chiều chất lượng + định nghĩa kiểm chứng được:**
-- **Golden set** (≥20 case theo cơ cấu trong guide §2.6, file trong `eval/`):
-- **Quality bar** (chốt từ hạn chốt spec của khoá, giữ nguyên sau đó): "Đạt khi ≥ ___% qua bộ, và ___"
-- **Kết quả các lượt chạy** (bảng % — cập nhật đến trước CP6):
+### 7.1 Chiều chất lượng và định nghĩa kiểm chứng được (5 tiêu chí C1 – C5)
+
+Chất lượng của Sentinel được kiểm thử tự động trên từng case thông qua 5 tiêu chí độc lập, kiểm chứng được bằng code (`eval/run_eval.py`):
+
+| Mã | Chiều chất lượng | Định nghĩa kiểm chứng tự động (Cấm cảm tính) | Cách kiểm tra |
+|---|---|---|---|
+| **C1** | **Đúng số lượng việc** (Completeness / Precision) | Số lượng item AI trích xuất phải bằng chính xác số lượng item trong `expected` (kể cả trường hợp rỗng `items = []`). Không bỏ sót việc và không sinh thẻ rác. | `len(actual_items) == len(expected_items)` |
+| **C2** | **Đúng phân loại việc** (Classification Accuracy) | Thuộc tính `type` của từng item trích xuất phải khớp chính xác 1 trong 3 loại: `DEADLINE`, `TASK`, `SCHEDULE`. | `actual.type == expected.type` |
+| **C3** | **Đúng thời hạn & Cấm bịa** (Temporal Integrity) | Mốc `due` phải chuẩn hóa theo định dạng ISO `YYYY-MM-DDTHH:MM` khớp tới phút dựa trên mốc `now`. **Nếu tin nhắn không nêu rõ ngày/giờ thì bắt buộc `due = null`**, tuyệt đối cấm tự bịa mốc thời gian. | `actual.due == expected.due` |
+| **C4** | **Đúng độ tin cậy theo nguồn** (Authority Confidence) | Gán `confidence = "high"` đối với thông báo chính thức từ BTC/Staff có thời gian cụ thể. Gán `confidence = "low"` (kèm lý do `review_reason`) đối với tin từ học viên, tin nhắc nhở chung chung, tin từ Bot, hoặc khi thông tin mơ hồ/mâu thuẫn. | `actual.confidence == expected.confidence` |
+| **C5** | **Có căn cứ xác thực nguyên văn** (Anti-hallucination Grounding) | Thuộc tính `evidence.quote` bắt buộc phải là **chuỗi con nguyên văn (verbatim substring)** nằm trong nội dung `content` của tin nhắn có `msg_id` tương ứng. Bộ hậu kiểm tự động giáng cấp nếu AI tự bịa quote. | `actual.quote in message[msg_id].content` |
+
+> **Quy chuẩn 1 case Đạt:** Một test case chỉ được tính là **ĐẠT (PASS)** khi và chỉ khi thỏa mãn đồng thời **cả 5 tiêu chí**:  
+> $$\text{Case Passed} \iff C1 \land C2 \land C3 \land C4 \land C5$$
 
 ---
 
-## §8. Phân công & kế hoạch
+### 7.2 Bộ kiểm thử chuẩn Golden Set (`eval/golden_set.json`)
 
-- **Phân công có tên:** spec / evidence / prompt / code / demo
-- **Willing users** (≥2 tên) + kế hoạch vòng validation *(bonus, nếu làm)*:
-- **Multi-prototype** (nếu làm): trục khác biệt của ≥2 phương án + lý do chọn:
+Bộ dữ liệu kiểm thử chuẩn gồm **22 test case độc lập**, tự chứa toàn bộ nội dung tin nhắn và nhãn kỳ vọng (không phụ thuộc file ngoài), phân bổ đủ 4 nhóm thử thách nghiệp vụ và 2 nhóm tần suất theo hướng dẫn:
+
+| Nhóm | Mã nhóm | Số case | Tỷ lệ | Mục đích kiểm thử |
+|---|---|:---:|:---:|---|
+| ① Nguồn sự thật | `L1_source` | 3 | 13.6% | Đảm bảo AI không tự bịa deadline khi bot hoặc học viên hỏi không có mốc thời gian (`G01`, `G02`, `G03`). |
+| ② Mơ hồ / thiếu thông tin | `L2_ambiguous` | 3 | 13.6% | Kiểm tra khả năng nhận biết tin mâu thuẫn (2 lịch), tin nhắc nhở không rõ hạn, phải hạ `confidence = "low"` (`G04`, `G05`, `G06`). |
+| ③ Ngoài phạm vi | `L3_out_of_scope` | 2 | 9.1% | Kiểm tra từ chối an toàn: tin xin gia hạn nộp bài, hỏi phòng gym $\rightarrow$ trả về `items = []` (`G07`, `G08`). |
+| ④ Đặc thù nghiệp vụ | `L4_domain` | 2 | 9.1% | 1 tin chứa nhiều mốc sự kiện (`G09`), tin quy định khung giờ nộp daily lặp lại hàng ngày (`G10`). |
+| Phổ biến hằng ngày | `common` | 9 | 40.9% | Các thông báo workshop, cài tool CVAT, đổi tên, tài liệu diễn ra thường nhật (`G11`–`G19`). |
+| Hiếm gặp / Biên | `rare` | 3 | 13.6% | Thông báo đính chính lùi giờ, cùng 1 tin đăng ở 2 channel khác nhau (`G20`–`G22`). |
+| **Tổng cộng** | | **22** | **100%** | **Gồm 21 case tin thật từ `k4_messages.csv` và 1 case synthetic.** |
+
+---
+
+### 7.3 Cam kết Ngưỡng Chất Lượng (Quality Bar Freeze) — Khóa cứng trước 21:00 · 17/9
+
+> [!IMPORTANT]
+> **CAM KẾT ĐÓNG BĂNG NGƯỠNG CHẤT LƯỢNG (QUALITY BAR):**
+> Nhóm FireFox cam kết sản phẩm **Sentinel (Actionable Digest)** khi đánh giá trên toàn bộ 22 test case của Golden Set phải thỏa mãn đồng thời các ngưỡng định lượng sau:
+>
+> 1. **Tỷ lệ Đạt tổng thể (Overall Pass Rate): $\ge 75.0\%$** (tối thiểu **17 / 22 case** đạt toàn diện cả 5 tiêu chí C1–C5).
+> 2. **Chống ảo giác trích dẫn tuyệt đối (C5 - Grounding Integrity): $100.0\%$** (22/22 case — tuyệt đối không có bất kỳ trích dẫn nào bịa đặt lọt qua bộ lọc hậu kiểm).
+> 3. **Từ chối an toàn các case ngoài phạm vi (L3 - Out-of-Scope Safety): $100.0\%$** (2/2 case ngoài thẩm quyền/ngoài phạm vi phải trả về `items = []`).
+> 4. **Bảo vệ tính toàn vẹn nguồn sự thật (L1 - Source-of-Truth Integrity): $\ge 66.7\%$** (tối thiểu 2/3 case không bịa mốc thời gian khi dữ liệu thiếu căn cứ).
+> 5. **Hiệu năng độ trễ phản hồi (Average Latency): $\le 6.0$ giây / request.**
+>
+> *Sau 21:00 ngày 17/9, công thức và các chỉ số Quality Bar trên được khóa vĩnh viễn, không điều chỉnh giảm.*
+
+---
+
+### 7.4 Kết quả các lượt chạy & Tự khai báo phần chưa hoàn thiện
+
+#### Bảng kết quả thực nghiệm
+
+| Lượt chạy | Thời điểm | Model sử dụng | Tổng case | Số case Đạt | Tỷ lệ Đạt (%) | C5 (Grounding) | L3 (Từ chối) | Trạng thái Quality Bar |
+|---|---|---|:---:|:---:|:---:|:---:|:---:|:---:|
+| **Lượt 1 (Run 1)** | 13:51 · 17/09 | `gemini-3.6-flash` | 22 | **14** | **63.64%** | **100% (22/22)** | **100% (2/2)** | ⚠️ **Chưa đạt** (thiếu 3 case so với mốc 75%) |
+| **Lượt 2 (Run 2)** | *Dự kiến trước CP5* | `gemini-3.6-flash` (Prompt v2) | 22 | *Mục tiêu $\ge 17$* | *Mục tiêu $\ge 77.3\%$* | *100%* | *100%* | *Đang tối ưu* |
+
+#### Tự khai báo các lỗi và hạn chế trong Lượt 1 (Self-declaration)
+
+Theo báo cáo kiểm thử tại [`eval/runs/run1_raw.json`](eval/runs/run1_raw.json) và [`eval/run_results.md`](eval/run_results.md), nhóm có **8 / 22 case chưa đạt (36.36%)**, tập trung vào 3 nhóm nguyên nhân kỹ thuật:
+
+1. **Lỗi lọc quá tay với tin mơ hồ (Over-filtering — 4 case: `G02`, `G04`, `G06`, `G19`):**  
+   Prompt hiện tại nhấn mạnh quy tắc *"bỏ qua tin tán gẫu/câu hỏi"*, dẫn đến việc AI lọc bỏ luôn các tin nhắc nhở có tính quy tắc nhưng thiếu mốc ngày cụ thể (ví dụ: bot nhắc "deadline thường là 23:59 cùng ngày", học viên bảo "dùng lịch có chữ UPDATED", BTC nhắc "trước 12h hôm sau"). AI trả về `items = []` thay vì tạo thẻ với `confidence = "low"` và `due = null`.
+2. **Lỗi bỏ sót mốc sự kiện trong tin phức tạp (Multi-item Extraction — 1 case: `G09`):**  
+   Thông báo của BTC chứa 2 mốc quan trọng (22:00 13/09: Mở ngân hàng đề tài; 23:59 20/09: Hạn đăng ký đề tài Gate 1). AI chỉ trích xuất được 1 deadline cuối cùng mà bỏ sót mốc lịch sự kiện đầu tiên $\rightarrow$ vi phạm tiêu chí C1.
+3. **Lỗi phân loại type và quy tắc gán nhãn cho deadline lặp lại / nguồn Bot (3 case: `G10`, `G18`, `G21`):**  
+   - `G10`: Quy định khung giờ nộp daily standup bị AI phân loại thành `TASK` thay vì `DEADLINE` lặp lại.
+   - `G21`: Khung giờ daily standup "0h-10h sáng hàng ngày" bị AI tự ý gán mốc giờ ngày hôm sau (`2026-09-14T10:00`) thay vì giữ `due = null`.
+   - `G18`, `G21`: Nguồn tin từ Bot nhưng AI thấy đưa deadline rõ ràng nên tự tin gán `confidence = "high"` (trong khi quy ước golden set yêu cầu bot phải là `low`).
+
+> **Kế hoạch khắc phục cho Lượt 2:** Tinh chỉnh `codebase/core/prompt.py` nhằm: (a) Hướng dẫn AI nhận diện tin nhắc nhở thường lệ để trích xuất với `due = null` & `confidence = "low"`; (b) Thêm chỉ dẫn bóc tách danh sách nhiều sự kiện khi một thông báo chứa $\ge 2$ mốc thời gian; (c) Quy định rõ mọi thông tin từ tác giả bot mặc định nhận `confidence = "low"`.
+
+---
+
+## §8. Phân công & Kế hoạch Thực hiện
+
+### 8.1 Bảng phân công nhân sự chi tiết
+
+| Thành viên | Mã học viên | Vai trò chính | Trách nhiệm chi tiết trong dự án | Trạng thái CP4 |
+|---|---|---|---|:---:|
+| **Nguyễn Duy Phong** | 2A202602834 | Đội trưởng | Điều phối tổng thể; chuẩn hóa AI Spec (§1–§4, §7 Quality Bar); lập trình runner eval `eval/run_eval.py`; chạy và phân tích Lượt 1 `eval/run_results.md`; quay video demo thao tác; nộp form các checkpoint. | Hoàn thành |
+| **Nguyễn Xuân Khuê** | 2A202602999 | Module AI Lõi | Thiết kế cấu trúc `codebase/core/`; kỹ thuật prompt `prompt.py`; kết nối API đa LLM `llm_client.py`; xây dựng hàm `extract()`; cơ chế retry parse JSON; bộ lọc hậu kiểm chống ảo giác trích dẫn `post_process_evidence()`; audit logging `llm_calls.jsonl`. | Hoàn thành |
+| **Nguyễn Minh Lương** | 2A202602618 | Golden Set & Data | Khai thác và phân tích chatlog `k4_messages.csv`; xây dựng bộ 22 case kiểm thử chuẩn `eval/golden_set.json`; lập trình script `eval/build_golden_set.py`; soạn phiếu kiểm tra chéo `eval/CROSS_REVIEW.md`; hỗ trợ phân tích nguyên nhân lỗi Lượt 1. | Hoàn thành |
+| **Tạ Duy Lâm** | 2A202602699 | Web & Integration | Phát triển giao diện HTML/CSS/JS tĩnh `prototype_actionable_digest.html`; áp dụng 6 nguyên tắc HAX; thiết kế 4 nhánh trải nghiệm HITL; xây dựng API server kết nối UI với hàm `extract()`; sửa lỗi tương tác timeline và bộ đếm tab. | Hoàn thành |
+
+---
+
+### 8.2 Khai báo Willing Users & Kế hoạch Thử nghiệm Thực tế (Validation — R6)
+
+Nhóm đã khai báo và kết nối với **2 Willing Users** từ mốc CP1 (đáp ứng điều kiện tiên quyết của khối R6):
+
+1. **Willing User 1:** **Vũ Mạnh Cường** — Mã HV: `2A202602812` (Lớp 3A · Phòng E403 · Nhóm 2).
+2. **Willing User 2:** **Lê Thị Thu Phương** — Mã HV: `2A202602955` (Lớp 3A · Phòng E402 · Nhóm 4).
+3. **Người dùng mở rộng cho vòng CP5 (dự kiến đủ $\ge 5$ người):** Đỗ Hoàng Nam (Nhóm 1), Phạm Quỳnh Nga (Nhóm 3), Trần Quốc Tuấn (Nhóm 6).
+
+**Kế hoạch kiểm thử người dùng tại CP5:**
+- **Phương pháp phỏng vấn The Mom Test:** Không hỏi xã giao "Sản phẩm này có hay không?", mà giao cho người dùng một nhiệm vụ cụ thể: *"Bạn hãy mở bản tin, lọc các kênh học tập của bạn, tìm xem hôm nay có những việc gì cần nộp hoặc cần chuẩn bị, sau đó thêm việc đó vào lịch cá nhân"*.
+- **Quan sát & Ghi nhận:** Quan sát thao tác thực tế, ghi lại chính xác thời gian hoàn thành tác vụ so với quy trình cũ (đọc lướt Discord thủ công mất $\ge 5$ phút), ghi nhận nguyên văn lời nói (verbatim quotes) khi người dùng lúng túng hoặc gặp lỗi.
+- **Biên bản bàn giao:** Lưu toàn bộ nhật ký kiểm thử tại thư mục `validation/` và cập nhật ít nhất 1 thay đổi thiết kế vào §9 Changelog.
+
+---
+
+### 8.3 Multi-prototype: Trục khác biệt & Quyết định lựa chọn
+
+- **Phương án A (Được chọn):** **Actionable Digest Dashboard (Web Prototype hiện tại).** Bảng tin tổng hợp độc lập, bóc tách sẵn các thẻ việc theo phân loại, hỗ trợ lọc kênh và xác nhận 1-click vào lịch.
+- **Phương án B (Ứng viên đối chiếu):** **Conversational Discord Bot (Chatbot tương tác dạng lệnh).** Người dùng chat trực tiếp với Bot bằng câu hỏi: *"Hôm nay tôi có deadline nào không?"* để bot trả lời dạng tin nhắn văn bản.
+- **Trục khác biệt:** *Chủ động tổng hợp trực quan (Passive Structured Feed) vs Hỏi - Đáp tương tác (Active Conversational Q&A).*
+- **Lý do chọn Phương án A:**
+  - Giải quyết đúng gốc rễ nỗi đau: Học viên bị quá tải vì không biết có tin gì quan trọng đang trôi qua. Nếu dùng chatbot (Phương án B), học viên vẫn phải chủ động nhớ ra để hỏi, và câu trả lời dạng chat lại tiếp tục làm trôi màn hình hội thoại.
+  - Phương án A hiển thị trực quan mức độ tin cậy, trích dẫn gốc và hỗ trợ chỉnh sửa inline trước khi xác nhận vào lịch — đây là mấu chốt của triết lý Human-in-the-Loop.
 
 ---
 
 ## §9. Changelog
 
-| Thời điểm | Đổi gì | Vì sao (trỏ về feedback/case nào) |
+| Mốc thời gian | Nội dung thay đổi | Lý do & Căn cứ thực tế |
 |---|---|---|
+| **16/09 · 19:30 (CP1)** | Khởi tạo tài liệu AI Spec; hoàn thành mục §1 User & Job, khảo sát 9 học viên và mining 1.092 tin nhắn Discord; xác định bảng so sánh 3 ứng viên và chọn giải pháp Actionable Digest; đăng ký 2 willing users. | Khóa bài toán thực tế và lát cắt giải pháp theo yêu cầu Checkpoint 1. |
+| **16/09 · 21:00 (CP2)** | Hoàn thiện mục §4 Thiết kế, §5 Ma trận rủi ro 4 lớp và §6 Bốn nhánh trải nghiệm người dùng; xây dựng prototype tĩnh `codebase/prototype_actionable_digest.html` áp dụng 6 nguyên tắc HAX. | Đảm bảo luồng tương tác Human-in-the-Loop bấm thử được, phục vụ nghiệm thu Checkpoint 2. |
+| **17/09 · 16:00 (CP3)** | Tích hợp Module AI lõi `codebase/core/extractor.py` kết nối LLM thật; hoàn thành bộ Golden Set 22 case (`eval/golden_set.json`); xây dựng runner `eval/run_eval.py` và chạy đánh giá Lượt 1 đạt 14/22 case (63.64%); ghi nhận audit log. | Đo lường định lượng lần đầu trên dữ liệu chuẩn theo yêu cầu Checkpoint 3. |
+| **17/09 · 21:00 (CP4)** | Bổ sung phân tích 2 sản phẩm tương tự (§3); hoàn thiện định nghĩa 5 tiêu chí C1–C5 (§7); **chính thức khóa cứng cam kết Quality Bar $\ge 75.0\%$**; tự khai báo nguyên nhân 8 case trượt Lượt 1; chốt phân công nhân sự và kế hoạch validation (§8). | Hoàn thiện toàn diện tài liệu AI Spec và đóng băng ngưỡng chất lượng phục vụ nghiệm thu Checkpoint 4. |
 
