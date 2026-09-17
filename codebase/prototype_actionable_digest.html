@@ -7,19 +7,21 @@
   <title>Actionable Digest & Verification Card - Discord AI Assistant</title>
   <style>
     :root {
-      --bg-color: #0f172a;
-      --card-bg: #1e293b;
-      --card-border: #334155;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --accent-blue: #38bdf8;
-      --accent-purple: #818cf8;
-      --accent-green: #34d399;
-      --accent-amber: #fbbf24;
-      --accent-rose: #f43f5e;
-      --tag-deadline: rgba(244, 63, 94, 0.15);
-      --tag-task: rgba(56, 189, 248, 0.15);
-      --tag-sched: rgba(251, 191, 36, 0.15);
+      --bg-color: #f4f4f5;
+      --card-bg: #ffffff;
+      --card-border: #18181b;
+      --border-soft: #e4e4e7;
+      --surface-muted: #f4f4f5;
+      --text-main: #18181b;
+      --text-muted: #71717a;
+      --accent-blue: #18181b;
+      --accent-purple: #18181b;
+      --accent-green: #18181b;
+      --accent-amber: #52525b;
+      --accent-rose: #18181b;
+      --tag-deadline: #18181b;
+      --tag-task: #ffffff;
+      --tag-sched: var(--surface-muted);
     }
 
     * {
@@ -64,7 +66,8 @@
     }
 
     .logo-badge {
-      background: linear-gradient(135deg, #6366f1, #3b82f6);
+      background: #18181b;
+      color: #ffffff;
       width: 40px;
       height: 40px;
       border-radius: 10px;
@@ -95,9 +98,9 @@
     }
 
     .btn-header {
-      background: #0f172a;
+      background: #ffffff;
       border: 1px solid var(--card-border);
-      color: #e2e8f0;
+      color: var(--text-main);
       padding: 7px 14px;
       border-radius: 8px;
       font-size: 13px;
@@ -110,19 +113,18 @@
     }
 
     .btn-header:hover {
-      background: #334155;
-      border-color: #64748b;
+      background: var(--surface-muted);
+      border-color: #52525b;
     }
 
     .btn-header.primary {
-      background: rgba(56, 189, 248, 0.15);
-      border-color: var(--accent-blue);
-      color: var(--accent-blue);
+      background: #18181b;
+      border-color: #18181b;
+      color: #ffffff;
     }
 
     .btn-header.primary:hover {
-      background: var(--accent-blue);
-      color: #0f172a;
+      background: #3f3f46;
     }
 
     /* Step 1: Channel Selector Panel */
@@ -159,8 +161,8 @@
     }
 
     .channel-chip {
-      background: #0f172a;
-      border: 1px solid var(--card-border);
+      background: #ffffff;
+      border: 1px solid var(--border-soft);
       border-radius: 8px;
       padding: 10px 12px;
       cursor: pointer;
@@ -172,12 +174,12 @@
     }
 
     .channel-chip:hover {
-      border-color: #64748b;
+      border-color: #52525b;
     }
 
     .channel-chip.selected {
-      border-color: var(--accent-blue);
-      background: rgba(56, 189, 248, 0.1);
+      border-color: var(--card-border);
+      background: var(--surface-muted);
     }
 
     .channel-info {
@@ -188,7 +190,7 @@
     .channel-name {
       font-size: 13px;
       font-weight: 600;
-      color: #f1f5f9;
+      color: var(--text-main);
       display: flex;
       align-items: center;
       gap: 4px;
@@ -203,7 +205,7 @@
     .channel-checkbox {
       width: 16px;
       height: 16px;
-      accent-color: var(--accent-blue);
+      accent-color: #18181b;
     }
 
     .panel-footer {
@@ -216,13 +218,14 @@
 
     /* HAX Scope Banner [G1, G2] */
     .banner-hax {
-      background: rgba(56, 189, 248, 0.08);
-      border-left: 4px solid var(--accent-blue);
+      background: var(--surface-muted);
+      border: 1px solid var(--border-soft);
+      border-left: 4px solid #18181b;
       border-radius: 4px 8px 8px 4px;
       padding: 10px 16px;
       margin-bottom: 20px;
       font-size: 12.5px;
-      color: #cbd5e1;
+      color: var(--text-main);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -263,8 +266,9 @@
 
     .tab-btn.active,
     .tab-btn:hover {
-      background: var(--card-border);
-      color: var(--text-main);
+      background: #18181b;
+      border-color: #18181b;
+      color: #ffffff;
     }
 
     /* Action Cards */
@@ -284,8 +288,8 @@
     }
 
     .action-card.status-verified {
-      border-color: rgba(52, 211, 153, 0.5);
-      background: linear-gradient(to right, rgba(52, 211, 153, 0.04), var(--card-bg));
+      border-color: var(--card-border);
+      background: var(--surface-muted);
     }
 
     .action-card.hidden {
@@ -315,21 +319,21 @@
     }
 
     .badge-deadline {
-      background: var(--tag-deadline);
-      color: var(--accent-rose);
-      border: 1px solid rgba(244, 63, 94, 0.3);
+      background: #18181b;
+      color: #ffffff;
+      border: 1px solid #18181b;
     }
 
     .badge-task {
-      background: var(--tag-task);
-      color: var(--accent-blue);
-      border: 1px solid rgba(56, 189, 248, 0.3);
+      background: #ffffff;
+      color: var(--text-main);
+      border: 1px solid var(--card-border);
     }
 
     .badge-sched {
-      background: var(--tag-sched);
-      color: var(--accent-amber);
-      border: 1px solid rgba(251, 191, 36, 0.3);
+      background: var(--surface-muted);
+      color: var(--text-main);
+      border: 1px solid var(--border-soft);
     }
 
     .badge-confidence {
@@ -342,14 +346,15 @@
     }
 
     .conf-high {
-      background: rgba(52, 211, 153, 0.15);
-      color: var(--accent-green);
+      background: var(--surface-muted);
+      color: var(--text-main);
+      border: 1px solid var(--border-soft);
     }
 
     .conf-low {
-      background: rgba(251, 191, 36, 0.15);
-      color: var(--accent-amber);
-      border: 1px dashed rgba(251, 191, 36, 0.5);
+      background: #ffffff;
+      color: var(--text-muted);
+      border: 1px dashed #a1a1aa;
     }
 
     .channel-source {
@@ -364,7 +369,7 @@
       font-size: 14.5px;
       font-weight: 600;
       margin-bottom: 6px;
-      color: #f1f5f9;
+      color: var(--text-main);
     }
 
     .meta-time {
@@ -372,19 +377,19 @@
       align-items: center;
       gap: 6px;
       font-size: 13px;
-      color: #e2e8f0;
+      color: var(--text-main);
       margin-bottom: 10px;
     }
 
     .meta-time span.highlight {
-      color: var(--accent-amber);
+      color: var(--text-main);
       font-weight: 600;
     }
 
     /* Verification Box / Source Proof (HAX G11) */
     .source-box {
-      background: rgba(15, 23, 42, 0.7);
-      border: 1px solid #334155;
+      background: var(--surface-muted);
+      border: 1px solid var(--border-soft);
       border-radius: 8px;
       padding: 8px 12px;
       margin-bottom: 12px;
@@ -402,9 +407,9 @@
     }
 
     .source-quote {
-      color: #cbd5e1;
+      color: #3f3f46;
       font-style: italic;
-      border-left: 2px solid #64748b;
+      border-left: 2px solid #a1a1aa;
       padding-left: 8px;
     }
 
@@ -419,7 +424,7 @@
 
     .action-feedback {
       font-size: 12px;
-      color: var(--accent-green);
+      color: var(--text-main);
       display: none;
       align-items: center;
       gap: 4px;
@@ -444,32 +449,33 @@
     }
 
     .btn-confirm {
-      background: #22c55e;
-      color: white;
+      background: #18181b;
+      color: #ffffff;
     }
 
     .btn-confirm:hover {
-      background: #16a34a;
+      background: #3f3f46;
     }
 
     .btn-edit {
-      background: var(--card-border);
-      color: #e2e8f0;
+      background: #ffffff;
+      color: var(--text-main);
+      border: 1px solid var(--card-border);
     }
 
     .btn-edit:hover {
-      background: #475569;
+      background: var(--surface-muted);
     }
 
     .btn-dismiss {
       background: transparent;
-      color: #94a3b8;
+      color: var(--text-muted);
       border: 1px solid transparent;
     }
 
     .btn-dismiss:hover {
-      color: var(--accent-rose);
-      background: rgba(244, 63, 94, 0.1);
+      color: var(--text-main);
+      background: var(--surface-muted);
     }
 
     /* Inline Edit */
@@ -491,9 +497,9 @@
     }
 
     .edit-input {
-      background: #0f172a;
+      background: #ffffff;
       border: 1px solid var(--card-border);
-      color: white;
+      color: var(--text-main);
       padding: 6px 10px;
       border-radius: 4px;
       font-size: 12px;
@@ -504,7 +510,7 @@
     .empty-state {
       display: none;
       background: var(--card-bg);
-      border: 1px dashed var(--card-border);
+      border: 1px dashed #a1a1aa;
       border-radius: 12px;
       padding: 36px 20px;
       text-align: center;
@@ -529,19 +535,19 @@
     }
 
     .modal-container {
-      background: #1e293b;
-      border: 1px solid #475569;
+      background: #ffffff;
+      border: 1px solid var(--card-border);
       border-radius: 14px;
       width: 100%;
       max-width: 650px;
       max-height: 85vh;
       overflow-y: auto;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.25);
     }
 
     .modal-header {
       padding: 18px 20px;
-      border-bottom: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--border-soft);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -553,12 +559,13 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      color: var(--text-main);
     }
 
     .btn-close-modal {
       background: none;
       border: none;
-      color: #94a3b8;
+      color: var(--text-muted);
       font-size: 20px;
       cursor: pointer;
     }
@@ -583,7 +590,7 @@
       top: 10px;
       bottom: 10px;
       width: 2px;
-      background: #334155;
+      background: var(--border-soft);
     }
 
     .timeline-item {
@@ -597,28 +604,29 @@
       width: 14px;
       height: 14px;
       border-radius: 50%;
-      background: #3b82f6;
-      border: 2px solid #0f172a;
+      background: #18181b;
+      border: 2px solid #ffffff;
+      box-shadow: 0 0 0 1px var(--border-soft);
     }
 
     .timeline-dot.danger {
-      background: #f43f5e;
+      background: #18181b;
     }
 
     .timeline-dot.warning {
-      background: #fbbf24;
+      background: #71717a;
     }
 
     .timeline-content {
-      background: #0f172a;
-      border: 1px solid #334155;
+      background: var(--surface-muted);
+      border: 1px solid var(--border-soft);
       border-radius: 8px;
       padding: 12px 14px;
     }
 
     .timeline-time {
       font-size: 11.5px;
-      color: var(--accent-blue);
+      color: var(--text-main);
       font-weight: 600;
       margin-bottom: 4px;
     }
@@ -626,12 +634,12 @@
     .timeline-title {
       font-size: 13.5px;
       font-weight: 600;
-      color: #f8fafc;
+      color: var(--text-main);
     }
 
     .timeline-desc {
       font-size: 12px;
-      color: #94a3b8;
+      color: var(--text-muted);
       margin-top: 4px;
     }
   </style>
@@ -651,16 +659,16 @@
       </div>
       <div class="header-actions">
         <input type="text" id="llm-base-url-input" placeholder="Base URL (OpenAI-compatible)…" value="http://localhost:20128/v1"
-          style="background:#0f172a;border:1px solid var(--card-border);color:#e2e8f0;padding:7px 10px;border-radius:8px;font-size:12.5px;width:180px;">
+          style="background:#ffffff;border:1px solid var(--card-border);color:var(--text-main);padding:7px 10px;border-radius:8px;font-size:12.5px;width:180px;">
         <input type="text" id="llm-model-input" placeholder="Model…" value="oc/deepseek-v4-flash-free"
-          style="background:#0f172a;border:1px solid var(--card-border);color:#e2e8f0;padding:7px 10px;border-radius:8px;font-size:12.5px;width:160px;">
+          style="background:#ffffff;border:1px solid var(--card-border);color:var(--text-main);padding:7px 10px;border-radius:8px;font-size:12.5px;width:160px;">
         <input type="password" id="gemini-key-input" placeholder="Dán API Key…"
-          style="background:#0f172a;border:1px solid var(--card-border);color:#e2e8f0;padding:7px 10px;border-radius:8px;font-size:12.5px;width:160px;">
+          style="background:#ffffff;border:1px solid var(--card-border);color:var(--text-main);padding:7px 10px;border-radius:8px;font-size:12.5px;width:160px;">
         <button class="btn-header primary" onclick="runRealScan()">🔄 Quét lại kênh (AI thật)</button>
         <span id="scan-status" style="font-size:11.5px;color:var(--text-muted);"></span>
         <button class="btn-header" onclick="toggleChannelPanel()">
           <span>⚙️ Kênh đang quét:</span>
-          <strong id="active-channel-count" style="color: var(--accent-blue);">3 kênh</strong>
+          <strong id="active-channel-count" style="color: var(--text-main);">3 kênh</strong>
         </button>
         <button class="btn-header primary" onclick="openCalendarModal()">
           <span>📅 Xem Lịch cụ thể</span>
@@ -723,7 +731,7 @@
       </div>
 
       <div class="panel-footer">
-        <span style="font-size: 12px; color: #94a3b8;" id="scan-summary">Đang duyệt thông báo từ 3/5 kênh đã chọn</span>
+        <span style="font-size: 12px; color: var(--text-muted);" id="scan-summary">Đang duyệt thông báo từ 3/5 kênh đã chọn</span>
         <button class="btn btn-confirm" style="font-size: 11.5px; padding: 5px 12px;" onclick="toggleChannelPanel()">✓
           Thu gọn bộ lọc</button>
       </div>
@@ -735,21 +743,21 @@
         <strong>[HAX G1 & G2]:</strong> AI lọc các thông tin cần hành động (Task/Deadline/Đổi phòng) chỉ từ <strong>các
           kênh bạn đã tích chọn</strong>. AI chỉ đề xuất — bạn luôn là người duyệt cuối cùng.
       </div>
-      <span style="font-size: 11px; color: #38bdf8; cursor: pointer;" onclick="openCalendarModal()">Xem dòng thời
+      <span style="font-size: 11px; color: var(--text-main); text-decoration: underline; cursor: pointer;" onclick="openCalendarModal()">Xem dòng thời
         gian</span>
     </div>
 
     <!-- Log kỹ thuật: prompt gửi đi + phản hồi thô nhận về — phục vụ xác minh kỹ thuật (yêu cầu CP3) -->
     <details id="tech-log-panel" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px 14px; margin-bottom: 20px;">
       <summary style="cursor: pointer; font-size: 12.5px; color: var(--text-muted);">🪵 Log kỹ thuật (prompt đầu vào + phản hồi thô của model) — bấm để xem</summary>
-      <pre id="tech-log-content" style="white-space: pre-wrap; word-break: break-word; font-size: 11px; color: #cbd5e1; max-height: 260px; overflow-y: auto; margin-top: 10px;">Chưa có lệnh gọi nào. Bấm "🔄 Quét lại kênh (AI thật)" để xem prompt và phản hồi thô ở đây.</pre>
+      <pre id="tech-log-content" style="white-space: pre-wrap; word-break: break-word; font-size: 11px; color: #3f3f46; max-height: 260px; overflow-y: auto; margin-top: 10px;">Chưa có lệnh gọi nào. Bấm "🔄 Quét lại kênh (AI thật)" để xem prompt và phản hồi thô ở đây.</pre>
     </details>
 
     <!-- STEP 2: Main Digest Section -->
     <div class="section-header">
       <div class="section-title">
         <span>📌 Bản tin Việc Cần Làm</span>
-        <span style="font-size: 12px; background: #334155; padding: 2px 8px; border-radius: 12px; color: #94a3b8;"
+        <span style="font-size: 12px; background: var(--surface-muted); border: 1px solid var(--border-soft); padding: 2px 8px; border-radius: 12px; color: var(--text-muted);"
           id="active-date">16/09 - 18/09/2026</span>
       </div>
       <div class="filter-tabs">
@@ -782,7 +790,7 @@
           <div class="meta-time">
             <span>⏰ Hạn chót:</span>
             <span class="highlight" id="time-1">19:30 · 16/09/2026</span>
-            <span style="color: #64748b; font-size: 12px;">(Hạn bắt buộc nộp form)</span>
+            <span style="color: var(--text-muted); font-size: 12px;">(Hạn bắt buộc nộp form)</span>
           </div>
 
           <!-- Source Verification [HAX G11] -->
@@ -837,7 +845,7 @@
           <div class="meta-time">
             <span>⏰ Thời gian:</span>
             <span class="highlight" id="time-2">18:00 - 21:00 · 16/09/2026</span>
-            <span style="color: #64748b; font-size: 12px;">(Phòng E403 thay vì E402)</span>
+            <span style="color: var(--text-muted); font-size: 12px;">(Phòng E403 thay vì E402)</span>
           </div>
 
           <div class="source-box">
@@ -1162,9 +1170,9 @@
       const newItem = document.createElement('div');
       newItem.className = 'timeline-item';
       newItem.innerHTML = `
-      <div class="timeline-dot" style="background:#22c55e;"></div>
-      <div class="timeline-content" style="border-color: rgba(34, 197, 94, 0.4);">
-        <div class="timeline-time" style="color: #22c55e;">${time} (Vừa xác nhận)</div>
+      <div class="timeline-dot" style="background:#18181b;"></div>
+      <div class="timeline-content" style="border-color: #18181b;">
+        <div class="timeline-time" style="color: #18181b;">${time} (Vừa xác nhận)</div>
         <div class="timeline-title">${title}</div>
         <div class="timeline-desc">Đã được người dùng phê duyệt từ bản tin Discord.</div>
       </div>
