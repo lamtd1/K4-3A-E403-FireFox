@@ -1,0 +1,26 @@
+{
+  "now": "2026-09-13 09:00",
+  "messages": [
+    {
+      "msg_id": "M21817",
+      "channel": "channel_12",
+      "author_role": "staff",
+      "created_at": "2026-09-13 08:42",
+      "content": "🚀 THÔNG BÁO WORKSHOP 02: Problem → MVP Canvas. Tối nay chúng ta sẽ có buổi WS2 hướng dẫn chi tiết cách hoàn thiện Canvas và xác định lát cắt giải pháp. 🕗 Thời gian: 20:00 — tối nay, ngày 13/09. 📍 Hình thức: Online qua Zoom (link ghim ở thông báo phòng)."
+    },
+    {
+      "msg_id": "M16114",
+      "channel": "channel_05",
+      "author_role": "staff",
+      "created_at": "2026-09-13 11:21",
+      "content": "@everyone mn ơi, ngày mai bài lab sẽ cần sử dụng đến CVAT nhé. Link hướng dẫn cài đặt và đăng ký tài khoản mình đã gửi trong drive. Mọi người tranh thủ kiểm tra và cài đặt trước để ngày mai có thể làm bài lab thuận lợi nhất nha!"
+    },
+    {
+      "msg_id": "M88027",
+      "channel": "channel_11",
+      "author_role": "student",
+      "created_at": "2026-09-13 00:08",
+      "content": "cho em hỏi Lab2 có được extend thời gian submit thêm không v ạ? Em lỡ nộp muộn 1 phút không submit bài được ạ"
+    }
+  ]
+}

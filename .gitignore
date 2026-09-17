@@ -1,2 +1,21 @@
 # Data
 k4_messages.csv
+
+# Environment & Secrets
+.env
+*.env
+codebase/.env
+codebase/*.env
+
+# Python cache & virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.pytest_cache/
+
+# Logs: cho phép codebase/logs/ được lưu
+!codebase/logs/
+
