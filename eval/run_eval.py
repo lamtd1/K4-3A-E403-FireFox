@@ -1,3 +1,4 @@
+import datetime
 import json
 import os
 import re
@@ -65,9 +66,21 @@ def _retry_delay_seconds(error_message, fallback):
     return min(delay, MAX_RETRY_DELAY_S)
 
 
-def run_one_case(case, api_key, base_url, model):
+def write_log_entry(log_file, entry):
+    """Ghi 1 dòng JSON (JSONL) chứa prompt đầu vào + phản hồi thô/lỗi của model — phục vụ
+    xác minh kỹ thuật theo yêu cầu CP3 ("cơ chế ghi vết rõ ràng cho prompt và phản hồi thô")."""
+    if log_file is None:
+        return
+    entry = dict(entry)
+    entry["timestamp"] = datetime.datetime.now().isoformat()
+    log_file.write(json.dumps(entry, ensure_ascii=False) + "\n")
+    log_file.flush()
+
+
+def run_one_case(case, api_key, base_url, model, log_file=None):
     messages = filter_messages_by_channel(case["messages"], case["selected_channels"])
     if case.get("filter_only") or not messages:
+        write_log_entry(log_file, {"case_id": case["id"], "skipped": True, "reason": "filter_only hoặc không có tin sau khi lọc kênh — không gọi API"})
         return []
     prompt = build_prompt(PROMPT_TEXT, messages)
 
@@ -78,9 +91,11 @@ def run_one_case(case, api_key, base_url, model):
             time.sleep(_retry_delay_seconds(last_error, RETRY_DELAYS_S[attempt - 1]))
         try:
             raw = call_llm(prompt, api_key, base_url, model)
+            write_log_entry(log_file, {"case_id": case["id"], "attempt": attempt, "prompt": prompt, "raw_response": raw})
             return parse_response(raw)
         except (ValueError, RuntimeError, OSError) as e:
             last_error = str(e)
+            write_log_entry(log_file, {"case_id": case["id"], "attempt": attempt, "prompt": prompt, "error": last_error})
             if "429" not in last_error:
                 # Lỗi khác 429 (404, JSON hỏng, network...) — không có lý do để retry, trả lỗi ngay.
                 return {"__error__": last_error}
@@ -130,22 +145,25 @@ def main():
     with open(golden_set_path, encoding="utf-8") as f:
         golden_set = json.load(f)
 
+    log_path = os.path.join(os.path.dirname(__file__), "run_log.jsonl")
     graded = []
-    for i, case in enumerate(golden_set, 1):
-        print(f"[{i}/{len(golden_set)}] {case['id']} ({case['bucket']})... ", end="", flush=True)
-        actual = run_one_case(case, api_key, base_url, model)
-        if isinstance(actual, dict) and "__error__" in actual:
-            print(f"LỖI: {actual['__error__'][:120]}", flush=True)
-            graded.append({"id": case["id"], "passed": False, "reasons": [f"Lỗi gọi API: {actual['__error__']}"]})
-            continue
-        result = grade_case(case, actual)
-        print("PASS" if result["passed"] else f"FAIL: {'; '.join(result['reasons'])[:120]}", flush=True)
-        graded.append(result)
+    with open(log_path, "w", encoding="utf-8") as log_file:
+        for i, case in enumerate(golden_set, 1):
+            print(f"[{i}/{len(golden_set)}] {case['id']} ({case['bucket']})... ", end="", flush=True)
+            actual = run_one_case(case, api_key, base_url, model, log_file=log_file)
+            if isinstance(actual, dict) and "__error__" in actual:
+                print(f"LỖI: {actual['__error__'][:120]}", flush=True)
+                graded.append({"id": case["id"], "passed": False, "reasons": [f"Lỗi gọi API: {actual['__error__']}"]})
+                continue
+            result = grade_case(case, actual)
+            print("PASS" if result["passed"] else f"FAIL: {'; '.join(result['reasons'])[:120]}", flush=True)
+            graded.append(result)
 
     out_path = os.path.join(os.path.dirname(__file__), "run_results.md")
     write_results_md(golden_set, graded, out_path)
     passed = sum(1 for g in graded if g["passed"])
     print(f"Đã ghi kết quả vào {out_path} — {passed}/{len(graded)} case đạt")
+    print(f"Log kỹ thuật (prompt + phản hồi thô từng lệnh gọi): {log_path}")
 
 
 if __name__ == "__main__":

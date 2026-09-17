@@ -52,7 +52,9 @@ function parseGeminiResponse(rawResponseText) {
   return cards;
 }
 
-async function classifyMessages(messages, apiKey, promptTemplate, baseUrl, model) {
+async function classifyMessages(messages, apiKey, promptTemplate, baseUrl, model, onLog) {
+  // onLog(entry) là cơ chế ghi vết: được gọi với {prompt, rawResponse, ok, status} sau MỌI lệnh
+  // gọi (thành công lẫn thất bại) — phục vụ xác minh kỹ thuật trực tiếp trên giao diện demo.
   const prompt = buildPrompt(promptTemplate, messages);
   const url = `${baseUrl.replace(/\/$/, '')}/chat/completions`;
   const response = await fetch(url, {
@@ -68,6 +70,9 @@ async function classifyMessages(messages, apiKey, promptTemplate, baseUrl, model
     }),
   });
   const rawText = await response.text();
+  if (onLog) {
+    onLog({ prompt, rawResponse: rawText, ok: response.ok, status: response.status });
+  }
   if (!response.ok) {
     throw new Error(`LLM API lỗi ${response.status}: ${rawText}`);
   }

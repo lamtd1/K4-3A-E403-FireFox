@@ -1,5 +1,7 @@
+import io
+import json
 import unittest
-from run_eval import grade_case
+from run_eval import grade_case, write_log_entry
 
 
 class TestGradeCase(unittest.TestCase):
@@ -54,6 +56,30 @@ class TestGradeCase(unittest.TestCase):
         case = {"id": "GS-14", "expected": {"type": "NONE", "escalate": True}}
         result = grade_case(case, [])
         self.assertTrue(result["passed"], result["reasons"])
+
+
+class TestWriteLogEntry(unittest.TestCase):
+    def test_writes_one_json_line_with_timestamp(self):
+        buf = io.StringIO()
+        write_log_entry(buf, {"case_id": "GS-01", "prompt": "p", "raw_response": "r"})
+        lines = buf.getvalue().splitlines()
+        self.assertEqual(len(lines), 1)
+        entry = json.loads(lines[0])
+        self.assertEqual(entry["case_id"], "GS-01")
+        self.assertEqual(entry["prompt"], "p")
+        self.assertEqual(entry["raw_response"], "r")
+        self.assertIn("timestamp", entry)
+
+    def test_noop_when_log_file_is_none(self):
+        # Không được raise dù không truyền log_file (dùng ở nơi không cần ghi log, ví dụ test khác).
+        write_log_entry(None, {"case_id": "GS-01"})
+
+    def test_preserves_error_field(self):
+        buf = io.StringIO()
+        write_log_entry(buf, {"case_id": "GS-02", "prompt": "p", "error": "boom"})
+        entry = json.loads(buf.getvalue().splitlines()[0])
+        self.assertEqual(entry["error"], "boom")
+        self.assertNotIn("raw_response", entry)
 
 
 if __name__ == "__main__":
