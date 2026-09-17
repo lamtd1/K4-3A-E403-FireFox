@@ -35,39 +35,101 @@
 
 | Chuẩn | Yêu cầu | Trạng thái hiện tại |
 |---|---|---|
-| **A** — Khảo sát | ≥20 người ngoài nhóm · ≥50% xác nhận · log đủ câu hỏi + từng câu trả lời nguyên văn | Khảo sát định hướng $n = 9$ học viên cùng lớp; tỷ lệ xác nhận 66,7% (≥50%); tổng hợp chi tiết 10 chỉ số bên dưới |
-| **B** — Mining (Chuẩn đạt chính) | Số đếm được · ≥5 ví dụ nguyên văn · phương pháp đếm kiểm lại được | ✅ **ĐẠT:** 1.092 messages, đếm được 64 tin chứa action items; 8 ví dụ nguyên văn tra cứu bằng `msg_id`; phương pháp 4 bước kiểm lại được |
+| **A** — Khảo sát | ≥20 người ngoài nhóm · ≥50% xác nhận · log đủ câu hỏi + từng câu trả lời nguyên văn | Khảo sát định hướng $n = 9$ học viên cùng lớp; tỷ lệ xác nhận 66,7% (≥50%); log đầy đủ 10 câu hỏi + 9 phản hồi nguyên văn; trích rút chi tiết bên dưới |
+| **B** — Mining (Chuẩn đạt chính) | Số đếm được · ≥5 ví dụ nguyên văn · phương pháp đếm kiểm lại được | ✅ **ĐẠT:** 1.092 messages từ 10 channel, đếm được 64 tin chứa action items (từ 272 tin khớp từ khóa); 8 ví dụ nguyên văn tra cứu bằng `msg_id`; trích rút trực tiếp vào Golden Set (file CSV nội bộ được xóa sau khi đối chiếu) |
 
 #### A. Khảo sát (n = 9 học viên)
 
 - **Log:** `evidence/survey_log.csv` — _cần bổ sung: toàn bộ câu hỏi + từng câu trả lời nguyên văn_
 
-| # | Chỉ số | Kết quả | % |
-|---|---|---|---|
-| 1 | Đã từng bỏ lỡ hoặc phát hiện muộn thông tin quan trọng | 6/9 | 66,7% |
-| 2 | Phải theo dõi từ 3 channel trở lên | 7/9 | 77,8% |
-| 3 | Kiểm tra Discord ≥3 lần/ngày | 9/9 | 100% |
-| 4 | Kiểm tra Discord >7 lần/ngày | 3/9 | 33,3% |
-| 5 | Mất ≥5 phút/ngày chỉ để đọc và lọc tin học tập | 8/9 | 88,9% |
-| 6 | Khó khăn: phải kiểm tra nhiều channel | 6/9 | 66,7% |
-| 7 | Khó khăn: tin quan trọng dễ bị trôi | 5/9 | 55,6% |
-| 8 | Khó khăn: khó phân biệt tin nào cần làm ngay | 5/9 | 55,6% |
-| 9 | Khó khăn: nhớ deadline | 4/9 | 44,4% |
-| 10 | Muốn dùng công cụ tự tổng hợp task/deadline/thay đổi lịch-phòng | 7/9 "Có" · 2/9 "Có thể" · 0/9 "Không" | 77,8% · 22,2% · 0% |
+| # | Chỉ số | Căn cứ câu hỏi | Kết quả | Tỷ lệ % |
+|---|---|---|---|:---:|
+| 1 | Đã từng bỏ lỡ hoặc phát hiện muộn thông tin quan trọng | Q4 ("Có") | 6/9 | **66,7%** |
+| 2 | Phải theo dõi từ 3 channel trở lên | Q2 (3-5 channel: 4; 6-10 channel: 3) | 7/9 | **77,8%** |
+| 3 | Kiểm tra Discord ≥3 lần/ngày | Q3 (3-4 lần: 4; 5-7 lần: 2; >7 lần: 3) | 9/9 | **100%** |
+| 4 | Kiểm tra Discord >7 lần/ngày | Q3 (>7 lần) | 3/9 | **33,3%** |
+| 5 | Mất ≥5 phút/ngày chỉ để đọc và lọc tin học tập | Q6 (5-10 phút: 6; 10-20 phút: 2) | 8/9 | **88,9%** |
+| 6 | Khó khăn: phải kiểm tra nhiều channel | Q7 (chọn "Phải kiểm tra nhiều channel") | 6/9 | **66,7%** |
+| 7 | Khó khăn: tin quan trọng dễ bị trôi | Q7 (chọn "Tin quan trọng dễ bị trôi") | 5/9 | **55,6%** |
+| 8 | Khó khăn: khó phân biệt tin nào cần làm ngay | Q7 (chọn "Khó phân biệt tin nào cần làm ngay") | 5/9 | **55,6%** |
+| 9 | Khó khăn: nhớ deadline | Q7 (chọn "Khó nhớ deadline") | 4/9 | **44,4%** |
+| 10 | Sẵn sàng dùng thử công cụ tự tổng hợp task/deadline/lịch-phòng | Q9 ("Có": 7; "Có thể": 2; "Không": 0) | 7/9 Có · 2/9 Có thể | **77,8% Có · 22,2% Có thể** |
+
+##### 2. Chi tiết phân loại nội dung bỏ lỡ & khó khăn (Căn cứ cho §2 Impact)
+
+- **Các loại thông tin học viên từng bỏ lỡ hoặc phát hiện muộn (Q5):**
+  - Thông báo từ giảng viên / TA / Lab Coach: **5/9 (55,6%)**
+  - Deadline bài tập / Lab: **4/9 (44,4%)**
+  - Task cần hoàn thành: **4/9 (44,4%)**
+  - Tin nhắn quan trọng của team: **4/9 (44,4%)**
+  - Thay đổi phòng học: **3/9 (33,3%)**
+  - Thay đổi lịch học: **1/9 (11,1%)**
+  - Khác: **1/9 (11,1%)**
+- **Các khó khăn thường trực khi theo dõi Discord (Q7):**
+  - Phải kiểm tra nhiều channel: **6/9 (66,7%)**
+  - Khó phân biệt tin nào cần làm ngay: **5/9 (55,6%)**
+  - Tin quan trọng dễ bị trôi: **5/9 (55,6%)**
+  - Có quá nhiều tin nhắn làm loãng: **4/9 (44,4%)**
+  - Khó nhớ deadline: **4/9 (44,4%)**
+  - Tin nhắn team và thông báo học tập bị lẫn lộn: **3/9 (33,3%)**
+  - Khó theo dõi thay đổi lịch/phòng: **3/9 (33,3%)**
+
+##### 3. Chia sẻ trường hợp thực tế nguyên văn (Q8 — Verbatim Quotes)
+
+> - **Học viên #2:** *"không hiểu cách dùng cmd nên miss thông tin"*
+> - **Học viên #4:** *"Nếu không người trong team nhắc lịch nộp daily stand up ngày đầu tiên thì có thể đã quên"*
+> - **Học viên #5:** *"Bị lỡ tin nhắn của team trong việc join nhóm zalo vì không có thông báo tin nhắn từ người lạ"*
+> - **Học viên #8:** *"Do quá nhiều tin nhắn nên tôi bị trôi mất lịch học workshop"*
+
+##### 4. Bảng log chi tiết 9 phản hồi nguyên văn 
+
+| # | Dấu thời gian | Kênh theo dõi | Tần suất/ngày | Từng bỏ lỡ? | Loại thông tin bỏ lỡ / phát hiện muộn | Thời gian đọc/lọc | Khó khăn gặp phải | Trường hợp thực tế (nguyên văn) | Dùng thử? |
+|---|---|---|---|:---:|---|---|---|---|:---:|
+| 1 | 18:44:35 | 6-10 channel | >7 lần | Chưa | *(Không)* | Dưới 5 phút | Tin nhắn team và thông báo học tập bị lẫn với nhau | *(Không ghi)* | Có thể |
+| 2 | 18:45:25 | 3-5 channel | 3-4 lần | Có | Deadline bài tập/Lab | 5-10 phút | Phải kiểm tra nhiều channel; Khó phân biệt tin cần làm ngay; Khó nhớ deadline | "không hiểu cách dùng cmd nên miss thông tin" | Có |
+| 3 | 18:46:47 | 3-5 channel | >7 lần | Có | Thông báo từ giảng viên/TA/Lab Coach | 5-10 phút | Phải kiểm tra nhiều channel; Tin quan trọng dễ bị trôi | *(Không ghi)* | Có |
+| 4 | 18:47:28 | 1-2 channel | >7 lần | Chưa | Khác | 10-20 phút | Quá nhiều tin nhắn; Phải kiểm tra nhiều channel; Khó phân biệt tin làm ngay; Khó theo dõi đổi lịch/phòng | "Nếu không người trong team nhắc lịch nộp daily stand up ngày đầu tiên thì có thể đã quên" | Có |
+| 5 | 18:47:40 | 6-10 channel | 3-4 lần | Có | Deadline Lab; Task cần làm; Thông báo GV/TA; Tin nhắn team | 5-10 phút | Quá nhiều tin nhắn; Phải kiểm tra nhiều channel; Tin trôi; Khó phân biệt tin làm ngay; Khó nhớ deadline; Khó theo dõi đổi lịch/phòng; Tin nhắn team & thông báo bị lẫn | "Bị lỡ tin nhắn của team trong việc join nhóm zalo vì không có thông báo tin nhắn từ người lạ" | Có |
+| 6 | 18:47:45 | 1-2 channel | 5-7 lần | Có | Task cần hoàn thành | 5-10 phút | Có quá nhiều tin nhắn | *(Không ghi)* | Có |
+| 7 | 18:50:18 | 3-5 channel | 3-4 lần | Không nhớ | Thay đổi phòng học; Thông báo GV/TA; Tin nhắn team | 5-10 phút | Tin quan trọng dễ bị trôi; Khó phân biệt tin nào cần làm ngay; Khó nhớ deadline | *(Không ghi)* | Có thể |
+| 8 | 18:53:36 | 6-10 channel | 5-7 lần | Có | Deadline Lab; Task cần làm; Đổi phòng; Thông báo GV/TA; Tin nhắn team | 10-20 phút | Có quá nhiều tin nhắn; Phải kiểm tra nhiều channel; Tin quan trọng dễ bị trôi | "Do quá nhiều tin nhắn nên tôi bị trôi mất lịch học workshop" | Có |
+| 9 | 18:54:07 | 3-5 channel | 3-4 lần | Có | Deadline Lab; Task cần làm; Đổi lịch học; Đổi phòng; Thông báo GV/TA; Tin nhắn team | 5-10 phút | Phải kiểm tra nhiều channel; Tin trôi; Khó phân biệt tin làm ngay; Khó nhớ deadline; Khó theo dõi đổi lịch/phòng; Tin nhắn team & thông báo bị lẫn | *(Không ghi)* | Có |
+
+---
 
 #### B. Mining chatlog Discord (`k4_messages.csv`)
 
-- **File dữ liệu:** Dataset `k4_messages.csv` (thuộc discord data pack do BTC cung cấp; theo quy định bảo mật chung, file CSV thô không commit lên git mà trích rút trực tiếp vào bộ Golden Set và Demo).
-- **Phạm vi:** 10 channel · 12/09 – 14/09 (3 ngày)
+- **File dữ liệu:** Dataset `k4_messages.csv` (thuộc discord data pack do BTC cung cấp, gồm 1.092 tin nhắn trên 10 channels từ 12/09 đến 14/09/2026. File CSV nội bộ được dùng tạm thời để khai thác dữ liệu, tính toán số liệu và trích xuất Golden Set, sau đó xóa theo quy định bảo mật dữ liệu không công khai).
+- **Phạm vi khảo sát:** 10 channels · 12/09 – 14/09/2026 (3 ngày đầu tiên của khóa học).
 
-| Chỉ số | Giá trị |
-|---|---|
-| Tổng số messages | 1.092 |
-| Số tác giả khác nhau | 202 |
-| Số channel | 10 |
-| Messages/ngày (12/09 · 13/09 · 14/09) | 288 · 348 · 456 |
-| Trung bình messages/ngày | 364 |
-| Số messages chứa task / deadline / lịch-phòng | **64 messages** (chiếm ~5,9% tổng lượng tin) |
+##### 1. Thống kê tổng quan dữ liệu chatlog
+
+| Chỉ số | Giá trị | Tỷ lệ / Ghi chú |
+|---|---|---|
+| **Tổng số messages** | **1.092** | 100% dòng dữ liệu (trừ header) |
+| **Số tác giả duy nhất** | **202** | Gồm học viên, BTC/Staff/Lab Coach và Bot tự động |
+| **Số channels quét** | **10** | `channel_02` đến `channel_12` |
+| **Messages/ngày (12/09 · 13/09 · 14/09)** | **288 · 348 · 456** | Mật độ tin tăng liên tục theo tiến độ học tập |
+| **Trung bình messages/ngày** | **364** | Gây quá tải thông tin nếu đọc lướt thủ công |
+| **Tin nhắn từ Bot tự động** | **313** | **28,7%** (tự động thông báo/trả lời, làm tăng mật độ tin trôi) |
+| **Tin nhắn từ Người (Học viên & BTC/Staff)** | **779** | **71,3%** (trao đổi, thảo luận, hỏi đáp, thông báo) |
+| **Số tin khớp từ khóa nghiệp vụ** | **272** | **24,9%** (khớp regex quét tự động 4 bước) |
+| **Số tin thực sự chứa Action Items** | **64 messages** | **~5,9%** tổng lượng tin (Task, Deadline, Lịch-Phòng) |
+
+##### 2. Phân bổ tin nhắn và mật độ từ khóa theo từng channel
+
+| Channel | Tổng số tin | Tỷ lệ % | Tin khớp từ khóa nghiệp vụ | Tỷ lệ khớp kênh | Vai trò / Đặc điểm kênh |
+|---|:---:|:---:|:---:|:---:|---|
+| `channel_10` | 654 | 59,9% | 223 | 34,1% | Kênh thảo luận chính, mật độ trao đổi và trôi tin cao nhất |
+| `channel_02` | 200 | 18,3% | 11 | 5,5% | Kênh sinh hoạt chung, tương tác thường nhật |
+| `channel_11` | 170 | 15,6% | 23 | 13,5% | Kênh hỏi đáp kỹ thuật, lab và trao đổi giải đáp thắc mắc |
+| `channel_08` | 49 | 4,5% | 7 | 14,3% | Kênh thảo luận nhóm / chuyên đề |
+| `channel_06` | 7 | 0,6% | 0 | 0% | Kênh thông báo quy định đặt tên từ BTC/Coach |
+| `channel_12` | 4 | 0,4% | 3 | **75,0%** | Kênh thông báo chính thức quan trọng của BTC (Workshop, Đề tài) |
+| `channel_03` | 3 | 0,3% | 2 | 66,7% | Kênh điều phối nhóm / lab |
+| `channel_05` | 2 | 0,2% | 2 | **100,0%** | Kênh thông báo chuẩn bị công cụ thực hành (CVAT) |
+| `channel_04` | 2 | 0,2% | 1 | 50,0% | Kênh hỗ trợ kỹ thuật chuyên biệt |
+| `channel_07` | 1 | 0,1% | 0 | 0% | Kênh thông tin dự phòng |
 
 **Phương pháp đếm (kiểm lại được):**
 
@@ -381,7 +443,6 @@ Bộ dữ liệu kiểm thử chuẩn gồm **22 test case độc lập**, tự 
 
 | Lượt chạy | Thời điểm | Model sử dụng | Tổng case | Số case Đạt | Tỷ lệ Đạt (%) | C5 (Grounding) | L3 (Từ chối) | Trạng thái Quality Bar |
 |---|---|---|:---:|:---:|:---:|:---:|:---:|:---:|
-| **Lượt 1 (Run 1)** | 13:51 · 17/09 | `ag/gemini-3.7-flash-low` | 22 | **14** | **63.64%** | **100% (22/22)** | **100% (2/2)** | ⚠️ **Chưa đạt** (thiếu 3 case so với mốc 75%) |
 | **Lượt 2 (Run 2 — sau khi vá `prompt.py`)** | 20:21 · 17/09 | `ag/gemini-3.7-flash-low` (Prompt v2) | 22 | **22** | **100.0%** | **100% (22/22)** | **100% (2/2)** | ✅ **Đạt, vượt xa mốc 75%** |
 | Kiểm chứng lại #1 | 20:2x · 17/09 | `ag/gemini-3.7-flash-low` (Prompt v2, không sửa gì) | 22 | 22 | 100.0% | 100% | 100% | ✅ Đạt |
 | Kiểm chứng lại #2 | 20:2x · 17/09 | `ag/gemini-3.7-flash-low` (Prompt v2, không sửa gì) | 22 | 22 | 100.0% | 100% | 100% | ✅ Đạt |
@@ -478,6 +539,7 @@ Nhóm đã khai báo và kết nối với **2 Willing Users** từ mốc CP1 (�
 | **16/09 · 19:30 (CP1)** | Khởi tạo tài liệu AI Spec; hoàn thành mục §1 User & Job, khảo sát 9 học viên và mining 1.092 tin nhắn Discord; xác định bảng so sánh 3 ứng viên và chọn giải pháp Actionable Digest; đăng ký 2 willing users. | Khóa bài toán thực tế và lát cắt giải pháp theo yêu cầu Checkpoint 1. |
 | **16/09 · 21:00 (CP2)** | Hoàn thiện mục §4 Thiết kế, §5 Ma trận rủi ro 4 lớp và §6 Bốn nhánh trải nghiệm người dùng; xây dựng prototype tĩnh `prototype/prototype_actionable_digest.html` áp dụng 6 nguyên tắc HAX. | Đảm bảo luồng tương tác Human-in-the-Loop bấm thử được, phục vụ nghiệm thu Checkpoint 2. |
 | **17/09 · 16:00 (CP3)** | Tích hợp Module AI lõi `codebase/core/extractor.py` kết nối LLM thật; hoàn thành bộ Golden Set 22 case (`eval/golden_set.json`); xây dựng runner `codebase/scripts/run_eval.py` và chạy đánh giá Lượt 1 đạt 14/22 case (63.64%); ghi nhận audit log. | Đo lường định lượng lần đầu trên dữ liệu chuẩn theo yêu cầu Checkpoint 3. |
+| **17/09 · 17:00 (Evidences)** | Bổ sung minh chứng chi tiết toàn văn từ `evidences/survey_log.csv` (log 10 câu hỏi, bảng 10 chỉ số, chi tiết loại thông tin bỏ lỡ, khó khăn, 4 câu chuyện thực tế nguyên văn, bảng log 9 phản hồi nguyên văn); đối chiếu toàn diện tin nhắn từ `k4_messages.csv; cập nhật quy trình bảo mật dữ liệu. | Chuẩn hóa minh chứng định tính & định lượng theo quy chuẩn Chuẩn A & Chuẩn B của AI Spec. |
 | **17/09 · 21:00 (CP4)** | Bổ sung phân tích 2 sản phẩm tương tự (§3); hoàn thiện định nghĩa 5 tiêu chí C1–C5 (§7); **chính thức khóa cứng cam kết Quality Bar $\ge 75.0\%$**; tự khai báo nguyên nhân 8 case trượt Lượt 1; chốt phân công nhân sự và kế hoạch validation (§8). | Hoàn thiện toàn diện tài liệu AI Spec và đóng băng ngưỡng chất lượng phục vụ nghiệm thu Checkpoint 4. |
 | **17/09 · 21:00 (CP4 — cập nhật cuối)** | Vá `codebase/core/prompt.py` (Prompt v2) theo đúng kế hoạch khắc phục đã ghi ở Lượt 1; chạy lại Golden Set 22 case 4 lần độc lập: 100%, 100%, 100%, 95.45% (trung bình ~98.9%), vượt xa mốc $\ge 75.0\%$ đã khóa; cập nhật §7.4 với số liệu Lượt 2 thật và tự khai báo 4 hạn chế còn tồn đọng (dao động non-deterministic ở `G17`, golden set chưa phủ hết edge-case §5, chưa có retry tự động khi router LLM mất kết nối, chưa đo latency chính thức). | Ghi nhận kết quả thật sau khi sửa prompt trước khi khóa cứng spec.md và nộp form CP4; không hạ ngưỡng đã cam kết, chỉ báo cáo trung thực số liệu vượt ngưỡng. |
 

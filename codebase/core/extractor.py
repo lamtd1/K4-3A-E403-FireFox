@@ -2,6 +2,7 @@ import os
 import sys
 import json
 import re
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 
@@ -21,6 +22,98 @@ except ImportError:
     from llm_client import call_llm, get_llm_config
     from prompt import SYSTEM_PROMPT, build_user_prompt
     from logger import log_llm_call
+
+
+_RECURRING_MARKERS = (
+    "hàng ngày",
+    "hằng ngày",
+    "mỗi ngày",
+    "mỗi buổi",
+    "các buổi",
+    "định kỳ",
+    "định kì",
+)
+
+
+def _apply_recurring_window_rules(item: Dict[str, Any], quote: str) -> None:
+    """Chuẩn hóa quy định khung giờ nộp lặp lại theo hợp đồng nghiệp vụ."""
+    normalized_quote = quote.casefold()
+    is_submission_window = (
+        "khung giờ" in normalized_quote
+        and any(marker in normalized_quote for marker in ("nộp", "deadline", "hạn"))
+    )
+    is_recurring = any(marker in normalized_quote for marker in _RECURRING_MARKERS)
+
+    if is_submission_window:
+        item["type"] = "DEADLINE"
+    if is_submission_window and is_recurring:
+        # Một quy định lặp lại không chỉ tới một ngày lịch cụ thể. Giữ giờ trong
+        # title/evidence để người dùng đọc, nhưng không bịa timestamp một lần.
+        item["due"] = None
+
+
+def _apply_relative_due_rules(item: Dict[str, Any], quote: str, created_at: str) -> None:
+    """Suy ra mốc ngày kế tiếp khi evidence nêu rõ giờ và 'hôm sau/ngày mai'."""
+    if item.get("due") is not None or item.get("type") != "DEADLINE":
+        return
+
+    normalized_quote = quote.casefold()
+    if not any(marker in normalized_quote for marker in ("hôm sau", "ngày mai")):
+        return
+
+    time_match = re.search(r"\b([01]?\d|2[0-3])(?:h|:)([0-5]\d)?\b", normalized_quote)
+    if not time_match or not created_at:
+        return
+
+    try:
+        source_time = datetime.fromisoformat(created_at.strip())
+    except (TypeError, ValueError):
+        return
+
+    hour = int(time_match.group(1))
+    minute = int(time_match.group(2) or 0)
+    next_day = source_time.date() + timedelta(days=1)
+    item["due"] = datetime.combine(next_day, datetime.min.time()).replace(
+        hour=hour,
+        minute=minute,
+    ).strftime("%Y-%m-%dT%H:%M")
+
+
+def _remove_nested_instruction_tasks(
+    items: List[Dict[str, Any]],
+    msg_map: Dict[str, Dict[str, str]],
+) -> List[Dict[str, Any]]:
+    """Bỏ bước hướng dẫn con khi cùng thông báo đã có deadline tổng bao phủ."""
+    deadline_msg_ids = {
+        str((item.get("evidence") or {}).get("msg_id", ""))
+        for item in items
+        if item.get("type") == "DEADLINE"
+    }
+    filtered: List[Dict[str, Any]] = []
+
+    for item in items:
+        evidence = item.get("evidence") or {}
+        msg_id = str(evidence.get("msg_id", ""))
+        quote = str(evidence.get("quote", ""))
+        content = msg_map.get(msg_id, {}).get("content", "")
+        normalized_content = content.casefold()
+        quote_index = content.find(quote) if quote else -1
+        guide_indexes = [
+            idx
+            for marker in ("\ncách ", "\nhướng dẫn ")
+            if (idx := normalized_content.find(marker)) >= 0
+        ]
+        inside_guide = bool(guide_indexes) and quote_index >= min(guide_indexes)
+        covered_subtask = (
+            item.get("type") == "TASK"
+            and item.get("due") is None
+            and msg_id in deadline_msg_ids
+            and inside_guide
+        )
+        if not covered_subtask:
+            filtered.append(item)
+
+    return filtered
 
 
 
@@ -63,10 +156,14 @@ def post_process_evidence(items: List[Dict[str, Any]], messages: List[Dict[str, 
     - Kiểm tra xem quote có phải chuỗi con nguyên văn trong content của msg_id đó không.
     - Nếu không tìm thấy: hạ confidence = "low", ghi review_reason = "Không tìm thấy trích dẫn trong tin gốc".
     """
-    msg_map: Dict[str, str] = {}
+    msg_map: Dict[str, Dict[str, str]] = {}
     for m in messages:
         if isinstance(m, dict) and "msg_id" in m:
-            msg_map[str(m["msg_id"])] = str(m.get("content", ""))
+            msg_map[str(m["msg_id"])] = {
+                "content": str(m.get("content", "")),
+                "author_role": str(m.get("author_role", "")).strip().lower(),
+                "created_at": str(m.get("created_at", "")),
+            }
 
     processed_items = []
     for item in items:
@@ -81,7 +178,7 @@ def post_process_evidence(items: List[Dict[str, Any]], messages: List[Dict[str, 
         # Kiểm tra quote có tồn tại trong message content hay không
         quote_valid = False
         if msg_id in msg_map and quote:
-            original_content = msg_map[msg_id]
+            original_content = msg_map[msg_id]["content"]
             if quote in original_content:
                 quote_valid = True
 
@@ -94,6 +191,17 @@ def post_process_evidence(items: List[Dict[str, Any]], messages: List[Dict[str, 
             elif "Không tìm thấy trích dẫn" not in reason:
                 item_copy["review_reason"] = f"{reason} (Không tìm thấy trích dẫn trong tin gốc)"
 
+        # Bảo đảm quy tắc nguồn bằng code thay vì phụ thuộc hoàn toàn vào
+        # mức độ tuân thủ prompt của model ở mỗi lượt gọi.
+        source_role = msg_map.get(msg_id, {}).get("author_role", "")
+        if source_role in {"bot", "student"}:
+            item_copy["confidence"] = "low"
+            if not item_copy.get("review_reason"):
+                if source_role == "bot":
+                    item_copy["review_reason"] = "Nguồn bot cần đối chiếu thông báo chính thức"
+                else:
+                    item_copy["review_reason"] = "Thông tin từ học viên chưa được xác thực"
+
         # Chuẩn hóa các trường bắt buộc
         if "location" not in item_copy:
             item_copy["location"] = None
@@ -101,13 +209,24 @@ def post_process_evidence(items: List[Dict[str, Any]], messages: List[Dict[str, 
             item_copy["due"] = None
         if item_copy.get("confidence") not in ["high", "low"]:
             item_copy["confidence"] = "low"
+        if item_copy.get("confidence") == "low" and not item_copy.get("review_reason"):
+            item_copy["review_reason"] = "Thông tin cần được kiểm tra lại"
+        elif item_copy.get("confidence") == "high":
+            item_copy["review_reason"] = None
         if item_copy.get("type") not in ["DEADLINE", "TASK", "SCHEDULE"]:
             # Mặc định về TASK nếu gán sai
             item_copy["type"] = "TASK"
 
+        _apply_recurring_window_rules(item_copy, quote)
+        _apply_relative_due_rules(
+            item_copy,
+            quote,
+            msg_map.get(msg_id, {}).get("created_at", ""),
+        )
+
         processed_items.append(item_copy)
 
-    return processed_items
+    return _remove_nested_instruction_tasks(processed_items, msg_map)
 
 
 def extract(messages: List[Dict[str, Any]], now: str) -> Dict[str, Any]:

@@ -1,0 +1,1299 @@
+{
+  "metadata": {
+    "run_type": "consolidated_infrastructure_retries",
+    "base_run": "eval\\runs\\run2_raw.json",
+    "primary_model": "gemini-3.6-flash",
+    "models_used": [
+      "gemini-3.5-flash",
+      "gemini-3.6-flash"
+    ],
+    "total_cases": 22,
+    "passed_cases": 22,
+    "failed_cases": 0,
+    "pass_rate": 100.0,
+    "group_stats": {
+      "L1_source": {
+        "total": 3,
+        "passed": 3
+      },
+      "L2_ambiguous": {
+        "total": 3,
+        "passed": 3
+      },
+      "L3_out_of_scope": {
+        "total": 2,
+        "passed": 2
+      },
+      "L4_domain": {
+        "total": 2,
+        "passed": 2
+      },
+      "common": {
+        "total": 9,
+        "passed": 9
+      },
+      "rare": {
+        "total": 3,
+        "passed": 3
+      }
+    },
+    "criteria_fails": {
+      "C1": 0,
+      "C2": 0,
+      "C3": 0,
+      "C4": 0,
+      "C5": 0
+    },
+    "retry_policy": "Chỉ thay case mà base actual.error khác null; chấm lại toàn bộ bằng post-process hiện tại.",
+    "retry_audit": [
+      {
+        "case_id": "G14",
+        "base_error": "Lỗi sau retry: LLM API lỗi (Status 503): [{\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n]",
+        "retry_model": "gemini-3.5-flash",
+        "retry_file": "eval\\runs\\retry_G14_v2.json"
+      },
+      {
+        "case_id": "G15",
+        "base_error": "Lỗi sau retry: LLM API lỗi (Status 503): [{\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n]",
+        "retry_model": "gemini-3.5-flash",
+        "retry_file": "eval\\runs\\retry_G15_v2.json"
+      },
+      {
+        "case_id": "G18",
+        "base_error": "Lỗi sau retry: LLM API lỗi (Status 429): [{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-3.6-flash\\nPlease retry in 10.005670852s.\",\n    \"status\": \"RESOURCE_EXHAUSTED\",\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.Help\",\n        \"links\": [\n          {\n            \"description\": \"Learn more about Gemini API quotas\",\n            \"url\": \"https://ai.google.dev/gemini-api/docs/rate-limits\"\n          }\n        ]\n      },\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.QuotaFailure\",\n        \"violations\": [\n          {\n            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_requests\",\n            \"quotaId\": \"GenerateRequestsPerMinutePerProjectPerModel-FreeTier\",\n            \"quotaDimensions\": {\n              \"location\": \"global\",\n              \"model\": \"gemini-3.6-flash\"\n            },\n            \"quotaValue\": \"5\"\n          }\n        ]\n      },\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.RetryInfo\",\n        \"retryDelay\": \"10s\"\n      }\n    ]\n  }\n}\n]",
+        "retry_model": "gemini-3.5-flash",
+        "retry_file": "eval\\runs\\retry_G18_v2.json"
+      },
+      {
+        "case_id": "G19",
+        "base_error": "Lỗi sau retry: LLM API lỗi (Status 429): [{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-3.6-flash\\nPlease retry in 7.547173268s.\",\n    \"status\": \"RESOURCE_EXHAUSTED\",\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.Help\",\n        \"links\": [\n          {\n            \"description\": \"Learn more about Gemini API quotas\",\n            \"url\": \"https://ai.google.dev/gemini-api/docs/rate-limits\"\n          }\n        ]\n      },\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.QuotaFailure\",\n        \"violations\": [\n          {\n            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_requests\",\n            \"quotaId\": \"GenerateRequestsPerMinutePerProjectPerModel-FreeTier\",\n            \"quotaDimensions\": {\n              \"location\": \"global\",\n              \"model\": \"gemini-3.6-flash\"\n            },\n            \"quotaValue\": \"5\"\n          }\n        ]\n      },\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.RetryInfo\",\n        \"retryDelay\": \"7s\"\n      }\n    ]\n  }\n}\n]",
+        "retry_model": "gemini-3.5-flash",
+        "retry_file": "eval\\runs\\retry_G19_v2.json"
+      },
+      {
+        "case_id": "G21",
+        "base_error": "Lỗi sau retry: LLM API lỗi (Status 429): [{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 56.03393508s.\",\n    \"status\": \"RESOURCE_EXHAUSTED\",\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.Help\",\n        \"links\": [\n          {\n            \"description\": \"Learn more about Gemini API quotas\",\n            \"url\": \"https://ai.google.dev/gemini-api/docs/rate-limits\"\n          }\n        ]\n      },\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.QuotaFailure\",\n        \"violations\": [\n          {\n            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_requests\",\n            \"quotaId\": \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\",\n            \"quotaDimensions\": {\n              \"model\": \"gemini-3.6-flash\",\n              \"location\": \"global\"\n            },\n            \"quotaValue\": \"20\"\n          }\n        ]\n      },\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.RetryInfo\",\n        \"retryDelay\": \"56s\"\n      }\n    ]\n  }\n}\n]",
+        "retry_model": "gemini-3.5-flash",
+        "retry_file": "eval\\runs\\retry_G21_v2.json"
+      }
+    ]
+  },
+  "results": [
+    {
+      "case_id": "G01",
+      "group": "L1_source",
+      "source": "real:M72484,M28485",
+      "description": "Hỏi hạn Lab02 nhưng bot xác nhận không có ngày giờ trong dữ liệu",
+      "input": {
+        "now": "2026-09-12 23:55",
+        "messages": [
+          {
+            "msg_id": "M72484",
+            "channel": "channel_10",
+            "author_role": "student",
+            "created_at": "2026-09-12 23:53",
+            "content": "Hạn nộp Lab02"
+          },
+          {
+            "msg_id": "M28485",
+            "channel": "channel_10",
+            "author_role": "bot",
+            "created_at": "2026-09-12 23:54",
+            "content": "Chào bạn! Rất tiếc là hiện tại mình không có thông tin về ngày giờ cụ thể cho hạn nộp **Lab02** trong dữ liệu hiện tại.\n\nĐể biết chính xác nhất, bạn hãy kiểm tra tại các \"nguồn sự thật\" sau đây nhé:\n\n1.  **Kênh Discord:** Check ngay mục `#📣-thông-báo` (dành cho hoạt động Build) hoặc `#📢-thông-báo-lớp-học` (dành cho hoạt động trên lớp). Đây là nơi BTC cập nhật mọi mốc thời gian quan trọng đó!\n2.  **Lịch sự kiện trên Phoenix:** Bạn truy cập [Phoenix Events](https://phoenix.note.transformerlabs.ai/events) để xem timeline của chương trình.\n3.  **Nền tảng Vlearn:** Đăng nhập vào [vlearn.dev](https://vlearn.dev) để xem chi tiết bài tập và thời hạn nộp bài.\n\nNếu bạn đã check các chỗ trên mà vẫn chưa rõ, hãy nhắn tin vào kênh thảo luận chung hoặc tag nhẹ các anh chị **@Mod** để được hỗ trợ giải đáp nhanh nhất nha! Chúc bạn làm Lab thật tốt! 💪✨"
+          }
+        ]
+      },
+      "expected": {
+        "items": []
+      },
+      "actual": {
+        "items": []
+      },
+      "metrics": {
+        "c1_count": true,
+        "c2_type": true,
+        "c3_due": true,
+        "c4_confidence": true,
+        "c5_evidence": true,
+        "passed": true,
+        "failure_reasons": []
+      },
+      "latency_ms": 6901.16,
+      "error": null,
+      "execution_model": "gemini-3.6-flash",
+      "source_run": "eval\\runs\\run2_raw.json",
+      "retried_after_error": false
+    },
+    {
+      "case_id": "G02",
+      "group": "L1_source",
+      "source": "real:M57630",
+      "description": "Bot nêu giờ thường lệ nhưng không có ngày cụ thể",
+      "input": {
+        "now": "2026-09-12 12:52",
+        "messages": [
+          {
+            "msg_id": "M57630",
+            "channel": "channel_10",
+            "author_role": "bot",
+            "created_at": "2026-09-12 12:51",
+            "content": "Bài Lab trên lớp sẽ được chấm sau khi hết deadline thường là 23:59 cùng ngày nhé"
+          }
+        ]
+      },
+      "expected": {
+        "items": [
+          {
+            "type": "DEADLINE",
+            "due": null,
+            "confidence": "low"
+          }
+        ]
+      },
+      "actual": {
+        "items": [
+          {
+            "type": "DEADLINE",
+            "title": "Hạn nộp bài Lab trên lớp",
+            "due": null,
+            "location": null,
+            "confidence": "low",
+            "review_reason": "Thông tin từ bot, cần đối chiếu nguồn chính thức",
+            "evidence": {
+              "msg_id": "M57630",
+              "quote": "Bài Lab trên lớp sẽ được chấm sau khi hết deadline thường là 23:59 cùng ngày nhé"
+            }
+          }
+        ]
+      },
+      "metrics": {
+        "c1_count": true,
+        "c2_type": true,
+        "c3_due": true,
+        "c4_confidence": true,
+        "c5_evidence": true,
+        "passed": true,
+        "failure_reasons": []
+      },
+      "latency_ms": 9134.38,
+      "error": null,
+      "execution_model": "gemini-3.6-flash",
+      "source_run": "eval\\runs\\run2_raw.json",
+      "retried_after_error": false
+    },
+    {
+      "case_id": "G03",
+      "group": "L1_source",
+      "source": "real:M40677,M00595",
+      "description": "Học viên tự nhắc giờ hạn và bot không xác nhận được quy định",
+      "input": {
+        "now": "2026-09-13 01:28",
+        "messages": [
+          {
+            "msg_id": "M40677",
+            "channel": "channel_10",
+            "author_role": "student",
+            "created_at": "2026-09-13 01:27",
+            "content": "[@BOT] tôi nộp codelab trên vlearn đúng giờ deadline như thông báo (23:59) nhưng commit trên máy bị lỗi và sau thời gian đó mới lên thì có được tính là nộp đúng hạn không ?"
+          },
+          {
+            "msg_id": "M00595",
+            "channel": "channel_10",
+            "author_role": "bot",
+            "created_at": "2026-09-13 01:27",
+            "content": "Chào bạn! Về vấn đề nộp bài codelab trên **Vlearn** bị trễ do lỗi commit, mình không có thông tin cụ thể về quy định châm chước cho trường hợp này trong dữ liệu hiện tại.\n\nTuy nhiên, để đảm bảo quyền lợi của mình, bạn nên thực hiện ngay các bước sau nhé:\n\n1.  **Liên hệ Admin:** Bạn hãy nhắn tin trực tiếp cho **@Vlearn Admin** để trình bày về lỗi kỹ thuật bạn gặp phải (kèm ảnh chụp màn hình lỗi commit nếu có để làm minh chứng).\n2.  **Tạo Ticket:** Bạn có thể vào kênh [hỏi-đáp-bot]([link:discord.com]), dùng lệnh `/ticket create` để mở một thread hỗ trợ. Khi đó, BTC sẽ xem xét trường hợp cụ thể của bạn và đưa ra quyết định cuối cùng.\n\nBạn cứ yên tâm liên hệ sớm với các anh chị để được hỗ trợ nhé. Chúc bạn giải quyết vấn đề suôn sẻ!"
+          }
+        ]
+      },
+      "expected": {
+        "items": []
+      },
+      "actual": {
+        "items": []
+      },
+      "metrics": {
+        "c1_count": true,
+        "c2_type": true,
+        "c3_due": true,
+        "c4_confidence": true,
+        "c5_evidence": true,
+        "passed": true,
+        "failure_reasons": []
+      },
+      "latency_ms": 12975.65,
+      "error": null,
+      "execution_model": "gemini-3.6-flash",
+      "source_run": "eval\\runs\\run2_raw.json",
+      "retried_after_error": false
+    },
+    {
+      "case_id": "G04",
+      "group": "L2_ambiguous",
+      "source": "real:M80655,M58634",
+      "description": "Hai lịch mâu thuẫn và một học viên khuyên dùng lịch UPDATED",
+      "input": {
+        "now": "2026-09-13 09:13",
+        "messages": [
+          {
+            "msg_id": "M80655",
+            "channel": "channel_11",
+            "author_role": "student",
+            "created_at": "2026-09-13 09:05",
+            "content": "[@user] Cho mình hỏi là: Email cá nhân nhận lịch mã số 02, sau đó nhận thêm mã số 03. Còn email outlook thì ngược lại nhận lịch mã số 03, sau đó nhận mã số 02. Vậy mình nên học theo lịch nào?"
+          },
+          {
+            "msg_id": "M58634",
+            "channel": "channel_11",
+            "author_role": "student",
+            "created_at": "2026-09-13 09:12",
+            "content": "Bạn dùng lịch có chữ UPDATED á"
+          }
+        ]
+      },
+      "expected": {
+        "items": [
+          {
+            "type": "SCHEDULE",
+            "due": null,
+            "confidence": "low"
+          }
+        ]
+      },
+      "actual": {
+        "items": [
+          {
+            "type": "SCHEDULE",
+            "title": "Theo dõi lịch học có chữ UPDATED",
+            "due": null,
+            "location": null,
+            "confidence": "low",
+            "review_reason": "Thông tin từ học viên, chưa được xác thực từ BQL/Staff",
+            "evidence": {
+              "msg_id": "M58634",
+              "quote": "Bạn dùng lịch có chữ UPDATED á"
+            }
+          }
+        ]
+      },
+      "metrics": {
+        "c1_count": true,
+        "c2_type": true,
+        "c3_due": true,
+        "c4_confidence": true,
+        "c5_evidence": true,
+        "passed": true,
+        "failure_reasons": []
+      },
+      "latency_ms": 5364.09,
+      "error": null,
+      "execution_model": "gemini-3.6-flash",
+      "source_run": "eval\\runs\\run2_raw.json",
+      "retried_after_error": false
+    },
+    {
+      "case_id": "G05",
+      "group": "L2_ambiguous",
+      "source": "real:M33002",
+      "description": "Học viên hỏi hạn tìm đồng đội nhưng không có câu trả lời",
+      "input": {
+        "now": "2026-09-13 12:02",
+        "messages": [
+          {
+            "msg_id": "M33002",
+            "channel": "channel_02",
+            "author_role": "student",
+            "created_at": "2026-09-13 12:01",
+            "content": "Hạn tìm đồng đội đến bao giờ thế mọi người ơi!!!"
+          }
+        ]
+      },
+      "expected": {
+        "items": []
+      },
+      "actual": {
+        "items": []
+      },
+      "metrics": {
+        "c1_count": true,
+        "c2_type": true,
+        "c3_due": true,
+        "c4_confidence": true,
+        "c5_evidence": true,
+        "passed": true,
+        "failure_reasons": []
+      },
+      "latency_ms": 4445.67,
+      "error": null,
+      "execution_model": "gemini-3.6-flash",
+      "source_run": "eval\\runs\\run2_raw.json",
+      "retried_after_error": false
+    },
+    {
+      "case_id": "G06",
+      "group": "L2_ambiguous",
+      "source": "synthetic",
+      "description": "Lời nhắc có hành động nhưng không rõ bài và không có hạn",
+      "input": {
+        "now": "2026-09-14 09:00",
+        "messages": [
+          {
+            "msg_id": "SYN001",
+            "channel": "channel_general",
+            "author_role": "student",
+            "created_at": "2026-09-14 08:58",
+            "content": "Mọi người nhớ nộp bài nha, hình như sắp hết hạn rồi đó."
+          }
+        ]
+      },
+      "expected": {
+        "items": [
+          {
+            "type": "TASK",
+            "due": null,
+            "confidence": "low"
+          }
+        ]
+      },
+      "actual": {
+        "items": [
+          {
+            "type": "TASK",
+            "title": "Nộp bài tập",
+            "due": null,
+            "location": null,
+            "confidence": "low",
+            "review_reason": "Thông tin nhắc nhở từ học viên, chưa được xác thực về mốc thời gian",
+            "evidence": {
+              "msg_id": "SYN001",
+              "quote": "Mọi người nhớ nộp bài nha, hình như sắp hết hạn rồi đó."
+            }
+          }
+        ]
+      },
+      "metrics": {
+        "c1_count": true,
+        "c2_type": true,
+        "c3_due": true,
+        "c4_confidence": true,
+        "c5_evidence": true,
+        "passed": true,
+        "failure_reasons": []
+      },
+      "latency_ms": 6223.68,
+      "error": null,
+      "execution_model": "gemini-3.6-flash",
+      "source_run": "eval\\runs\\run2_raw.json",
+      "retried_after_error": false
+    },
+    {
+      "case_id": "G07",
+      "group": "L3_out_of_scope",
+      "source": "real:M88027",
+      "description": "Học viên xin gia hạn bài Lab2",
+      "input": {
+        "now": "2026-09-13 00:09",
+        "messages": [
+          {
+            "msg_id": "M88027",
+            "channel": "channel_11",
+            "author_role": "student",
+            "created_at": "2026-09-13 00:08",
+            "content": "cho em hỏi Lab2 có được extend thời gian submit thêm không v ạ? Em lỡ nộp muộn 1 phút không submit bài được ạ"
+          }
+        ]
+      },
+      "expected": {
+        "items": []
+      },
+      "actual": {
+        "items": []
+      },
+      "metrics": {
+        "c1_count": true,
+        "c2_type": true,
+        "c3_due": true,
+        "c4_confidence": true,
+        "c5_evidence": true,
+        "passed": true,
+        "failure_reasons": []
+      },
+      "latency_ms": 3296.43,
+      "error": null,
+      "execution_model": "gemini-3.6-flash",
+      "source_run": "eval\\runs\\run2_raw.json",
+      "retried_after_error": false
+    },
+    {
+      "case_id": "G08",
+      "group": "L3_out_of_scope",
+      "source": "real:M85253",
+      "description": "Hỏi phòng gym gần khu học",
+      "input": {
+        "now": "2026-09-13 15:39",
+        "messages": [
+          {
+            "msg_id": "M85253",
+            "channel": "channel_11",
+            "author_role": "student",
+            "created_at": "2026-09-13 15:38",
+            "content": "trong khu ocp 1 hay quanh khu có phòng gym nào ngon giá ok ko a"
+          }
+        ]
+      },
+      "expected": {
+        "items": []
+      },
+      "actual": {
+        "items": []
+      },
+      "metrics": {
+        "c1_count": true,
+        "c2_type": true,
+        "c3_due": true,
+        "c4_confidence": true,
+        "c5_evidence": true,
+        "passed": true,
+        "failure_reasons": []
+      },
+      "latency_ms": 3515.05,
+      "error": null,
+      "execution_model": "gemini-3.6-flash",
+      "source_run": "eval\\runs\\run2_raw.json",
+      "retried_after_error": false
+    },
+    {
+      "case_id": "G09",
+      "group": "L4_domain",
+      "source": "real:M09449",
+      "description": "Một thông báo chính thức chứa mốc công bố và hạn đăng ký đề tài",
+      "input": {
+        "now": "2026-09-13 21:50",
+        "messages": [
+          {
+            "msg_id": "M09449",
+            "channel": "channel_12",
+            "author_role": "staff",
+            "created_at": "2026-09-13 21:49",
+            "content": "📢 THÔNG BÁO LỰA CHỌN ĐỀ TÀI\n\nBTC đã hoàn tất việc sắp xếp thành viên và danh sách các team. Ngân hàng đề tài chính thức sẽ được công khai lúc 22h00 hôm nay, Chủ [HV], ngày 13/09/2026.\n\nSau khi ngân hàng đề được công bố, các team cần chủ động tổ chức trao đổi nội bộ và thống nhất với đầy đủ thành viên trước khi đăng ký. Không nên để một cá nhân tự lựa chọn khi team chưa thảo luận kỹ.\n\nKhi đánh giá đề tài, team cần cân nhắc:\n\n> Mức độ phù hợp với năng lực và định hướng của các thành viên.\n> \n> Khả năng xây dựng sản phẩm có thể triển khai và demo trong thời gian khóa học.\n> \n> Khả năng tiếp cận dữ liệu, tài liệu, công cụ và hạ tầng.\n> \n> Yêu cầu về AI Agent, human-in-the-loop, đánh giá chất lượng và an toàn.\n> \n> Phạm vi công việc và phương án phân công giữa các thành viên.\n\nQuy định đăng ký:\n\nĐọc kỹ các thông tin trong sheet đề tài\n\n> **Nội dung trong ngân hàng là gợi ý để nhóm lựa chọn và tinh chỉnh theo tình hình thực tế khi khảo sát, trao đổi trực tiếp với người dùng trong quá trình phát triển sản phẩm.**\n> \n> **Mỗi đề tài chỉ nhận tối đa 2 team đăng ký.**\n> \n> **Team cần thống nhất thứ tự ưu tiên giữa các đề tài.**\n> \n> **Trường hợp team muốn đề xuất đề tài mới, cần được BTC duyệt bằng việc tạo ticket.**\n\n\nCác mốc thời gian quan trọng:\n\n- 22:00 Chủ [HV], ngày 13/09/2026: Công khai ngân hàng đề tài.\n- 23:59 Chủ [HV], ngày 20/09/2026: Hạn cuối lựa chọn và đăng ký đề tài - Hoàn thiện các delieverables Gate 1.\n\nSau ngày 20/09/2026: BTC sẽ không tiếp nhận hoặc hỗ trợ thêm các yêu cầu liên quan đến việc lựa chọn hoặc đề xuất đề tài.\n\nCác team vui lòng chủ động sắp xếp thời gian thảo luận, lựa chọn nghiêm túc và hoàn tất đăng ký đúng thời hạn.\n\n[@role]"
+          }
+        ]
+      },
+      "expected": {
+        "items": [
+          {
+            "type": "SCHEDULE",
+            "due": "2026-09-13T22:00",
+            "confidence": "high"
+          },
+          {
+            "type": "DEADLINE",
+            "due": "2026-09-20T23:59",
+            "confidence": "high"
+          }
+        ]
+      },
+      "actual": {
+        "items": [
+          {
+            "type": "SCHEDULE",
+            "title": "Công khai ngân hàng đề tài",
+            "due": "2026-09-13T22:00",
+            "location": null,
+            "confidence": "high",
+            "review_reason": null,
+            "evidence": {
+              "msg_id": "M09449",
+              "quote": "22:00 Chủ [HV], ngày 13/09/2026: Công khai ngân hàng đề tài."
+            }
+          },
+          {
+            "type": "DEADLINE",
+            "title": "Hạn cuối lựa chọn, đăng ký đề tài và hoàn thiện deliverables Gate 1",
+            "due": "2026-09-20T23:59",
+            "location": null,
+            "confidence": "high",
+            "review_reason": null,
+            "evidence": {
+              "msg_id": "M09449",
+              "quote": "23:59 Chủ [HV], ngày 20/09/2026: Hạn cuối lựa chọn và đăng ký đề tài - Hoàn thiện các delieverables Gate 1."
+            }
+          }
+        ]
+      },
+      "metrics": {
+        "c1_count": true,
+        "c2_type": true,
+        "c3_due": true,
+        "c4_confidence": true,
+        "c5_evidence": true,
+        "passed": true,
+        "failure_reasons": []
+      },
+      "latency_ms": 12459.19,
+      "error": null,
+      "execution_model": "gemini-3.6-flash",
+      "source_run": "eval\\runs\\run2_raw.json",
+      "retried_after_error": false
+    },
+    {
+      "case_id": "G10",
+      "group": "L4_domain",
+      "source": "real:M78917",
+      "description": "Hai quy định hạn lặp lại cho daily standup và mentor duty",
+      "input": {
+        "now": "2026-09-14 15:47",
+        "messages": [
+          {
+            "msg_id": "M78917",
+            "channel": "channel_10",
+            "author_role": "staff",
+            "created_at": "2026-09-14 15:46",
+            "content": "Khung giờ daily standup để được cộng XP: 0h-10h sáng. Nộp trễ vẫn ghi nhận nhưng không +XP.\n\nKhung giờ nộp mentor duty để được cộng XP: Trước 12h00 các buổi mentor duty. Nộp trễ vẫn ghi nhận nhưng không +XP."
+          }
+        ]
+      },
+      "expected": {
+        "items": [
+          {
+            "type": "DEADLINE",
+            "due": null,
+            "confidence": "high"
+          },
+          {
+            "type": "DEADLINE",
+            "due": null,
+            "confidence": "high"
+          }
+        ]
+      },
+      "actual": {
+        "items": [
+          {
+            "type": "DEADLINE",
+            "title": "Nộp daily standup trong khung giờ 0h-10h sáng để được cộng XP",
+            "due": null,
+            "location": null,
+            "confidence": "high",
+            "review_reason": null,
+            "evidence": {
+              "msg_id": "M78917",
+              "quote": "Khung giờ daily standup để được cộng XP: 0h-10h sáng."
+            }
+          },
+          {
+            "type": "DEADLINE",
+            "title": "Nộp mentor duty trước 12h00 các buổi mentor duty để được cộng XP",
+            "due": null,
+            "location": null,
+            "confidence": "high",
+            "review_reason": null,
+            "evidence": {
+              "msg_id": "M78917",
+              "quote": "Khung giờ nộp mentor duty để được cộng XP: Trước 12h00 các buổi mentor duty."
+            }
+          }
+        ]
+      },
+      "metrics": {
+        "c1_count": true,
+        "c2_type": true,
+        "c3_due": true,
+        "c4_confidence": true,
+        "c5_evidence": true,
+        "passed": true,
+        "failure_reasons": []
+      },
+      "latency_ms": 9172.48,
+      "error": null,
+      "execution_model": "gemini-3.6-flash",
+      "source_run": "eval\\runs\\run2_raw.json",
+      "retried_after_error": false
+    },
+    {
+      "case_id": "G11",
+      "group": "common",
+      "source": "real:M21817",
+      "description": "Thông báo Workshop 02 có ngày giờ và nền tảng rõ ràng",
+      "input": {
+        "now": "2026-09-13 09:00",
+        "messages": [
+          {
+            "msg_id": "M21817",
+            "channel": "channel_12",
+            "author_role": "staff",
+            "created_at": "2026-09-13 08:42",
+            "content": "🚀 THÔNG BÁO WORKSHOP 02 \n\nTheo như thông báo trước đó, thì định kì tối thứ 5 và chủ nhật hàng tuần sẽ là các Buổi WS, vào tối 13/9 ( hôm nay ) chúng ta sẽ đi vào Buổi WS 2 với chủ đề : Problem → MVP Canvas\n\nDiễn giả : Diễn giả: ThS [HV] : Founder, CEO - Bot bán hàng, Gương Mặt Trẻ Việt Nam Tiêu Biểu 2020.\n\n> 🕗 Thời gian: 20:00 — tối nay, ngày 13/09\n> 📍 Hình thức: Online qua Zoom\n> \n> Join Zoom Meeting\n> [link:zoom.us]\n> \n> Meeting ID: [ID]\n> Passcode: [PASSCODE]\n\n   💻 Quy định khi vào Zoom\n\nThời gian: Vui lòng vào sớm 10 phút (19:50) để ổn định kỹ thuật.\n\n\n📝 CÚ PHÁP ĐẶT TÊN CHUẨN:\n\n**Mã nhóm — Mã đội — Họ và tên **\n\n💡 Ví dụ cụ thể:\n\n> Nếu bạn là [HV] , thuộc mã team 001, thuộc mã nhóm G01\n>  ➡️ Bạn đặt tên là: G01 — T001 — [HV]g trường hợp buổi các buổi đầu tiên chưa có mã nhóm / team các bạn có thể dùng : **TÊN - 5 chữ số cuối mssv**\n\nĐây là quy định bắt buộc, các bạn vui lòng tuân thủ để không gặp vấn đề phát sinh khi tính điểm danh chuyên cần\n\n\n🆘  ĐẶC BIỆT LƯU Ý : CẦN ĐĂNG NHẬP VÀO ZOOM BẰNG EMAIL ĐÃ  DÙNG ĐỂ ĐĂNG NHẬP TRÊN https://phoenix.note.transformerlabs.ai/\n\nCác bạn lưu ý lịch để tham gia nhé\n\n[@role]"
+          }
+        ]
+      },
+      "expected": {
+        "items": [
+          {
+            "type": "SCHEDULE",
+            "due": "2026-09-13T20:00",
+            "confidence": "high"
+          }
+        ]
+      },
+      "actual": {
+        "items": [
+          {
+            "type": "SCHEDULE",
+            "title": "Workshop 02: Problem → MVP Canvas",
+            "due": "2026-09-13T20:00",
+            "location": "Online qua Zoom",
+            "confidence": "high",
+            "review_reason": null,
+            "evidence": {
+              "msg_id": "M21817",
+              "quote": "🕗 Thời gian: 20:00 — tối nay, ngày 13/09"
+            }
+          }
+        ]
+      },
+      "metrics": {
+        "c1_count": true,
+        "c2_type": true,
+        "c3_due": true,
+        "c4_confidence": true,
+        "c5_evidence": true,
+        "passed": true,
+        "failure_reasons": []
+      },
+      "latency_ms": 14202.58,
+      "error": null,
+      "execution_model": "gemini-3.6-flash",
+      "source_run": "eval\\runs\\run2_raw.json",
+      "retried_after_error": false
+    },
+    {
+      "case_id": "G12",
+      "group": "common",
+      "source": "real:M16114",
+      "description": "Lab Coach yêu cầu kiểm tra và cài CVAT trước buổi lab",
+      "input": {
+        "now": "2026-09-13 11:22",
+        "messages": [
+          {
+            "msg_id": "M16114",
+            "channel": "channel_05",
+            "author_role": "staff",
+            "created_at": "2026-09-13 11:21",
+            "content": "@everyone  mn ơi, ngày mai bài lab sẽ cần sử dụng đến CVAT nhé.\n\nBạn nào hiện tại chưa cài được CVAT hoặc đang gặp vấn đề trong quá trình cài đặt/sử dụng thì có thể nhắn tin cho bọn mình để được hỗ trợ nhé. Mọi người tranh thủ kiểm tra và cài đặt trước để ngày mai có thể làm bài lab thuận lợi nhất nha!"
+          }
+        ]
+      },
+      "expected": {
+        "items": [
+          {
+            "type": "TASK",
+            "due": null,
+            "confidence": "high"
+          }
+        ]
+      },
+      "actual": {
+        "items": [
+          {
+            "type": "TASK",
+            "title": "Kiểm tra và cài đặt CVAT trước bài lab",
+            "due": null,
+            "location": null,
+            "confidence": "high",
+            "review_reason": null,
+            "evidence": {
+              "msg_id": "M16114",
+              "quote": "Mọi người tranh thủ kiểm tra và cài đặt trước để ngày mai có thể làm bài lab thuận lợi nhất nha!"
+            }
+          }
+        ]
+      },
+      "metrics": {
+        "c1_count": true,
+        "c2_type": true,
+        "c3_due": true,
+        "c4_confidence": true,
+        "c5_evidence": true,
+        "passed": true,
+        "failure_reasons": []
+      },
+      "latency_ms": 9982.23,
+      "error": null,
+      "execution_model": "gemini-3.6-flash",
+      "source_run": "eval\\runs\\run2_raw.json",
+      "retried_after_error": false
+    },
+    {
+      "case_id": "G13",
+      "group": "common",
+      "source": "real:M47011",
+      "description": "Lab Coach yêu cầu đổi tên Discord theo cú pháp",
+      "input": {
+        "now": "2026-09-12 09:41",
+        "messages": [
+          {
+            "msg_id": "M47011",
+            "channel": "channel_06",
+            "author_role": "staff",
+            "created_at": "2026-09-12 09:39",
+            "content": "@everyone\n\nĐể BTC và các Lab Coach thuận tiện trong việc nhận diện, quản lý học viên và theo dõi điểm cộng, mọi người vui lòng đổi tên theo cú pháp:\n\n  Mã Nhóm - Họ và tên - 5 số cuối mã sinh viên\n\nVí dụ: T001 - [HV]\n\nMọi người kiểm tra và đổi lại tên giúp mình nhé. Việc thống nhất cách đặt tên sẽ giúp BTC và các Lab Coach dễ dàng theo dõi thông tin và ghi nhận điểm cộng của mọi người hơn.\n\nCảm ơn mọi người! ❤️"
+          }
+        ]
+      },
+      "expected": {
+        "items": [
+          {
+            "type": "TASK",
+            "due": null,
+            "confidence": "high"
+          }
+        ]
+      },
+      "actual": {
+        "items": [
+          {
+            "type": "TASK",
+            "title": "Đổi tên hiển thị theo đúng cú pháp quy định",
+            "due": null,
+            "location": null,
+            "confidence": "high",
+            "review_reason": null,
+            "evidence": {
+              "msg_id": "M47011",
+              "quote": "mọi người vui lòng đổi tên theo cú pháp:\n\n  Mã Nhóm - Họ và tên - 5 số cuối mã sinh viên"
+            }
+          }
+        ]
+      },
+      "metrics": {
+        "c1_count": true,
+        "c2_type": true,
+        "c3_due": true,
+        "c4_confidence": true,
+        "c5_evidence": true,
+        "passed": true,
+        "failure_reasons": []
+      },
+      "latency_ms": 8054.12,
+      "error": null,
+      "execution_model": "gemini-3.6-flash",
+      "source_run": "eval\\runs\\run2_raw.json",
+      "retried_after_error": false
+    },
+    {
+      "case_id": "G14",
+      "group": "common",
+      "source": "real:M49744",
+      "description": "Thông báo hoàn tất onboarding và ghép đội trước hạn",
+      "input": {
+        "now": "2026-09-12 18:03",
+        "messages": [
+          {
+            "msg_id": "M49744",
+            "channel": "channel_03",
+            "author_role": "staff",
+            "created_at": "2026-09-12 18:02",
+            "content": "THÔNG BÁO HOÀN THIỆN CÁC BƯỚC ONBOARDING VÀO CHƯƠNG TRÌNH\n\nChào mừng các bạn đã đến với Chương trình AI20K - Build Phase Cohort 4A. Để hoàn tất quá trình onboarding và bắt đầu chặng đường 6 tuần tới, BTC thông tin đến các bạn học viên hoàn thiện hồ sơ và lập đội bắt đầu thực chiến.\n\nCác bạn học viên đăng nhập vào nền tảng Phoenix bằng link mời dưới đây và **Tiếp tục với Github** cùng email đã đăng ký với chương trình.\n\n> Link tham gia chương trình (link cập nhật mới nhất):\n> https://phoenix.note.transformerlabs.ai/invite/qYw_GaXnbiPxczQy5cNkMEPNuRrlYjSy_rQgOeiLfRI\n\n**Hoàn thành đủ các bước:**\n1. Vào nền tảng bằng lời mời\n2. Xác minh danh tính\n3. Kết nối và xác minh Discord\n4. Hoàn tất hồ sơ năng lực\n5. Lập đội / tham gia đội\n\n🗓️ **Thời hạn hoàn thành và ghép đội tự do đến 21:00 13/9**\nSau thời gian trên hệ thống sẽ tự động ghép đội ngẫu nhiên.\n\n*Lưu ý:* Trường hợp tài khoản Github đang liên kết với nhiều email, hãy cài đặt email đăng ký với chương trình thành `Primary` tại https://github.com/settings/emails trước khi truy cập vào link mời.\n\nMọi vấn đề thắc mắc trong quá trình onboarding các bạn vui lòng tạo ticket để được hỗ trợ.\n> Cách thức tạo ticket: gõ command `/ticket create` tại kênh [link:discord.com]\n\n@everyone"
+          }
+        ]
+      },
+      "expected": {
+        "items": [
+          {
+            "type": "DEADLINE",
+            "due": "2026-09-13T21:00",
+            "confidence": "high"
+          }
+        ]
+      },
+      "actual": {
+        "items": [
+          {
+            "type": "DEADLINE",
+            "title": "Hoàn thành các bước onboarding và ghép đội tự do",
+            "due": "2026-09-13T21:00",
+            "location": "Nền tảng Phoenix",
+            "confidence": "high",
+            "review_reason": null,
+            "evidence": {
+              "msg_id": "M49744",
+              "quote": "Thời hạn hoàn thành và ghép đội tự do đến 21:00 13/9"
+            }
+          }
+        ]
+      },
+      "metrics": {
+        "c1_count": true,
+        "c2_type": true,
+        "c3_due": true,
+        "c4_confidence": true,
+        "c5_evidence": true,
+        "passed": true,
+        "failure_reasons": []
+      },
+      "latency_ms": 6390.15,
+      "error": null,
+      "execution_model": "gemini-3.5-flash",
+      "source_run": "eval\\runs\\retry_G14_v2.json",
+      "retried_after_error": true
+    },
+    {
+      "case_id": "G15",
+      "group": "common",
+      "source": "real:M31002",
+      "description": "BTC nhắc vào lại đúng link mời để hệ thống nhận diện",
+      "input": {
+        "now": "2026-09-12 18:19",
+        "messages": [
+          {
+            "msg_id": "M31002",
+            "channel": "channel_02",
+            "author_role": "staff",
+            "created_at": "2026-09-12 18:18",
+            "content": "Các bạn lưu ý là vào lại đúng link mời mới theo thông báo nhé [link:discord.com] để hệ thống tự nhận diện nha."
+          }
+        ]
+      },
+      "expected": {
+        "items": [
+          {
+            "type": "TASK",
+            "due": null,
+            "confidence": "high"
+          }
+        ]
+      },
+      "actual": {
+        "items": [
+          {
+            "type": "TASK",
+            "title": "Vào lại đúng link mời mới để hệ thống tự nhận diện",
+            "due": null,
+            "location": null,
+            "confidence": "high",
+            "review_reason": null,
+            "evidence": {
+              "msg_id": "M31002",
+              "quote": "vào lại đúng link mời mới theo thông báo nhé [link:discord.com]"
+            }
+          }
+        ]
+      },
+      "metrics": {
+        "c1_count": true,
+        "c2_type": true,
+        "c3_due": true,
+        "c4_confidence": true,
+        "c5_evidence": true,
+        "passed": true,
+        "failure_reasons": []
+      },
+      "latency_ms": 3164.16,
+      "error": null,
+      "execution_model": "gemini-3.5-flash",
+      "source_run": "eval\\runs\\retry_G15_v2.json",
+      "retried_after_error": true
+    },
+    {
+      "case_id": "G16",
+      "group": "common",
+      "source": "real:M14573",
+      "description": "BTC yêu cầu kiểm tra hồ sơ Phoenix khớp tài khoản Discord",
+      "input": {
+        "now": "2026-09-13 20:38",
+        "messages": [
+          {
+            "msg_id": "M14573",
+            "channel": "channel_02",
+            "author_role": "staff",
+            "created_at": "2026-09-13 20:37",
+            "content": "[HV] kiểm tra hồ sơ cá nhân  trên Phoenix có đúng với Discord hiện tại trong server không nhé"
+          }
+        ]
+      },
+      "expected": {
+        "items": [
+          {
+            "type": "TASK",
+            "due": null,
+            "confidence": "high"
+          }
+        ]
+      },
+      "actual": {
+        "items": [
+          {
+            "type": "TASK",
+            "title": "Kiểm tra hồ sơ cá nhân trên Phoenix",
+            "due": null,
+            "location": "Phoenix",
+            "confidence": "high",
+            "review_reason": null,
+            "evidence": {
+              "msg_id": "M14573",
+              "quote": "kiểm tra hồ sơ cá nhân  trên Phoenix"
+            }
+          }
+        ]
+      },
+      "metrics": {
+        "c1_count": true,
+        "c2_type": true,
+        "c3_due": true,
+        "c4_confidence": true,
+        "c5_evidence": true,
+        "passed": true,
+        "failure_reasons": []
+      },
+      "latency_ms": 6248.51,
+      "error": null,
+      "execution_model": "gemini-3.6-flash",
+      "source_run": "eval\\runs\\run2_raw.json",
+      "retried_after_error": false
+    },
+    {
+      "case_id": "G17",
+      "group": "common",
+      "source": "real:M23868",
+      "description": "BTC hướng dẫn đổi tài khoản Discord trong hồ sơ Phoenix",
+      "input": {
+        "now": "2026-09-13 20:45",
+        "messages": [
+          {
+            "msg_id": "M23868",
+            "channel": "channel_02",
+            "author_role": "staff",
+            "created_at": "2026-09-13 20:44",
+            "content": "Hiện tại bạn đang liên kết với discord [ID] ([HV]), nếu tài khoản này không truy cập được thì [HV] vào Hồ sơ cá nhân > Tôi cần đổi tài khoản Discord để AD duyệt cấp role Learner trong server Discord cho tài khoản Discord hiện tại nhé"
+          }
+        ]
+      },
+      "expected": {
+        "items": [
+          {
+            "type": "TASK",
+            "due": null,
+            "confidence": "high"
+          }
+        ]
+      },
+      "actual": {
+        "items": [
+          {
+            "type": "TASK",
+            "title": "Đổi tài khoản Discord trong Hồ sơ cá nhân nếu không truy cập được tài khoản đã liên kết",
+            "due": null,
+            "location": "Hồ sơ cá nhân",
+            "confidence": "high",
+            "review_reason": null,
+            "evidence": {
+              "msg_id": "M23868",
+              "quote": "vào Hồ sơ cá nhân > Tôi cần đổi tài khoản Discord"
+            }
+          }
+        ]
+      },
+      "metrics": {
+        "c1_count": true,
+        "c2_type": true,
+        "c3_due": true,
+        "c4_confidence": true,
+        "c5_evidence": true,
+        "passed": true,
+        "failure_reasons": []
+      },
+      "latency_ms": 8440.73,
+      "error": null,
+      "execution_model": "gemini-3.6-flash",
+      "source_run": "eval\\runs\\run2_raw.json",
+      "retried_after_error": false
+    },
+    {
+      "case_id": "G18",
+      "group": "common",
+      "source": "real:M01982",
+      "description": "Bot hiển thị Gate 1 với deadline tuyệt đối và deliverables",
+      "input": {
+        "now": "2026-09-13 21:59",
+        "messages": [
+          {
+            "msg_id": "M01982",
+            "channel": "channel_10",
+            "author_role": "bot",
+            "created_at": "2026-09-13 21:58",
+            "content": "Gate 1 — Chốt đề tài\nactive\n+100 XP / member\n· Deadline 23:59:00 20/9/2026\nChốt bài toán + thiết kế | 1-page brief, PRD, Wireframe, GitHub repo setup\n\nDeliverables cần đạt\n- Brief\n- PRD\n- Wireframe/UI Flow\n- Github Repo Setup AI Log\n\nNộp 1 link gồm đủ các deliverables trên, có thể là link github, docs, google drive, ...\n\nCách setup AI LOG\nTrong chương trình Build Phase bạn cần setup AI Log để tự động submit prompt:\n1. Tạo API Keys tại https://phoenix.note.transformerlabs.ai/api-keys\n2. Clone Repo của team trong Org: github.com/AI20K-Build-Phase-Cohort-4\n3. Đọc README.md hướng dẫn và làm theo từng bước\n4. Kiểm tra [ai-log] Submitted khi push code hoặc kiểm tra API Key last used trên dashboard ở bước 1.\n\nVideo hướng dẫn chi tiết xem tại: [Hướng dẫn setup AI Log Hook](https://drive.google.com/file/d/1q8P0gRA4yBq4t9kZ_nQxYvkoIKF5ebtH/view?usp=sharing)\n\n- Setup AI Log càng sớm càng tốt (ngay tuần 1)\n- Đảm bảo log đầy đủ các phiên prompt từ đầu chương trình đến Demo Day\n\nNếu bạn chưa được invite vào nền tảng hãy đăng nhập tài khoản tại: [Join phoenix](https://phoenix.note.transformerlabs.ai/invite/2ESYVCDgupFApHMpm2k1pQ7AtOa2caD7t5ooHJXbfE0)"
+          }
+        ]
+      },
+      "expected": {
+        "items": [
+          {
+            "type": "DEADLINE",
+            "due": "2026-09-20T23:59",
+            "confidence": "low"
+          }
+        ]
+      },
+      "actual": {
+        "items": [
+          {
+            "type": "DEADLINE",
+            "title": "Gate 1 — Chốt đề tài",
+            "due": "2026-09-20T23:59",
+            "location": null,
+            "confidence": "low",
+            "review_reason": "Thông tin từ bot, cần đối chiếu với nguồn chính thức từ staff.",
+            "evidence": {
+              "msg_id": "M01982",
+              "quote": "Deadline 23:59:00 20/9/2026"
+            }
+          }
+        ]
+      },
+      "metrics": {
+        "c1_count": true,
+        "c2_type": true,
+        "c3_due": true,
+        "c4_confidence": true,
+        "c5_evidence": true,
+        "passed": true,
+        "failure_reasons": []
+      },
+      "latency_ms": 4261.23,
+      "error": null,
+      "execution_model": "gemini-3.5-flash",
+      "source_run": "eval\\runs\\retry_G18_v2.json",
+      "retried_after_error": true
+    },
+    {
+      "case_id": "G19",
+      "group": "common",
+      "source": "real:M45316,M79177",
+      "description": "BTC xác nhận hạn mentor duty là trước 12h hôm sau",
+      "input": {
+        "now": "2026-09-14 16:10",
+        "messages": [
+          {
+            "msg_id": "M45316",
+            "channel": "channel_10",
+            "author_role": "student",
+            "created_at": "2026-09-14 16:07",
+            "content": "Trợ lý Kute blocked k cho em nộp nữa :(( mentor duty thì nộp ngày hôm trước miễn 12h hôm sau là vẫn được anh nhỉ, hay có giới hạn trước 24h hay gì k ạ"
+          },
+          {
+            "msg_id": "M79177",
+            "channel": "channel_10",
+            "author_role": "staff",
+            "created_at": "2026-09-14 16:09",
+            "content": "Nộp hôm trước miễn trước 12h hôm sau là được nhé"
+          }
+        ]
+      },
+      "expected": {
+        "items": [
+          {
+            "type": "DEADLINE",
+            "due": "2026-09-15T12:00",
+            "confidence": "high"
+          }
+        ]
+      },
+      "actual": {
+        "items": [
+          {
+            "type": "DEADLINE",
+            "title": "Hạn nộp báo cáo mentor duty",
+            "due": "2026-09-15T12:00",
+            "location": null,
+            "confidence": "high",
+            "review_reason": null,
+            "evidence": {
+              "msg_id": "M79177",
+              "quote": "Nộp hôm trước miễn trước 12h hôm sau là được nhé"
+            }
+          }
+        ]
+      },
+      "metrics": {
+        "c1_count": true,
+        "c2_type": true,
+        "c3_due": true,
+        "c4_confidence": true,
+        "c5_evidence": true,
+        "passed": true,
+        "failure_reasons": []
+      },
+      "latency_ms": 4321.32,
+      "error": null,
+      "execution_model": "gemini-3.5-flash",
+      "source_run": "eval\\runs\\retry_G19_v2.json",
+      "retried_after_error": true
+    },
+    {
+      "case_id": "G20",
+      "group": "rare",
+      "source": "real:M47011,M12505",
+      "description": "Cùng thông báo đổi tên được đăng ở hai channel",
+      "input": {
+        "now": "2026-09-12 09:42",
+        "messages": [
+          {
+            "msg_id": "M47011",
+            "channel": "channel_06",
+            "author_role": "staff",
+            "created_at": "2026-09-12 09:39",
+            "content": "@everyone\n\nĐể BTC và các Lab Coach thuận tiện trong việc nhận diện, quản lý học viên và theo dõi điểm cộng, mọi người vui lòng đổi tên theo cú pháp:\n\n  Mã Nhóm - Họ và tên - 5 số cuối mã sinh viên\n\nVí dụ: T001 - [HV]\n\nMọi người kiểm tra và đổi lại tên giúp mình nhé. Việc thống nhất cách đặt tên sẽ giúp BTC và các Lab Coach dễ dàng theo dõi thông tin và ghi nhận điểm cộng của mọi người hơn.\n\nCảm ơn mọi người! ❤️"
+          },
+          {
+            "msg_id": "M12505",
+            "channel": "channel_07",
+            "author_role": "staff",
+            "created_at": "2026-09-12 09:40",
+            "content": "@everyone\n\nĐể BTC và các Lab Coach thuận tiện trong việc nhận diện, quản lý học viên và theo dõi điểm cộng, mọi người vui lòng đổi tên theo cú pháp:\n\n  Mã Nhóm - Họ và tên - 5 số cuối mã sinh viên\n\nVí dụ: T001 - [HV]\n\nMọi người kiểm tra và đổi lại tên giúp mình nhé. Việc thống nhất cách đặt tên sẽ giúp BTC và các Lab Coach dễ dàng theo dõi thông tin và ghi nhận điểm cộng của mọi người hơn.\n\nCảm ơn mọi người! ❤️"
+          }
+        ]
+      },
+      "expected": {
+        "items": [
+          {
+            "type": "TASK",
+            "due": null,
+            "confidence": "high"
+          }
+        ]
+      },
+      "actual": {
+        "items": [
+          {
+            "type": "TASK",
+            "title": "Đổi tên hiển thị Discord theo cú pháp quy định",
+            "due": null,
+            "location": null,
+            "confidence": "high",
+            "review_reason": null,
+            "evidence": {
+              "msg_id": "M47011",
+              "quote": "mọi người vui lòng đổi tên theo cú pháp:\n\n  Mã Nhóm - Họ và tên - 5 số cuối mã sinh viên"
+            }
+          }
+        ]
+      },
+      "metrics": {
+        "c1_count": true,
+        "c2_type": true,
+        "c3_due": true,
+        "c4_confidence": true,
+        "c5_evidence": true,
+        "passed": true,
+        "failure_reasons": []
+      },
+      "latency_ms": 8462.79,
+      "error": null,
+      "execution_model": "gemini-3.6-flash",
+      "source_run": "eval\\runs\\run2_raw.json",
+      "retried_after_error": false
+    },
+    {
+      "case_id": "G21",
+      "group": "rare",
+      "source": "real:M71036,M01313",
+      "description": "Hai câu trả lời bot trùng nhau về hạn daily standup",
+      "input": {
+        "now": "2026-09-14 09:08",
+        "messages": [
+          {
+            "msg_id": "M71036",
+            "channel": "channel_10",
+            "author_role": "bot",
+            "created_at": "2026-09-14 09:05",
+            "content": "Khung giờ nộp daily hàng ngày là từ 0h-10h sáng nhé. Nộp muộn vẫn được ghi nhận nhưng không +XP"
+          },
+          {
+            "msg_id": "M01313",
+            "channel": "channel_10",
+            "author_role": "bot",
+            "created_at": "2026-09-14 09:06",
+            "content": "Khung giờ nộp daily hàng ngày là từ 0h-10h sáng nhé. Nộp muộn vẫn được ghi nhận nhưng không +XP"
+          }
+        ]
+      },
+      "expected": {
+        "items": [
+          {
+            "type": "DEADLINE",
+            "due": null,
+            "confidence": "low"
+          }
+        ]
+      },
+      "actual": {
+        "items": [
+          {
+            "type": "DEADLINE",
+            "title": "Khung giờ nộp daily hàng ngày để được cộng XP",
+            "due": null,
+            "location": null,
+            "confidence": "low",
+            "review_reason": "Cần đối chiếu nguồn chính thức từ staff vì thông tin từ bot.",
+            "evidence": {
+              "msg_id": "M71036",
+              "quote": "Khung giờ nộp daily hàng ngày là từ 0h-10h sáng nhé. Nộp muộn vẫn được ghi nhận nhưng không +XP"
+            }
+          }
+        ]
+      },
+      "metrics": {
+        "c1_count": true,
+        "c2_type": true,
+        "c3_due": true,
+        "c4_confidence": true,
+        "c5_evidence": true,
+        "passed": true,
+        "failure_reasons": []
+      },
+      "latency_ms": 3844.76,
+      "error": null,
+      "execution_model": "gemini-3.5-flash",
+      "source_run": "eval\\runs\\retry_G21_v2.json",
+      "retried_after_error": true
+    },
+    {
+      "case_id": "G22",
+      "group": "rare",
+      "source": "real:M82237",
+      "description": "Bài đăng chỉ cung cấp recording Workshop đã diễn ra",
+      "input": {
+        "now": "2026-09-13 14:48",
+        "messages": [
+          {
+            "msg_id": "M82237",
+            "channel": "channel_04",
+            "author_role": "staff",
+            "created_at": "2026-09-13 14:47",
+            "content": "Recording WS01: Kick off\n[link:zoom.us] \nPasscode: [PASSCODE]\n\nLưu ý: Tài liệu lưu hành nội bộ chương trình AI20K Build Phase\n[@role]"
+          }
+        ]
+      },
+      "expected": {
+        "items": []
+      },
+      "actual": {
+        "items": []
+      },
+      "metrics": {
+        "c1_count": true,
+        "c2_type": true,
+        "c3_due": true,
+        "c4_confidence": true,
+        "c5_evidence": true,
+        "passed": true,
+        "failure_reasons": []
+      },
+      "latency_ms": 1855.09,
+      "error": null,
+      "execution_model": "gemini-3.6-flash",
+      "source_run": "eval\\runs\\run2_raw.json",
+      "retried_after_error": false
+    }
+  ]
+}

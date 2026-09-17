@@ -1,0 +1,89 @@
+{
+  "metadata": {
+    "run_timestamp": "2026-09-17 18:31:13",
+    "provider": "openai-compatible",
+    "model": "gemini-3.5-flash",
+    "commit_hash": "45a7784",
+    "total_cases": 1,
+    "passed_cases": 1,
+    "failed_cases": 0,
+    "pass_rate": 100.0,
+    "total_duration_sec": 3.84,
+    "group_stats": {
+      "rare": {
+        "total": 1,
+        "passed": 1
+      }
+    },
+    "criteria_fails": {
+      "C1": 0,
+      "C2": 0,
+      "C3": 0,
+      "C4": 0,
+      "C5": 0
+    }
+  },
+  "results": [
+    {
+      "case_id": "G21",
+      "group": "rare",
+      "source": "real:M71036,M01313",
+      "description": "Hai câu trả lời bot trùng nhau về hạn daily standup",
+      "input": {
+        "now": "2026-09-14 09:08",
+        "messages": [
+          {
+            "msg_id": "M71036",
+            "channel": "channel_10",
+            "author_role": "bot",
+            "created_at": "2026-09-14 09:05",
+            "content": "Khung giờ nộp daily hàng ngày là từ 0h-10h sáng nhé. Nộp muộn vẫn được ghi nhận nhưng không +XP"
+          },
+          {
+            "msg_id": "M01313",
+            "channel": "channel_10",
+            "author_role": "bot",
+            "created_at": "2026-09-14 09:06",
+            "content": "Khung giờ nộp daily hàng ngày là từ 0h-10h sáng nhé. Nộp muộn vẫn được ghi nhận nhưng không +XP"
+          }
+        ]
+      },
+      "expected": {
+        "items": [
+          {
+            "type": "DEADLINE",
+            "due": null,
+            "confidence": "low"
+          }
+        ]
+      },
+      "actual": {
+        "items": [
+          {
+            "type": "DEADLINE",
+            "title": "Khung giờ nộp daily hàng ngày để được cộng XP",
+            "due": null,
+            "location": null,
+            "confidence": "low",
+            "review_reason": "Cần đối chiếu nguồn chính thức từ staff vì thông tin từ bot.",
+            "evidence": {
+              "msg_id": "M71036",
+              "quote": "Khung giờ nộp daily hàng ngày là từ 0h-10h sáng nhé. Nộp muộn vẫn được ghi nhận nhưng không +XP"
+            }
+          }
+        ]
+      },
+      "metrics": {
+        "c1_count": true,
+        "c2_type": true,
+        "c3_due": true,
+        "c4_confidence": true,
+        "c5_evidence": true,
+        "passed": true,
+        "failure_reasons": []
+      },
+      "latency_ms": 3844.76,
+      "error": null
+    }
+  ]
+}
