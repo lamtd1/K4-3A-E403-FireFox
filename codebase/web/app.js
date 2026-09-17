@@ -87,8 +87,19 @@ function cardTypeToBadgeClass(type) {
 }
 
 function cardTypeToLabel(type) {
-  return { DEADLINE: '🚨 Deadline', TASK: '📋 Task', SCHEDULE: '📍 Đổi Phòng / Địa điểm' }[type] || type;
+  return { DEADLINE: 'Deadline', TASK: 'Task', SCHEDULE: 'Đổi phòng / Địa điểm' }[type] || type;
 }
+
+// Bộ icon SVG dùng chung (outline, không phụ thuộc mạng ngoài) — thay cho emoji.
+const ICONS = {
+  check: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>',
+  alertCircle: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>',
+  alertTriangle: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>',
+  clock: '<svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>',
+  pin: '<svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>',
+  edit: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>',
+  x: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>',
+};
 
 function escapeHtml(str) {
   const div = document.createElement('div');
@@ -128,44 +139,45 @@ function renderCards() {
     el.dataset.type = item.type;
 
     const confClass = item.confidence === 'high' ? 'conf-high' : 'conf-low';
-    const confLabel = item.confidence === 'high' ? '✓ Độ tin cậy cao' : '⚠️ Cần kiểm tra lại';
+    const confIcon = item.confidence === 'high' ? ICONS.check : ICONS.alertCircle;
+    const confLabel = item.confidence === 'high' ? 'Độ tin cậy cao' : 'Cần kiểm tra lại';
     const dueLabel = due ? escapeHtml(due) : 'Chưa xác định';
     const locationLine = item.location
-      ? `<div class="meta-time"><span>📍</span><span>${escapeHtml(item.location)}</span></div>` : '';
+      ? `<div class="meta-row">${ICONS.pin}<span>${escapeHtml(item.location)}</span></div>` : '';
     const reviewLine = item.review_reason
-      ? `<div class="review-reason">⚠️ ${escapeHtml(item.review_reason)}</div>` : '';
+      ? `<div class="review-reason">${ICONS.alertTriangle}<span>${escapeHtml(item.review_reason)}</span></div>` : '';
 
     el.innerHTML = `
       <div class="card-top">
         <div class="tags-group">
           <span class="badge-type ${cardTypeToBadgeClass(item.type)}">${escapeHtml(cardTypeToLabel(item.type))}</span>
-          <span class="badge-confidence ${confClass}">${confLabel}</span>
+          <span class="badge-confidence ${confClass}">${confIcon}<span>${confLabel}</span></span>
         </div>
-        <div class="channel-source"><span>#${escapeHtml(channel)}</span></div>
+        <div class="channel-source">#${escapeHtml(channel)}</div>
       </div>
       <div class="card-content">
         <h3 id="title-${index}">${escapeHtml(title)}</h3>
-        <div class="meta-time"><span>⏰ Hạn:</span><span class="highlight" id="due-${index}">${dueLabel}</span></div>
+        <div class="meta-row">${ICONS.clock}<span class="label">Hạn:</span><span class="value" id="due-${index}">${dueLabel}</span></div>
         ${locationLine}
         ${reviewLine}
         <div class="source-box">
-          <div class="source-label"><span>Căn cứ xác minh — msg_id: ${escapeHtml(item.evidence && item.evidence.msg_id)}</span></div>
-          <div class="source-quote">"${escapeHtml(item.evidence && item.evidence.quote)}"</div>
+          <div class="source-label">Căn cứ xác minh — <span class="msg-id">${escapeHtml(item.evidence && item.evidence.msg_id)}</span></div>
+          <div class="source-quote">&ldquo;${escapeHtml(item.evidence && item.evidence.quote)}&rdquo;</div>
         </div>
         <div class="edit-inline" id="edit-box-${index}">
           <div class="edit-inputs">
             <input type="text" class="edit-input" id="input-title-${index}" value="${escapeHtml(title)}">
             <input type="text" class="edit-input" id="input-due-${index}" value="${escapeHtml(due || '')}">
           </div>
-          <button class="btn btn-confirm" style="padding: 4px 10px; font-size: 11px;" onclick="saveEdit(${index})">Lưu thay đổi</button>
+          <button class="btn btn-confirm" style="padding: 5px 11px; font-size: 11.5px;" onclick="saveEdit(${index})">Lưu thay đổi</button>
         </div>
       </div>
       <div class="card-actions">
-        <div class="action-feedback" id="feedback-${index}">✓ Đã xác nhận & thêm vào lịch</div>
+        <div class="action-feedback" id="feedback-${index}">${ICONS.check}<span>Đã xác nhận, đã thêm vào lịch</span></div>
         <div class="btn-group" id="actions-${index}">
-          <button class="btn btn-confirm" onclick="verifyCard(${index})">✓ Xác nhận vào Lịch</button>
-          <button class="btn btn-edit" onclick="toggleEdit(${index})">✎ Sửa</button>
-          <button class="btn btn-dismiss" onclick="dismissCard(${index})">✕ Bỏ qua</button>
+          <button class="btn btn-confirm" onclick="verifyCard(${index})">${ICONS.check}<span>Xác nhận vào lịch</span></button>
+          <button class="btn btn-edit" onclick="toggleEdit(${index})">${ICONS.edit}<span>Sửa</span></button>
+          <button class="btn btn-dismiss" onclick="dismissCard(${index})">${ICONS.x}<span>Bỏ qua</span></button>
         </div>
       </div>
     `;
@@ -256,15 +268,15 @@ function addEventToTimeline(title, time) {
 function logTechCall(entry) {
   const panel = document.getElementById('tech-log-content');
   const time = new Date().toLocaleTimeString('vi-VN');
-  const statusLine = entry.ok === false ? `❌ HTTP ${entry.status}` : `✅ HTTP ${entry.status}`;
+  const statusLine = entry.ok === false ? `LỖI — HTTP ${entry.status}` : `OK — HTTP ${entry.status}`;
   panel.textContent = `[${time}] ${statusLine}\n\n${JSON.stringify(entry.body, null, 2)}`;
   document.getElementById('tech-log-panel').open = true;
 }
 
 function showError(message) {
   const banner = document.getElementById('error-banner');
-  banner.textContent = `⚠️ ${message}`;
-  banner.style.display = 'block';
+  document.getElementById('error-banner-text').textContent = message;
+  banner.style.display = 'flex';
 }
 
 function hideError() {

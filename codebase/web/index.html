@@ -4,54 +4,67 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Actionable Digest & Verification Card - Discord AI Assistant</title>
+  <title>Actionable Digest — Discord AI Assistant</title>
   <style>
     :root {
-      --bg-color: #f4f4f5;
-      --card-bg: #ffffff;
-      --card-border: #18181b;
-      --border-soft: #e4e4e7;
+      --bg: #fafafa;
+      --surface: #ffffff;
       --surface-muted: #f4f4f5;
-      --text-main: #18181b;
-      --text-muted: #71717a;
-      --accent-blue: #18181b;
-      --accent-purple: #18181b;
-      --accent-green: #18181b;
-      --accent-amber: #52525b;
-      --accent-rose: #18181b;
-      --tag-deadline: #18181b;
-      --tag-task: #ffffff;
-      --tag-sched: var(--surface-muted);
+      --border: #e4e4e7;
+      --border-strong: #d4d4d8;
+      --ink: #18181b;
+      --ink-2: #52525b;
+      --ink-muted: #71717a;
+      --radius-lg: 14px;
+      --radius-md: 10px;
+      --radius-sm: 7px;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    html, body {
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
     }
 
     body {
-      background-color: var(--bg-color);
-      color: var(--text-main);
-      padding: 24px 16px;
+      background-color: var(--bg);
+      color: var(--ink);
+      padding: 32px 20px 60px;
       display: flex;
       justify-content: center;
       min-height: 100vh;
+      font-size: 14px;
+      line-height: 1.5;
     }
 
     .container {
       width: 100%;
-      max-width: 980px;
+      max-width: 960px;
     }
 
-    /* Top Navigation / Header */
+    .icon {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+    }
+
+    .icon-sm { width: 13px; height: 13px; }
+    .icon-lg { width: 20px; height: 20px; }
+
+    /* Header */
     header {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 16px 20px;
-      margin-bottom: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 18px 22px;
+      margin-bottom: 16px;
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
@@ -65,231 +78,353 @@
       gap: 12px;
     }
 
-    .logo-badge {
-      background: #18181b;
-      color: #ffffff;
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
+    .logo-mark {
+      background: var(--ink);
+      color: var(--surface);
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: bold;
-      font-size: 20px;
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: -0.02em;
+      flex-shrink: 0;
     }
 
     .title-group h1 {
-      font-size: 17px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
     }
 
     .title-group p {
-      font-size: 12.5px;
-      color: var(--text-muted);
+      font-size: 12px;
+      color: var(--ink-muted);
+      margin-top: 1px;
     }
 
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .scan-status {
+      font-size: 12px;
+      color: var(--ink-muted);
     }
 
     .btn-header {
-      background: #ffffff;
-      border: 1px solid var(--card-border);
-      color: var(--text-main);
-      padding: 7px 14px;
-      border-radius: 8px;
-      font-size: 13px;
+      background: var(--surface);
+      border: 1px solid var(--border-strong);
+      color: var(--ink);
+      padding: 7px 13px;
+      border-radius: var(--radius-sm);
+      font-size: 12.5px;
       font-weight: 500;
+      font-family: inherit;
       cursor: pointer;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 7px;
-      transition: all 0.2s;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
     }
 
     .btn-header:hover {
       background: var(--surface-muted);
-      border-color: #52525b;
+      border-color: var(--ink-muted);
     }
 
     .btn-header.primary {
-      background: #18181b;
-      border-color: #18181b;
-      color: #ffffff;
+      background: var(--ink);
+      border-color: var(--ink);
+      color: var(--surface);
     }
 
     .btn-header.primary:hover {
-      background: #3f3f46;
+      background: #2f2f33;
     }
 
-    /* Step 1: Channel Selector Panel */
+    .btn-header:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Section eyebrow */
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ink-muted);
+    }
+
+    /* Channel Selector Panel */
     .channel-select-panel {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 18px 20px;
-      margin-bottom: 20px;
-      transition: all 0.3s ease;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px 22px;
+      margin-bottom: 16px;
     }
 
     .panel-header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
+      align-items: baseline;
+      margin-bottom: 4px;
+      gap: 12px;
     }
 
     .panel-header h2 {
-      font-size: 14.5px;
+      font-size: 13.5px;
       font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--text-main);
+      color: var(--ink);
+      margin-top: 2px;
+    }
+
+    .panel-header .hint {
+      font-size: 12px;
+      color: var(--ink-muted);
     }
 
     .channel-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 10px;
-      margin-bottom: 14px;
+      gap: 8px;
+      margin: 14px 0;
     }
 
     .channel-chip {
-      background: #ffffff;
-      border: 1px solid var(--border-soft);
-      border-radius: 8px;
-      padding: 10px 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 9px 12px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: space-between;
       user-select: none;
-      transition: all 0.15s ease;
+      transition: border-color 0.15s ease, background-color 0.15s ease;
     }
 
     .channel-chip:hover {
-      border-color: #52525b;
+      border-color: var(--ink-muted);
     }
 
     .channel-chip.selected {
-      border-color: var(--card-border);
+      border-color: var(--ink);
       background: var(--surface-muted);
     }
 
     .channel-info {
       display: flex;
       flex-direction: column;
+      gap: 2px;
     }
 
     .channel-name {
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 600;
-      color: var(--text-main);
-      display: flex;
-      align-items: center;
-      gap: 4px;
+      color: var(--ink);
+      font-family: var(--font-mono);
     }
 
     .channel-desc {
       font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 2px;
+      color: var(--ink-muted);
     }
 
     .channel-checkbox {
-      width: 16px;
-      height: 16px;
-      accent-color: #18181b;
+      width: 15px;
+      height: 15px;
+      accent-color: var(--ink);
+      flex-shrink: 0;
     }
 
     .panel-footer {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-top: 1px dashed var(--card-border);
+      border-top: 1px solid var(--border);
       padding-top: 12px;
     }
 
-    /* HAX Scope Banner [G1, G2] */
-    .banner-hax {
-      background: var(--surface-muted);
-      border: 1px solid var(--border-soft);
-      border-left: 4px solid #18181b;
-      border-radius: 4px 8px 8px 4px;
-      padding: 10px 16px;
-      margin-bottom: 20px;
+    /* Scope note */
+    .scope-note {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      margin-bottom: 16px;
       font-size: 12.5px;
-      color: var(--text-main);
+      color: var(--ink-2);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 12px;
     }
 
-    /* Digest Controls */
+    .scope-note .tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      color: var(--ink-muted);
+      border: 1px solid var(--border-strong);
+      border-radius: 4px;
+      padding: 1px 6px;
+      margin-right: 8px;
+      vertical-align: 1px;
+    }
+
+    .link-quiet {
+      font-size: 12px;
+      color: var(--ink);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      cursor: pointer;
+      white-space: nowrap;
+      background: none;
+      border: none;
+      font-family: inherit;
+      padding: 0;
+    }
+
+    /* Technical log */
+    .log-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .log-panel summary {
+      cursor: pointer;
+      font-size: 12.5px;
+      color: var(--ink-2);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      list-style: none;
+    }
+
+    .log-panel summary::-webkit-details-marker { display: none; }
+
+    .log-panel summary .caption {
+      color: var(--ink-muted);
+      font-size: 11.5px;
+    }
+
+    .log-content {
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-2);
+      max-height: 260px;
+      overflow-y: auto;
+      padding: 0 16px 14px;
+      border-top: 1px solid var(--border);
+      margin-top: -1px;
+      padding-top: 12px;
+    }
+
+    /* Error banner */
+    .error-banner {
+      display: none;
+      align-items: flex-start;
+      gap: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border-strong);
+      border-left: 3px solid var(--ink);
+      border-radius: var(--radius-sm);
+      padding: 11px 14px;
+      margin-bottom: 14px;
+      font-size: 12.5px;
+      color: var(--ink);
+    }
+
+    /* Section header / filter tabs */
     .section-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
     .section-title {
-      font-size: 15px;
+      font-size: 14.5px;
       font-weight: 600;
-      color: var(--text-main);
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+    }
+
+    .date-range {
+      font-size: 11.5px;
+      background: var(--surface-muted);
+      border: 1px solid var(--border);
+      padding: 2px 9px;
+      border-radius: 999px;
+      color: var(--ink-muted);
+      font-family: var(--font-mono);
     }
 
     .filter-tabs {
       display: flex;
-      gap: 6px;
+      gap: 4px;
+      background: var(--surface-muted);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 3px;
     }
 
     .tab-btn {
       background: transparent;
-      border: 1px solid var(--card-border);
-      color: var(--text-muted);
-      padding: 5px 10px;
-      border-radius: 6px;
-      font-size: 11.5px;
+      border: none;
+      color: var(--ink-muted);
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 500;
+      font-family: inherit;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: background-color 0.15s ease, color 0.15s ease;
     }
 
-    .tab-btn.active,
-    .tab-btn:hover {
-      background: #18181b;
-      border-color: #18181b;
-      color: #ffffff;
+    .tab-btn.active {
+      background: var(--ink);
+      color: var(--surface);
+    }
+
+    .tab-btn:not(.active):hover {
+      color: var(--ink);
     }
 
     /* Action Cards */
     .cards-container {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 10px;
     }
 
     .action-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
       padding: 16px 18px;
       position: relative;
-      transition: transform 0.15s ease, border-color 0.15s ease;
     }
 
     .action-card.status-verified {
-      border-color: var(--card-border);
-      background: var(--surface-muted);
+      border-color: var(--ink);
     }
 
     .action-card.hidden {
@@ -300,260 +435,237 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
+      gap: 10px;
     }
 
     .tags-group {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+      flex-wrap: wrap;
     }
 
     .badge-type {
       font-size: 11px;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 5px;
+      letter-spacing: 0.01em;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
     }
 
-    .badge-deadline {
-      background: #18181b;
-      color: #ffffff;
-      border: 1px solid #18181b;
-    }
-
-    .badge-task {
-      background: #ffffff;
-      color: var(--text-main);
-      border: 1px solid var(--card-border);
-    }
-
-    .badge-sched {
-      background: var(--surface-muted);
-      color: var(--text-main);
-      border: 1px solid var(--border-soft);
-    }
+    .badge-deadline { background: var(--ink); color: var(--surface); }
+    .badge-task { background: var(--surface); color: var(--ink); border: 1px solid var(--border-strong); }
+    .badge-sched { background: var(--surface-muted); color: var(--ink); border: 1px solid var(--border); }
 
     .badge-confidence {
       font-size: 11px;
-      padding: 3px 8px;
-      border-radius: 4px;
-      display: flex;
+      padding: 3px 9px;
+      border-radius: 5px;
+      display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
+      font-weight: 500;
     }
 
-    .conf-high {
-      background: var(--surface-muted);
-      color: var(--text-main);
-      border: 1px solid var(--border-soft);
-    }
-
-    .conf-low {
-      background: #ffffff;
-      color: var(--text-muted);
-      border: 1px dashed #a1a1aa;
-    }
+    .conf-high { background: var(--surface-muted); color: var(--ink-2); border: 1px solid var(--border); }
+    .conf-low { background: var(--surface); color: var(--ink-muted); border: 1px dashed var(--border-strong); }
 
     .channel-source {
-      font-size: 12px;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 4px;
+      font-size: 11.5px;
+      color: var(--ink-muted);
+      font-family: var(--font-mono);
+      white-space: nowrap;
     }
 
     .card-content h3 {
       font-size: 14.5px;
       font-weight: 600;
-      margin-bottom: 6px;
-      color: var(--text-main);
+      margin-bottom: 8px;
+      color: var(--ink);
+      line-height: 1.35;
     }
 
-    .meta-time {
+    .meta-row {
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 13px;
-      color: var(--text-main);
-      margin-bottom: 10px;
+      font-size: 12.5px;
+      color: var(--ink-2);
+      margin-bottom: 6px;
     }
 
-    .meta-time span.highlight {
-      color: var(--text-main);
+    .meta-row .label {
+      color: var(--ink-muted);
+    }
+
+    .meta-row .value {
       font-weight: 600;
+      color: var(--ink);
+      font-family: var(--font-mono);
+      font-size: 12px;
     }
 
     .review-reason {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
       font-size: 12px;
-      color: var(--text-muted);
-      margin-bottom: 10px;
-      font-style: italic;
+      color: var(--ink-muted);
+      margin: 8px 0;
+      padding: 8px 10px;
+      background: var(--surface-muted);
+      border-radius: var(--radius-sm);
     }
 
-    /* Verification Box / Source Proof (HAX G11) */
+    /* Source / evidence box */
     .source-box {
       background: var(--surface-muted);
-      border: 1px solid var(--border-soft);
-      border-radius: 8px;
-      padding: 8px 12px;
-      margin-bottom: 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      margin: 10px 0 12px;
       font-size: 12px;
     }
 
     .source-label {
-      color: var(--text-muted);
+      color: var(--ink-muted);
       font-size: 10.5px;
       text-transform: uppercase;
+      letter-spacing: 0.05em;
       font-weight: 600;
-      margin-bottom: 3px;
-      display: flex;
-      justify-content: space-between;
+      margin-bottom: 5px;
+      font-family: var(--font-sans);
+    }
+
+    .source-label .msg-id {
+      font-family: var(--font-mono);
+      text-transform: none;
+      letter-spacing: 0;
+      color: var(--ink-2);
     }
 
     .source-quote {
-      color: #3f3f46;
-      font-style: italic;
-      border-left: 2px solid #a1a1aa;
-      padding-left: 8px;
+      color: var(--ink-2);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      border-left: 2px solid var(--border-strong);
+      padding-left: 10px;
     }
 
-    /* Action Controls (HAX G8, G9) */
+    /* Actions */
     .card-actions {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-top: 1px solid var(--card-border);
-      padding-top: 10px;
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      margin-top: 2px;
     }
 
     .action-feedback {
       font-size: 12px;
-      color: var(--text-main);
+      color: var(--ink);
       display: none;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
+      font-weight: 500;
     }
 
     .btn-group {
       display: flex;
-      gap: 8px;
+      gap: 6px;
     }
 
     .btn {
-      padding: 5px 12px;
-      border-radius: 6px;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
       font-size: 12px;
       font-weight: 500;
+      font-family: inherit;
       cursor: pointer;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 6px;
-      border: none;
-      transition: all 0.2s;
-    }
-
-    .btn-confirm {
-      background: #18181b;
-      color: #ffffff;
-    }
-
-    .btn-confirm:hover {
-      background: #3f3f46;
-    }
-
-    .btn-edit {
-      background: #ffffff;
-      color: var(--text-main);
-      border: 1px solid var(--card-border);
-    }
-
-    .btn-edit:hover {
-      background: var(--surface-muted);
-    }
-
-    .btn-dismiss {
-      background: transparent;
-      color: var(--text-muted);
       border: 1px solid transparent;
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
     }
 
-    .btn-dismiss:hover {
-      color: var(--text-main);
-      background: var(--surface-muted);
-    }
+    .btn-confirm { background: var(--ink); color: var(--surface); }
+    .btn-confirm:hover { background: #2f2f33; }
+
+    .btn-edit { background: var(--surface); color: var(--ink); border-color: var(--border-strong); }
+    .btn-edit:hover { background: var(--surface-muted); }
+
+    .btn-dismiss { background: transparent; color: var(--ink-muted); }
+    .btn-dismiss:hover { color: var(--ink); background: var(--surface-muted); }
 
     /* Inline Edit */
     .edit-inline {
       display: none;
       margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px dashed var(--card-border);
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
     }
 
-    .edit-inline.active {
-      display: block;
-    }
+    .edit-inline.active { display: block; }
 
     .edit-inputs {
       display: flex;
       gap: 8px;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .edit-input {
-      background: #ffffff;
-      border: 1px solid var(--card-border);
-      color: var(--text-main);
-      padding: 6px 10px;
-      border-radius: 4px;
-      font-size: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border-strong);
+      color: var(--ink);
+      padding: 7px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 12.5px;
+      font-family: inherit;
       flex: 1;
     }
 
-    /* Empty state */
-    .empty-state {
-      display: none;
-      background: var(--card-bg);
-      border: 1px dashed #a1a1aa;
-      border-radius: 12px;
-      padding: 36px 20px;
-      text-align: center;
-      color: var(--text-muted);
+    .edit-input:focus {
+      outline: none;
+      border-color: var(--ink);
     }
 
-    /* Loading state */
-    .loading-state {
+    /* Empty / loading states */
+    .empty-state, .loading-state {
       display: none;
-      background: var(--card-bg);
-      border: 1px dashed var(--border-soft);
-      border-radius: 12px;
-      padding: 28px 20px;
+      background: var(--surface);
+      border: 1px dashed var(--border-strong);
+      border-radius: var(--radius-lg);
+      padding: 40px 20px;
       text-align: center;
-      color: var(--text-muted);
+      color: var(--ink-muted);
+    }
+
+    .state-icon {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 12px;
+      color: var(--ink-muted);
+    }
+
+    .empty-state p, .loading-state p {
       font-size: 13px;
+      margin-bottom: 4px;
     }
 
-    .error-banner {
-      display: none;
-      background: #ffffff;
-      border: 1px solid var(--card-border);
-      border-left: 4px solid #18181b;
-      border-radius: 4px 8px 8px 4px;
-      padding: 10px 16px;
-      margin-bottom: 14px;
-      font-size: 12.5px;
-      color: var(--text-main);
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spin { animation: spin 1s linear infinite; }
 
-    /* Modal Lịch Cụ Thể (Calendar Modal) */
+    /* Modal */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(4px);
+      background: rgba(24, 24, 27, 0.45);
       display: none;
       justify-content: center;
       align-items: center;
@@ -561,51 +673,53 @@
       padding: 16px;
     }
 
-    .modal-overlay.active {
-      display: flex;
-    }
+    .modal-overlay.active { display: flex; }
 
     .modal-container {
-      background: #ffffff;
-      border: 1px solid var(--card-border);
-      border-radius: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
       width: 100%;
-      max-width: 650px;
+      max-width: 620px;
       max-height: 85vh;
       overflow-y: auto;
-      box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 20px 40px -12px rgba(24, 24, 27, 0.2);
     }
 
     .modal-header {
-      padding: 18px 20px;
-      border-bottom: 1px solid var(--border-soft);
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
     .modal-title {
-      font-size: 16px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--text-main);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink);
     }
 
     .btn-close-modal {
       background: none;
       border: none;
-      color: var(--text-muted);
-      font-size: 20px;
+      color: var(--ink-muted);
       cursor: pointer;
+      display: flex;
+      padding: 2px;
     }
 
-    .modal-body {
-      padding: 20px;
+    .btn-close-modal:hover { color: var(--ink); }
+
+    .modal-body { padding: 20px 22px; }
+
+    .modal-body > .hint {
+      font-size: 12.5px;
+      color: var(--ink-muted);
+      margin-bottom: 18px;
     }
 
-    /* Timeline in Modal */
+    /* Timeline */
     .timeline {
       display: flex;
       flex-direction: column;
@@ -617,52 +731,50 @@
     .timeline::before {
       content: '';
       position: absolute;
-      left: 6px;
-      top: 10px;
-      bottom: 10px;
-      width: 2px;
-      background: var(--border-soft);
+      left: 5px;
+      top: 6px;
+      bottom: 6px;
+      width: 1px;
+      background: var(--border-strong);
     }
 
-    .timeline-item {
-      position: relative;
-    }
+    .timeline-item { position: relative; }
 
     .timeline-dot {
       position: absolute;
       left: -20px;
       top: 4px;
-      width: 14px;
-      height: 14px;
+      width: 11px;
+      height: 11px;
       border-radius: 50%;
-      background: #18181b;
-      border: 2px solid #ffffff;
-      box-shadow: 0 0 0 1px var(--border-soft);
+      background: var(--surface);
+      border: 2px solid var(--ink);
     }
 
     .timeline-content {
       background: var(--surface-muted);
-      border: 1px solid var(--border-soft);
-      border-radius: 8px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
       padding: 12px 14px;
     }
 
     .timeline-time {
-      font-size: 11.5px;
-      color: var(--text-main);
+      font-size: 11px;
+      color: var(--ink-muted);
       font-weight: 600;
+      font-family: var(--font-mono);
       margin-bottom: 4px;
     }
 
     .timeline-title {
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 600;
-      color: var(--text-main);
+      color: var(--ink);
     }
 
     .timeline-desc {
       font-size: 12px;
-      color: var(--text-muted);
+      color: var(--ink-muted);
       margin-top: 4px;
     }
   </style>
@@ -674,21 +786,25 @@
     <!-- Header -->
     <header>
       <div class="brand">
-        <div class="logo-badge">⚡</div>
+        <div class="logo-mark">AD</div>
         <div class="title-group">
-          <h1>Actionable Digest & Verification</h1>
-          <p>Máy chủ Discord: <strong>AI Thực Chiến - K4</strong> · Cụm lớp 3A</p>
+          <h1>Actionable Digest</h1>
+          <p>AI Thực Chiến K4 &middot; Cụm lớp 3A</p>
         </div>
       </div>
       <div class="header-actions">
-        <button class="btn-header primary" id="btn-scan" onclick="runScan()">🔄 Quét bằng AI</button>
-        <span id="scan-status" style="font-size:11.5px;color:var(--text-muted);"></span>
-        <button class="btn-header" onclick="toggleChannelPanel()">
-          <span>⚙️ Kênh đang quét:</span>
-          <strong id="active-channel-count" style="color: var(--text-main);">0 kênh</strong>
+        <button class="btn-header primary" id="btn-scan" onclick="runScan()">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+          <span>Quét bằng AI</span>
         </button>
-        <button class="btn-header primary" onclick="openCalendarModal()">
-          <span>📅 Xem Lịch cụ thể</span>
+        <span id="scan-status" class="scan-status"></span>
+        <button class="btn-header" onclick="toggleChannelPanel()">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+          <span>Kênh: <strong id="active-channel-count">0</strong></span>
+        </button>
+        <button class="btn-header" onclick="openCalendarModal()">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          <span>Dòng thời gian</span>
         </button>
       </div>
     </header>
@@ -696,50 +812,55 @@
     <!-- STEP 1: Select Discord Channels Panel -->
     <section class="channel-select-panel" id="channel-panel">
       <div class="panel-header">
-        <h2><span>🎛️ Bước 1: Chọn các kênh Discord cần duyệt thông báo</span></h2>
-        <span style="font-size: 11.5px; color: var(--text-muted);">Hệ thống chỉ quét các kênh bạn tích chọn</span>
+        <div>
+          <div class="eyebrow">Bước 1</div>
+          <h2>Chọn kênh Discord cần duyệt thông báo</h2>
+        </div>
+        <span class="hint">Chỉ quét các kênh đã tích chọn</span>
       </div>
       <div class="channel-grid" id="channel-grid">
         <!-- Sinh động từ /api/demo-messages -->
       </div>
       <div class="panel-footer">
-        <span style="font-size: 12px; color: var(--text-muted);" id="scan-summary">Đang tải tin nhắn mẫu…</span>
-        <button class="btn btn-confirm" style="font-size: 11.5px; padding: 5px 12px;" onclick="toggleChannelPanel()">✓
-          Thu gọn bộ lọc</button>
+        <span class="hint" id="scan-summary">Đang tải tin nhắn mẫu…</span>
+        <button class="btn btn-edit" onclick="toggleChannelPanel()">Thu gọn bộ lọc</button>
       </div>
     </section>
 
-    <!-- HAX Scope Clarification Banner [G1, G2] -->
-    <div class="banner-hax">
+    <!-- Scope note (HAX G1, G2) -->
+    <div class="scope-note">
       <div>
-        <strong>[HAX G1 & G2]:</strong> AI lọc các thông tin cần hành động (Task/Deadline/Đổi phòng) chỉ từ <strong>các
-          kênh bạn đã tích chọn</strong>. AI chỉ đề xuất — bạn luôn là người duyệt cuối cùng.
+        <span class="tag">HAX G1&middot;G2</span>AI chỉ đề xuất từ các kênh đã chọn — người dùng luôn là bên duyệt cuối cùng trước khi thêm vào lịch.
       </div>
-      <span style="font-size: 11px; color: var(--text-main); text-decoration: underline; cursor: pointer;" onclick="openCalendarModal()">Xem dòng thời
-        gian</span>
+      <button class="link-quiet" onclick="openCalendarModal()">Xem dòng thời gian</button>
     </div>
 
     <!-- Kết quả gọi API gần nhất — log đầy đủ (prompt + phản hồi thô) nằm ở server: codebase/logs/llm_calls.jsonl -->
-    <details id="tech-log-panel" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px 14px; margin-bottom: 20px;">
-      <summary style="cursor: pointer; font-size: 12.5px; color: var(--text-muted);">🪵 Kết quả gọi API gần nhất — bấm để xem (log đầy đủ ở codebase/logs/llm_calls.jsonl)</summary>
-      <pre id="tech-log-content" style="white-space: pre-wrap; word-break: break-word; font-size: 11px; color: #3f3f46; max-height: 260px; overflow-y: auto; margin-top: 10px;">Chưa có lệnh gọi nào. Bấm "🔄 Quét bằng AI" để xem kết quả ở đây.</pre>
+    <details class="log-panel" id="tech-log-panel">
+      <summary>
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        <span>Kết quả gọi API gần nhất</span>
+        <span class="caption">— log đầy đủ tại codebase/logs/llm_calls.jsonl</span>
+      </summary>
+      <pre class="log-content" id="tech-log-content">Chưa có lệnh gọi nào. Bấm "Quét bằng AI" để xem kết quả ở đây.</pre>
     </details>
 
     <!-- Error banner khi gọi API thất bại -->
-    <div class="error-banner" id="error-banner"></div>
+    <div class="error-banner" id="error-banner">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="margin-top:1px;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+      <span id="error-banner-text"></span>
+    </div>
 
     <!-- STEP 2: Main Digest Section -->
     <div class="section-header">
       <div class="section-title">
-        <span>📌 Bản tin Việc Cần Làm</span>
-        <span style="font-size: 12px; background: var(--surface-muted); border: 1px solid var(--border-soft); padding: 2px 8px; border-radius: 12px; color: var(--text-muted);"
-          id="active-date">16/09 - 18/09/2026</span>
+        <span>Bản tin việc cần làm</span>
+        <span class="date-range" id="active-date">16/09 – 18/09/2026</span>
       </div>
       <div class="filter-tabs">
         <button class="tab-btn active" onclick="filterType('ALL', this)">Tất cả (<span id="count-all">0</span>)</button>
         <button class="tab-btn" onclick="filterType('DEADLINE', this)">Deadline (<span id="count-dl">0</span>)</button>
-        <button class="tab-btn" onclick="filterType('SCHEDULE', this)">Lịch / Phòng (<span
-            id="count-sched">0</span>)</button>
+        <button class="tab-btn" onclick="filterType('SCHEDULE', this)">Lịch / Phòng (<span id="count-sched">0</span>)</button>
         <button class="tab-btn" onclick="filterType('TASK', this)">Task (<span id="count-task">0</span>)</button>
       </div>
     </div>
@@ -748,13 +869,19 @@
     <div class="cards-container" id="cards-wrapper">
       <div id="ai-cards"></div>
 
-      <div class="loading-state" id="loading-state">⏳ Đang gọi AI thật, vui lòng đợi…</div>
+      <div class="loading-state" id="loading-state">
+        <div class="state-icon">
+          <svg class="icon-lg spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="6"></line><line x1="12" y1="18" x2="12" y2="22"></line><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line><line x1="2" y1="12" x2="6" y2="12"></line><line x1="18" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line></svg>
+        </div>
+        <p>Đang gọi AI thật, vui lòng đợi…</p>
+      </div>
 
       <div class="empty-state" id="empty-state">
-        <div style="font-size: 28px; margin-bottom: 8px;">📭</div>
-        <p>Bấm "🔄 Quét bằng AI" để phân tích các tin nhắn trong kênh đã chọn.</p>
-        <button class="btn btn-edit" style="margin: 12px auto 0;" onclick="toggleChannelPanel()">Mở lại cài đặt
-          kênh</button>
+        <div class="state-icon">
+          <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+        </div>
+        <p>Bấm "Quét bằng AI" để phân tích các tin nhắn trong kênh đã chọn.</p>
+        <button class="btn btn-edit" style="margin: 14px auto 0;" onclick="toggleChannelPanel()">Mở lại cài đặt kênh</button>
       </div>
     </div>
   </div>
@@ -763,27 +890,27 @@
   <div class="modal-overlay" id="calendar-modal" onclick="handleModalBgClick(event)">
     <div class="modal-container">
       <div class="modal-header">
-        <div class="modal-title">📅 Dòng thời gian Hackathon & Việc đã xác nhận</div>
-        <button class="btn-close-modal" onclick="closeCalendarModal()">✕</button>
+        <div class="modal-title">Dòng thời gian Hackathon &amp; việc đã xác nhận</div>
+        <button class="btn-close-modal" onclick="closeCalendarModal()">
+          <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
       </div>
       <div class="modal-body">
-        <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 18px;">
-          Các mốc bạn đã bấm "✓ Xác nhận vào Lịch" sẽ xuất hiện ở đầu danh sách này.
-        </p>
+        <p class="hint">Các mốc bạn xác nhận sẽ xuất hiện ở đầu danh sách này.</p>
         <div class="timeline" id="timeline-list">
           <div class="timeline-item">
             <div class="timeline-dot"></div>
             <div class="timeline-content">
-              <div class="timeline-time">17/09 · 16:00</div>
-              <div class="timeline-title">🚀 CP3: Nộp AI thật + đo lượt đầu</div>
+              <div class="timeline-time">17/09 &middot; 16:00</div>
+              <div class="timeline-title">CP3 — Nộp AI thật + đo lượt đầu</div>
               <div class="timeline-desc">Golden set ≥20 case, run_results.md, video demo.</div>
             </div>
           </div>
           <div class="timeline-item">
             <div class="timeline-dot"></div>
             <div class="timeline-content">
-              <div class="timeline-time">18/09 · 17:30</div>
-              <div class="timeline-title">🏆 CP6: Thuyết trình Pitching & Vòng Chung kết</div>
+              <div class="timeline-time">18/09 &middot; 17:30</div>
+              <div class="timeline-title">CP6 — Thuyết trình Pitching &amp; Vòng Chung kết</div>
               <div class="timeline-desc">Vòng cụm và chung kết phòng tại E403 / E402.</div>
             </div>
           </div>
