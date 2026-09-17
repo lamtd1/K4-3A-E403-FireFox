@@ -53,7 +53,7 @@ def parse_response(raw_response_text):
     return cards
 
 
-def call_gemini(prompt_text, api_key, model="gemini-2.0-flash"):
+def call_gemini(prompt_text, api_key, model="gemini-3.5-flash"):
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
     body = json.dumps({"contents": [{"parts": [{"text": prompt_text}]}]}).encode("utf-8")
     req = urllib.request.Request(url, data=body, headers={"Content-Type": "application/json"}, method="POST")
