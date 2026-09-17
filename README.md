@@ -11,7 +11,7 @@
 | Nguyễn Duy Phong | 2A202602834 | Đội trưởng | Điều phối chung, chuẩn hóa hợp đồng dữ liệu, viết runner eval `eval/run_eval.py`, chạy & báo cáo kết quả lượt 1 `eval/run_results.md`, quay video demo, nộp bài |
 | Nguyễn Xuân Khuê | 2A202602999 | Module AI lõi | Thiết kế và phát triển `codebase/core/`: hàm `extract()`, thiết kế prompt, kết nối LLM (Gemini/OpenAI), parse & validation JSON, hậu kiểm trích dẫn gốc (anti-hallucination quote check), logging `llm_calls.jsonl` |
 | Nguyễn Minh Lương | 2A202602618 | Golden Set & Data | Khai thác dữ liệu `k4_messages.csv`, xây dựng bộ dữ liệu kiểm thử chuẩn `eval/golden_set.json` (≥20 case đủ 4 nhóm thử thách + edge cases), hỗ trợ phân tích lỗi |
-| Tạ Duy Lâm | 2A202602699 | Web & Integration | Phát triển server API `codebase/app.py`, tích hợp hàm `extract()` vào UI prototype `prototype_actionable_digest.html`, sửa lỗi tương tác timeline và bộ đếm tab |
+| Tạ Duy Lâm | 2A202602699 | Web & Integration | Phát triển server API `codebase/app.py`, tích hợp hàm `extract()` vào UI prototype `prototype/prototype_actionable_digest.html`, sửa lỗi tương tác timeline và bộ đếm tab |
 
 > Nhóm copy nguyên file README này về repo của mình, rồi điền bảng trên. Cột **Phần việc đảm nhiệm** ghi càng cụ thể càng tốt.
 

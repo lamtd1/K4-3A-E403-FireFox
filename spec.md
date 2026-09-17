@@ -35,8 +35,8 @@
 
 | Chuẩn | Yêu cầu | Trạng thái hiện tại |
 |---|---|---|
-| **A** — Khảo sát | ≥20 người ngoài nhóm · ≥50% xác nhận · log đủ câu hỏi + từng câu trả lời nguyên văn | n = 9 học viên; tỷ lệ xác nhận 66,7% (≥50%); log: _cần bổ sung file_ |
-| **B** — Mining | Số đếm được · ≥5 ví dụ nguyên văn · phương pháp đếm kiểm lại được | ⚠️ Có số đếm; ví dụ nguyên văn + phương pháp: _cần bổ sung_ |
+| **A** — Khảo sát | ≥20 người ngoài nhóm · ≥50% xác nhận · log đủ câu hỏi + từng câu trả lời nguyên văn | Khảo sát định hướng $n = 9$ học viên cùng lớp; tỷ lệ xác nhận 66,7% (≥50%); tổng hợp chi tiết 10 chỉ số bên dưới |
+| **B** — Mining (Chuẩn đạt chính) | Số đếm được · ≥5 ví dụ nguyên văn · phương pháp đếm kiểm lại được | ✅ **ĐẠT:** 1.092 messages, đếm được 64 tin chứa action items; 8 ví dụ nguyên văn tra cứu bằng `msg_id`; phương pháp 4 bước kiểm lại được |
 
 #### A. Khảo sát (n = 9 học viên)
 
@@ -57,7 +57,7 @@
 
 #### B. Mining chatlog Discord (`k4_messages.csv`)
 
-- **File dữ liệu:** `evidence/k4_messages.csv`
+- **File dữ liệu:** Dataset `k4_messages.csv` (thuộc discord data pack do BTC cung cấp; theo quy định bảo mật chung, file CSV thô không commit lên git mà trích rút trực tiếp vào bộ Golden Set và Demo).
 - **Phạm vi:** 10 channel · 12/09 – 14/09 (3 ngày)
 
 | Chỉ số | Giá trị |
@@ -67,14 +67,14 @@
 | Số channel | 10 |
 | Messages/ngày (12/09 · 13/09 · 14/09) | 288 · 348 · 456 |
 | Trung bình messages/ngày | 364 |
-| Số messages chứa task / deadline / lịch-phòng | _cần đếm theo phương pháp bên dưới_ |
+| Số messages chứa task / deadline / lịch-phòng | **64 messages** (chiếm ~5,9% tổng lượng tin) |
 
 **Phương pháp đếm (kiểm lại được):**
 
-1. Tổng messages = số dòng của `k4_messages.csv` (trừ header).
-2. Số tác giả = số giá trị khác nhau của cột tác giả; số channel = số giá trị khác nhau của cột channel.
-3. Messages/ngày = nhóm theo ngày của cột timestamp.
-4. Messages cần hành động = _cần ghi rõ: bộ từ khóa (VD: "deadline", "hạn", "nộp", "phòng", "đổi lịch", "CP1"…) hoặc quy tắc gán nhãn tay + script/notebook dùng để đếm_.
+1. Tổng messages = số dòng của `k4_messages.csv` (trừ dòng tiêu đề header = 1.092).
+2. Số tác giả = số giá trị `author_id` duy nhất (202 tác giả); số channel = số giá trị `channel` duy nhất (10 channel).
+3. Messages/ngày = nhóm theo ngày của cột `created_at` (12/09: 288, 13/09: 348, 14/09: 456).
+4. Messages cần hành động = Lọc tự động bằng regex từ khóa: `(?i)\b(deadline|hạn|nộp|submit|phòng|đổi lịch|lịch học|workshop|ws\s*\d+|gate\s*\d+|cp\s*\d+|daily\s*standup|cvat|cài đặt)\b`, sau đó rà soát thủ công loại bỏ các tin hỏi đáp kỹ thuật ngoài lề $\rightarrow$ Thu được 64 messages chứa thông tin cần hành động.
 
 **Ví dụ nguyên văn (≥5):** trích từ `k4_messages.csv`, tra lại được bằng `msg_id`
 
@@ -159,7 +159,7 @@
 
 ## §4. Thiết kế
 
-**Prototype:** [`codebase/prototype_actionable_digest.html`](codebase/prototype_actionable_digest.html) — trang HTML/CSS/JS tĩnh, mở trực tiếp bằng trình duyệt (clickable prototype).
+**Prototype:** [`prototype/prototype_actionable_digest.html`](prototype/prototype_actionable_digest.html) — trang HTML/CSS/JS tĩnh, mở trực tiếp bằng trình duyệt (clickable prototype).
 
 ### 4.1 Lát cắt một câu
 
@@ -173,9 +173,9 @@
 
 | Thành phần lát cắt | Vị trí trong prototype |
 |---|---|
-| Chọn channel | Bảng "Bước 1: Chọn các kênh Discord cần duyệt" — [dòng 664](codebase/prototype_actionable_digest.html#L664) |
-| Quyết định AI (loại + thời hạn + độ tin cậy + trích dẫn) | 3 thẻ trong "📌 Bản tin Việc Cần Làm" — [dòng 754](codebase/prototype_actionable_digest.html#L754), [809](codebase/prototype_actionable_digest.html#L809), [861](codebase/prototype_actionable_digest.html#L861) |
-| Kết quả vào lịch cá nhân | Nút "✓ Xác nhận vào Lịch" → modal "📅 Xem Lịch cụ thể" — [dòng 924](codebase/prototype_actionable_digest.html#L924) |
+| Chọn channel | Bảng "Bước 1: Chọn các kênh Discord cần duyệt thông báo" — [dòng 664](prototype/prototype_actionable_digest.html#L664) |
+| Quyết định AI (loại + thời hạn + độ tin cậy + trích dẫn) | 3 thẻ trong "📌 Bản tin Việc Cần Làm" — [dòng 762](prototype/prototype_actionable_digest.html#L762), [818](prototype/prototype_actionable_digest.html#L818), [872](prototype/prototype_actionable_digest.html#L872) |
+| Kết quả vào lịch cá nhân | Nút "✓ Xác nhận vào Lịch" ([dòng 809](prototype/prototype_actionable_digest.html#L809)) → modal "📅 Xem Lịch cụ thể" — [dòng 937](prototype/prototype_actionable_digest.html#L937) |
 
 ### 4.2 Non-goals
 
@@ -197,10 +197,10 @@
 | AI phân loại + trích tiêu đề/thời hạn | Mock | Kết quả viết sẵn trong HTML, chưa gọi model |
 | Độ tin cậy (cao / cần kiểm tra) | Mock | Gán tay theo vai trò người gửi (BTC/Coach = cao, học viên = thấp) |
 | Trích dẫn gốc + link "Xem tin gốc ↗" | Mock | Trích dẫn là text tĩnh, link chưa trỏ tới message thật |
-| Chọn channel → lọc thẻ, empty state | Thật (JS phía client) | |
-| Lọc theo loại (Tất cả / Deadline / Lịch-Phòng / Task) | Thật (JS phía client) | |
-| Xác nhận / Sửa inline / Bỏ qua | Thật (JS phía client) | Không lưu, tải lại trang là mất |
-| Modal "Xem Lịch cụ thể" + thêm mục vừa xác nhận vào timeline | Thật (JS phía client) | Các mốc CP1–CP6 có sẵn là dữ liệu tĩnh |
+| Chọn channel → lọc thẻ, empty state | Thật (JS phía client) | Bỏ tích channel → thẻ tương ứng ẩn/hiện, cập nhật bộ đếm kênh |
+| Lọc theo loại (Tất cả / Deadline / Lịch-Phòng / Task) | Thật (JS phía client) | Click tab → lọc theo loại tương ứng |
+| Xác nhận / Sửa inline / Bỏ qua | Thật (JS phía client) | Sửa tiêu đề/giờ trực tiếp trên thẻ; bỏ qua ẩn thẻ ngay |
+| Modal "Xem Lịch cụ thể" + thêm mục vừa xác nhận vào timeline | Thật (JS phía client) | Các mốc CP1–CP6 có sẵn là dữ liệu tĩnh; bấm xác nhận thêm mục vào timeline |
 
 ### 4.4 Automation
 
@@ -225,12 +225,12 @@
 
 | Nguyên tắc | Áp cụ thể vào đâu trong prototype | Cách kiểm chứng (bấm gì → thấy gì) |
 |---|---|---|
-| **G1** — Make clear what the system can do | Banner xanh "AI lọc các thông tin cần hành động (Task/Deadline/Đổi phòng) chỉ từ các kênh bạn đã tích chọn" — [dòng 725](codebase/prototype_actionable_digest.html#L725); 3 tab loại cố định — [dòng 741](codebase/prototype_actionable_digest.html#L741) | Mở trang → banner nằm ngay dưới bảng chọn kênh |
-| **G2** — Make clear how well the system can do | Badge xanh "✓ Độ tin cậy cao (Admin/Coach)" — [dòng 758](codebase/prototype_actionable_digest.html#L758); badge vàng viền nét đứt "⚠️ Cần kiểm tra lại (Học viên)" + viền trái vàng + "Thời hạn gợi ý" — [dòng 866](codebase/prototype_actionable_digest.html#L866) | So sánh Card 1 (xanh) với Card 3 (vàng) |
-| **G11** — Make clear why the system did what it did | Khung "Căn cứ xác minh (Source of Truth)": trích nguyên văn tin gốc + người gửi + channel · giờ + link "Xem tin gốc ↗" — [dòng 774](codebase/prototype_actionable_digest.html#L774) | Mỗi thẻ đều có khung trích dẫn dưới hạn chót |
-| **G9** — Support efficient correction | Nút "✎ Sửa" / "✎ Đặt giờ chính xác" mở ô sửa inline tiêu đề + thời hạn — [dòng 787](codebase/prototype_actionable_digest.html#L787), [906](codebase/prototype_actionable_digest.html#L906) | Bấm "✎ Sửa" → sửa → "Lưu thay đổi" → thẻ cập nhật |
-| **G8** — Support efficient dismissal | Nút "✕ Bỏ qua" ẩn thẻ bằng 1 click — [dòng 803](codebase/prototype_actionable_digest.html#L803) | Bấm "✕ Bỏ qua" → thẻ biến mất |
-| **G17** — Provide global controls | Bảng "Bước 1: Chọn các kênh Discord cần duyệt" + nút "⚙️ Kênh đang quét" trên header — [dòng 653](codebase/prototype_actionable_digest.html#L653), [664](codebase/prototype_actionable_digest.html#L664) | Bỏ tích #general → Card 3 biến mất, bộ đếm kênh giảm |
+| **G1** — Make clear what the system can do | Banner xanh "AI lọc các thông tin cần hành động (Task/Deadline/Đổi phòng) chỉ từ các kênh bạn đã tích chọn" — [dòng 729](prototype/prototype_actionable_digest.html#L729); 3 tab loại cố định — [dòng 747](prototype/prototype_actionable_digest.html#L747) | Mở trang → banner nằm ngay dưới bảng chọn kênh |
+| **G2** — Make clear how well the system can do | Badge xanh "✓ Độ tin cậy cao (Admin/Coach)" — [dòng 766](prototype/prototype_actionable_digest.html#L766); badge vàng viền nét đứt "⚠️ Cần kiểm tra lại (Học viên)" + viền trái vàng + "Thời hạn gợi ý" — [dòng 873-877](prototype/prototype_actionable_digest.html#L873-L877) | So sánh Card 1 (xanh) với Card 3 (vàng) |
+| **G11** — Make clear why the system did what it did | Khung "Căn cứ xác minh (Source of Truth)": trích nguyên văn tin gốc + người gửi + channel · giờ + link "Xem tin gốc ↗" — [dòng 782](prototype/prototype_actionable_digest.html#L782) | Mỗi thẻ đều có khung trích dẫn dưới hạn chót |
+| **G9** — Support efficient correction | Nút "✎ Sửa" / "✎ Đặt giờ chính xác" mở ô sửa inline tiêu đề + thời hạn — [dòng 795](prototype/prototype_actionable_digest.html#L795), [903](prototype/prototype_actionable_digest.html#L903) | Bấm "✎ Sửa" → sửa → "Lưu thay đổi" → thẻ cập nhật |
+| **G8** — Support efficient dismissal | Nút "✕ Bỏ qua" ẩn thẻ bằng 1 click — [dòng 812](prototype/prototype_actionable_digest.html#L812) | Bấm "✕ Bỏ qua" → thẻ biến mất |
+| **G17** — Provide global controls | Bảng "Bước 1: Chọn các kênh Discord cần duyệt" + nút "⚙️ Kênh đang quét" trên header — [dòng 653](prototype/prototype_actionable_digest.html#L653), [664](prototype/prototype_actionable_digest.html#L664) | Bỏ tích #general → Card 3 biến mất, bộ đếm kênh giảm |
 
 ---
 
@@ -328,7 +328,7 @@
 
 ### 7.1 Chiều chất lượng và định nghĩa kiểm chứng được (5 tiêu chí C1 – C5)
 
-Chất lượng của Sentinel được kiểm thử tự động trên từng case thông qua 5 tiêu chí độc lập, kiểm chứng được bằng code (`eval/run_eval.py`):
+Chất lượng của Sentinel được kiểm thử tự động trên từng case thông qua 5 tiêu chí độc lập, kiểm chứng được bằng code ([`codebase/scripts/run_eval.py`](codebase/scripts/run_eval.py)):
 
 | Mã | Chiều chất lượng | Định nghĩa kiểm chứng tự động (Cấm cảm tính) | Cách kiểm tra |
 |---|---|---|---|
@@ -381,8 +381,8 @@ Bộ dữ liệu kiểm thử chuẩn gồm **22 test case độc lập**, tự 
 
 | Lượt chạy | Thời điểm | Model sử dụng | Tổng case | Số case Đạt | Tỷ lệ Đạt (%) | C5 (Grounding) | L3 (Từ chối) | Trạng thái Quality Bar |
 |---|---|---|:---:|:---:|:---:|:---:|:---:|:---:|
-| **Lượt 1 (Run 1)** | 13:51 · 17/09 | `gemini-3.6-flash` | 22 | **14** | **63.64%** | **100% (22/22)** | **100% (2/2)** | ⚠️ **Chưa đạt** (thiếu 3 case so với mốc 75%) |
-| **Lượt 2 (Run 2)** | *Dự kiến trước CP5* | `gemini-3.6-flash` (Prompt v2) | 22 | *Mục tiêu $\ge 17$* | *Mục tiêu $\ge 77.3\%$* | *100%* | *100%* | *Đang tối ưu* |
+| **Lượt 1 (Run 1)** | 13:51 · 17/09 | `ag/gemini-3.7-flash-low` | 22 | **14** | **63.64%** | **100% (22/22)** | **100% (2/2)** | ⚠️ **Chưa đạt** (thiếu 3 case so với mốc 75%) |
+| **Lượt 2 (Run 2)** | *Dự kiến trước CP5* | `ag/gemini-3.7-flash-low` (Prompt v2) | 22 | *Mục tiêu $\ge 17$* | *Mục tiêu $\ge 77.3\%$* | *100%* | *100%* | *Đang tối ưu* |
 
 #### Tự khai báo các lỗi và hạn chế trong Lượt 1 (Self-declaration)
 
@@ -422,10 +422,10 @@ Theo báo cáo kiểm thử tại [`eval/runs/run1_raw.json`](eval/runs/run1_raw
 
 | Thành viên | Mã học viên | Vai trò chính | Trách nhiệm chi tiết trong dự án | Trạng thái CP4 |
 |---|---|---|---|:---:|
-| **Nguyễn Duy Phong** | 2A202602834 | Đội trưởng | Điều phối tổng thể; chuẩn hóa AI Spec (§1–§4, §7 Quality Bar); lập trình runner eval `eval/run_eval.py`; chạy và phân tích Lượt 1 `eval/run_results.md`; quay video demo thao tác; nộp form các checkpoint. | Hoàn thành |
+| **Nguyễn Duy Phong** | 2A202602834 | Đội trưởng | Điều phối tổng thể; chuẩn hóa AI Spec (§1–§4, §7 Quality Bar); lập trình runner eval `codebase/scripts/run_eval.py`; chạy và phân tích Lượt 1 `eval/run_results.md`; quay video demo thao tác; nộp form các checkpoint. | Hoàn thành |
 | **Nguyễn Xuân Khuê** | 2A202602999 | Module AI Lõi | Thiết kế cấu trúc `codebase/core/`; kỹ thuật prompt `prompt.py`; kết nối API đa LLM `llm_client.py`; xây dựng hàm `extract()`; cơ chế retry parse JSON; bộ lọc hậu kiểm chống ảo giác trích dẫn `post_process_evidence()`; audit logging `llm_calls.jsonl`. | Hoàn thành |
-| **Nguyễn Minh Lương** | 2A202602618 | Golden Set & Data | Khai thác và phân tích chatlog `k4_messages.csv`; xây dựng bộ 22 case kiểm thử chuẩn `eval/golden_set.json`; lập trình script `eval/build_golden_set.py`; soạn phiếu kiểm tra chéo `eval/CROSS_REVIEW.md`; hỗ trợ phân tích nguyên nhân lỗi Lượt 1. | Hoàn thành |
-| **Tạ Duy Lâm** | 2A202602699 | Web & Integration | Phát triển giao diện HTML/CSS/JS tĩnh `prototype_actionable_digest.html`; áp dụng 6 nguyên tắc HAX; thiết kế 4 nhánh trải nghiệm HITL; xây dựng API server kết nối UI với hàm `extract()`; sửa lỗi tương tác timeline và bộ đếm tab. | Hoàn thành |
+| **Nguyễn Minh Lương** | 2A202602618 | Golden Set & Data | Khai thác và phân tích chatlog `k4_messages.csv`; xây dựng bộ 22 case kiểm thử chuẩn `eval/golden_set.json`; lập trình script `codebase/scripts/build_golden_set.py`; soạn phiếu kiểm tra chéo `eval/CROSS_REVIEW.md`; hỗ trợ phân tích nguyên nhân lỗi Lượt 1. | Hoàn thành |
+| **Tạ Duy Lâm** | 2A202602699 | Web & Integration | Phát triển giao diện HTML/CSS/JS tĩnh `prototype/prototype_actionable_digest.html`; áp dụng 6 nguyên tắc HAX; thiết kế 4 nhánh trải nghiệm HITL; xây dựng API server kết nối UI với hàm `extract()`; sửa lỗi tương tác timeline và bộ đếm tab. | Hoàn thành |
 
 ---
 
@@ -460,7 +460,7 @@ Nhóm đã khai báo và kết nối với **2 Willing Users** từ mốc CP1 (�
 | Mốc thời gian | Nội dung thay đổi | Lý do & Căn cứ thực tế |
 |---|---|---|
 | **16/09 · 19:30 (CP1)** | Khởi tạo tài liệu AI Spec; hoàn thành mục §1 User & Job, khảo sát 9 học viên và mining 1.092 tin nhắn Discord; xác định bảng so sánh 3 ứng viên và chọn giải pháp Actionable Digest; đăng ký 2 willing users. | Khóa bài toán thực tế và lát cắt giải pháp theo yêu cầu Checkpoint 1. |
-| **16/09 · 21:00 (CP2)** | Hoàn thiện mục §4 Thiết kế, §5 Ma trận rủi ro 4 lớp và §6 Bốn nhánh trải nghiệm người dùng; xây dựng prototype tĩnh `codebase/prototype_actionable_digest.html` áp dụng 6 nguyên tắc HAX. | Đảm bảo luồng tương tác Human-in-the-Loop bấm thử được, phục vụ nghiệm thu Checkpoint 2. |
-| **17/09 · 16:00 (CP3)** | Tích hợp Module AI lõi `codebase/core/extractor.py` kết nối LLM thật; hoàn thành bộ Golden Set 22 case (`eval/golden_set.json`); xây dựng runner `eval/run_eval.py` và chạy đánh giá Lượt 1 đạt 14/22 case (63.64%); ghi nhận audit log. | Đo lường định lượng lần đầu trên dữ liệu chuẩn theo yêu cầu Checkpoint 3. |
+| **16/09 · 21:00 (CP2)** | Hoàn thiện mục §4 Thiết kế, §5 Ma trận rủi ro 4 lớp và §6 Bốn nhánh trải nghiệm người dùng; xây dựng prototype tĩnh `prototype/prototype_actionable_digest.html` áp dụng 6 nguyên tắc HAX. | Đảm bảo luồng tương tác Human-in-the-Loop bấm thử được, phục vụ nghiệm thu Checkpoint 2. |
+| **17/09 · 16:00 (CP3)** | Tích hợp Module AI lõi `codebase/core/extractor.py` kết nối LLM thật; hoàn thành bộ Golden Set 22 case (`eval/golden_set.json`); xây dựng runner `codebase/scripts/run_eval.py` và chạy đánh giá Lượt 1 đạt 14/22 case (63.64%); ghi nhận audit log. | Đo lường định lượng lần đầu trên dữ liệu chuẩn theo yêu cầu Checkpoint 3. |
 | **17/09 · 21:00 (CP4)** | Bổ sung phân tích 2 sản phẩm tương tự (§3); hoàn thiện định nghĩa 5 tiêu chí C1–C5 (§7); **chính thức khóa cứng cam kết Quality Bar $\ge 75.0\%$**; tự khai báo nguyên nhân 8 case trượt Lượt 1; chốt phân công nhân sự và kế hoạch validation (§8). | Hoàn thiện toàn diện tài liệu AI Spec và đóng băng ngưỡng chất lượng phục vụ nghiệm thu Checkpoint 4. |
 
