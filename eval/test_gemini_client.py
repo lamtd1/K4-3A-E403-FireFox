@@ -31,7 +31,7 @@ class TestBuildPrompt(unittest.TestCase):
 
 class TestParseResponse(unittest.TestCase):
     def _wrap(self, cards):
-        return json.dumps({"candidates": [{"content": {"parts": [{"text": json.dumps(cards)}]}}]})
+        return json.dumps({"choices": [{"message": {"content": json.dumps(cards)}}]})
 
     def test_extracts_valid_cards(self):
         raw = self._wrap([{
@@ -64,8 +64,13 @@ class TestParseResponse(unittest.TestCase):
             parse_response("not json")
 
     def test_raises_on_non_array_text(self):
-        raw = json.dumps({"candidates": [{"content": {"parts": [{"text": json.dumps({"type": "TASK"})}]}}]})
+        raw = json.dumps({"choices": [{"message": {"content": json.dumps({"type": "TASK"})}}]})
         with self.assertRaisesRegex(ValueError, "mảng card"):
+            parse_response(raw)
+
+    def test_raises_on_empty_content(self):
+        raw = json.dumps({"choices": [{"message": {"content": ""}}]})
+        with self.assertRaisesRegex(ValueError, "rỗng"):
             parse_response(raw)
 
 

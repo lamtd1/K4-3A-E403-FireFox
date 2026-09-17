@@ -3,7 +3,10 @@ import os
 import re
 import sys
 import time
-from gemini_client import build_prompt, call_gemini, parse_response, filter_messages_by_channel
+from gemini_client import build_prompt, call_llm, parse_response, filter_messages_by_channel
+
+DEFAULT_BASE_URL = "http://localhost:20128/v1"
+DEFAULT_MODEL = "oc/deepseek-v4-flash-free"
 
 RETRY_DELAYS_S = [3, 5, 8]  # dùng làm lịch mặc định nếu response 429 không kèm retryDelay
 MAX_RETRY_DELAY_S = 8  # trần thời gian chờ — bỏ qua retryDelay dài mà API gợi ý để chạy nhanh hơn
@@ -62,7 +65,7 @@ def _retry_delay_seconds(error_message, fallback):
     return min(delay, MAX_RETRY_DELAY_S)
 
 
-def run_one_case(case, api_key):
+def run_one_case(case, api_key, base_url, model):
     messages = filter_messages_by_channel(case["messages"], case["selected_channels"])
     if case.get("filter_only") or not messages:
         return []
@@ -74,7 +77,7 @@ def run_one_case(case, api_key):
         if attempt > 0:
             time.sleep(_retry_delay_seconds(last_error, RETRY_DELAYS_S[attempt - 1]))
         try:
-            raw = call_gemini(prompt, api_key)
+            raw = call_llm(prompt, api_key, base_url, model)
             return parse_response(raw)
         except (ValueError, RuntimeError, OSError) as e:
             last_error = str(e)
@@ -115,22 +118,29 @@ def write_results_md(golden_set, graded, out_path):
 
 
 def main():
-    api_key = os.environ.get("GEMINI_API_KEY")
+    api_key = os.environ.get("LLM_API_KEY") or os.environ.get("GEMINI_API_KEY")
     if not api_key:
-        print("Thiếu biến môi trường GEMINI_API_KEY", file=sys.stderr)
+        print("Thiếu biến môi trường LLM_API_KEY (hoặc GEMINI_API_KEY để tương thích ngược)", file=sys.stderr)
         sys.exit(1)
+    base_url = os.environ.get("LLM_BASE_URL", DEFAULT_BASE_URL)
+    model = os.environ.get("LLM_MODEL", DEFAULT_MODEL)
+    print(f"Dùng model={model} qua base_url={base_url}", flush=True)
 
     golden_set_path = os.path.join(os.path.dirname(__file__), "golden_set.json")
     with open(golden_set_path, encoding="utf-8") as f:
         golden_set = json.load(f)
 
     graded = []
-    for case in golden_set:
-        actual = run_one_case(case, api_key)
+    for i, case in enumerate(golden_set, 1):
+        print(f"[{i}/{len(golden_set)}] {case['id']} ({case['bucket']})... ", end="", flush=True)
+        actual = run_one_case(case, api_key, base_url, model)
         if isinstance(actual, dict) and "__error__" in actual:
+            print(f"LỖI: {actual['__error__'][:120]}", flush=True)
             graded.append({"id": case["id"], "passed": False, "reasons": [f"Lỗi gọi API: {actual['__error__']}"]})
             continue
-        graded.append(grade_case(case, actual))
+        result = grade_case(case, actual)
+        print("PASS" if result["passed"] else f"FAIL: {'; '.join(result['reasons'])[:120]}", flush=True)
+        graded.append(result)
 
     out_path = os.path.join(os.path.dirname(__file__), "run_results.md")
     write_results_md(golden_set, graded, out_path)

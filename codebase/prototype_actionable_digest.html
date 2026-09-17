@@ -650,8 +650,12 @@
         </div>
       </div>
       <div class="header-actions">
-        <input type="password" id="gemini-key-input" placeholder="Dán Gemini API Key…"
-          style="background:#0f172a;border:1px solid var(--card-border);color:#e2e8f0;padding:7px 10px;border-radius:8px;font-size:12.5px;width:200px;">
+        <input type="text" id="llm-base-url-input" placeholder="Base URL (OpenAI-compatible)…" value="http://localhost:20128/v1"
+          style="background:#0f172a;border:1px solid var(--card-border);color:#e2e8f0;padding:7px 10px;border-radius:8px;font-size:12.5px;width:180px;">
+        <input type="text" id="llm-model-input" placeholder="Model…" value="oc/deepseek-v4-flash-free"
+          style="background:#0f172a;border:1px solid var(--card-border);color:#e2e8f0;padding:7px 10px;border-radius:8px;font-size:12.5px;width:160px;">
+        <input type="password" id="gemini-key-input" placeholder="Dán API Key…"
+          style="background:#0f172a;border:1px solid var(--card-border);color:#e2e8f0;padding:7px 10px;border-radius:8px;font-size:12.5px;width:160px;">
         <button class="btn-header primary" onclick="runRealScan()">🔄 Quét lại kênh (AI thật)</button>
         <span id="scan-status" style="font-size:11.5px;color:var(--text-muted);"></span>
         <button class="btn-header" onclick="toggleChannelPanel()">
@@ -1215,17 +1219,21 @@
     async function runRealScan() {
       const status = document.getElementById('scan-status');
       const apiKey = document.getElementById('gemini-key-input').value.trim();
-      if (!apiKey) {
-        status.textContent = 'Cần dán API key trước khi quét.';
+      const baseUrl = document.getElementById('llm-base-url-input').value.trim();
+      const model = document.getElementById('llm-model-input').value.trim();
+      if (!apiKey || !baseUrl || !model) {
+        status.textContent = 'Cần nhập đủ Base URL, Model và API key trước khi quét.';
         return;
       }
       sessionStorage.setItem('gemini_api_key', apiKey);
+      sessionStorage.setItem('llm_base_url', baseUrl);
+      sessionStorage.setItem('llm_model', model);
       const selectedChannels = getSelectedChannels();
       const messages = filterMessagesByChannel(window.SAMPLE_MESSAGES, selectedChannels);
       document.getElementById('mock-cards').style.display = 'none';
-      status.textContent = 'Đang gọi Gemini…';
+      status.textContent = `Đang gọi ${model}…`;
       try {
-        const cards = await classifyMessages(messages, apiKey, PROMPT_TEXT);
+        const cards = await classifyMessages(messages, apiKey, PROMPT_TEXT, baseUrl, model);
         renderAiCards(cards);
         status.textContent = `Xong — ${cards.length} card từ ${messages.length} tin.`;
       } catch (e) {
@@ -1238,6 +1246,10 @@
     window.addEventListener('DOMContentLoaded', () => {
       const saved = sessionStorage.getItem('gemini_api_key');
       if (saved) document.getElementById('gemini-key-input').value = saved;
+      const savedBaseUrl = sessionStorage.getItem('llm_base_url');
+      if (savedBaseUrl) document.getElementById('llm-base-url-input').value = savedBaseUrl;
+      const savedModel = sessionStorage.getItem('llm_model');
+      if (savedModel) document.getElementById('llm-model-input').value = savedModel;
     });
   </script>
 

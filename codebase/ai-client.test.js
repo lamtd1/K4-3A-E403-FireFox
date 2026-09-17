@@ -24,9 +24,9 @@ test('buildPrompt embeds message fields and instructs JSON-only output', () => {
 
 test('parseGeminiResponse extracts and validates cards array', () => {
   const raw = JSON.stringify({
-    candidates: [{ content: { parts: [{ text: JSON.stringify([
+    choices: [{ message: { content: JSON.stringify([
       { type: 'TASK', title: 'x', deadline_text: '', confidence: 'high', quote: 'q', msg_id: 'M1', escalate: false, reason: 'r' }
-    ]) }] } }]
+    ]) } }]
   });
   const cards = parseGeminiResponse(raw);
   assert.equal(cards.length, 1);
@@ -34,20 +34,25 @@ test('parseGeminiResponse extracts and validates cards array', () => {
 });
 
 test('parseGeminiResponse accepts empty array', () => {
-  const raw = JSON.stringify({ candidates: [{ content: { parts: [{ text: '[]' }] } }] });
+  const raw = JSON.stringify({ choices: [{ message: { content: '[]' } }] });
   assert.deepEqual(parseGeminiResponse(raw), []);
 });
 
 test('parseGeminiResponse throws on missing field', () => {
-  const raw = JSON.stringify({ candidates: [{ content: { parts: [{ text: JSON.stringify([{ type: 'TASK' }]) }] } }] });
+  const raw = JSON.stringify({ choices: [{ message: { content: JSON.stringify([{ type: 'TASK' }]) } }] });
   assert.throws(() => parseGeminiResponse(raw), /thiếu field/);
 });
 
 test('parseGeminiResponse throws on invalid type', () => {
   const raw = JSON.stringify({
-    candidates: [{ content: { parts: [{ text: JSON.stringify([
+    choices: [{ message: { content: JSON.stringify([
       { type: 'BOGUS', title: 'x', deadline_text: '', confidence: 'high', quote: 'q', msg_id: 'M1', escalate: false, reason: 'r' }
-    ]) }] } }]
+    ]) } }]
   });
   assert.throws(() => parseGeminiResponse(raw), /type không hợp lệ/);
+});
+
+test('parseGeminiResponse throws on empty content', () => {
+  const raw = JSON.stringify({ choices: [{ message: { content: '' } }] });
+  assert.throws(() => parseGeminiResponse(raw), /rỗng/);
 });

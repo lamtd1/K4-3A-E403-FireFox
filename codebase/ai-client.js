@@ -13,17 +13,19 @@ function buildPrompt(promptTemplate, messages) {
 }
 
 function parseGeminiResponse(rawResponseText) {
+  // Parse phản hồi dạng OpenAI chat-completions: {choices: [{message: {content: "..."}}]}.
+  // Chuẩn này dùng chung cho mọi provider OpenAI-compatible (OpenAI, Groq, router nội bộ,
+  // Gemini qua endpoint .../v1beta/openai/, v.v.) — không còn khoá riêng vào schema gốc của Gemini.
   let envelope;
   try {
     envelope = JSON.parse(rawResponseText);
   } catch (e) {
-    throw new Error(`Không parse được response bao ngoài của Gemini: ${e.message}`);
+    throw new Error(`Không parse được response bao ngoài của model: ${e.message}`);
   }
-  const text = envelope && envelope.candidates && envelope.candidates[0] &&
-    envelope.candidates[0].content && envelope.candidates[0].content.parts &&
-    envelope.candidates[0].content.parts[0] && envelope.candidates[0].content.parts[0].text;
-  if (typeof text !== 'string') {
-    throw new Error('Response Gemini thiếu candidates[0].content.parts[0].text');
+  const text = envelope && envelope.choices && envelope.choices[0] &&
+    envelope.choices[0].message && envelope.choices[0].message.content;
+  if (typeof text !== 'string' || text.trim() === '') {
+    throw new Error('Model không trả JSON hợp lệ trong text: nội dung rỗng');
   }
   let cards;
   try {
@@ -47,17 +49,24 @@ function parseGeminiResponse(rawResponseText) {
   return cards;
 }
 
-async function classifyMessages(messages, apiKey, promptTemplate) {
+async function classifyMessages(messages, apiKey, promptTemplate, baseUrl, model) {
   const prompt = buildPrompt(promptTemplate, messages);
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${apiKey}`;
+  const url = `${baseUrl.replace(/\/$/, '')}/chat/completions`;
   const response = await fetch(url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }),
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model,
+      messages: [{ role: 'user', content: prompt }],
+      stream: false,
+    }),
   });
   const rawText = await response.text();
   if (!response.ok) {
-    throw new Error(`Gemini API lỗi ${response.status}: ${rawText}`);
+    throw new Error(`LLM API lỗi ${response.status}: ${rawText}`);
   }
   return parseGeminiResponse(rawText);
 }

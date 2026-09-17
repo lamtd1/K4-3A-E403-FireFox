@@ -9,3 +9,6 @@ tasks-cp3.md
 
 # Claude Code tool state (worktrees, session metadata)
 .claude/
+
+# Python bytecode cache
+__pycache__/

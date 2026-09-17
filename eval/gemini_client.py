@@ -25,15 +25,21 @@ def build_prompt(prompt_template, messages):
 
 
 def parse_response(raw_response_text):
+    """Parse phản hồi dạng OpenAI chat-completions: {"choices": [{"message": {"content": "..."}}]}.
+    Chuẩn này dùng chung cho mọi provider OpenAI-compatible (OpenAI, Groq, router nội bộ, Gemini
+    qua endpoint .../v1beta/openai/, v.v.) — không còn khoá riêng vào schema gốc của Gemini."""
     try:
         envelope = json.loads(raw_response_text)
     except json.JSONDecodeError as e:
-        raise ValueError(f"Không parse được response bao ngoài của Gemini: {e}")
+        raise ValueError(f"Không parse được response bao ngoài của model: {e}")
 
     try:
-        text = envelope["candidates"][0]["content"]["parts"][0]["text"]
+        text = envelope["choices"][0]["message"]["content"]
     except (KeyError, IndexError, TypeError):
-        raise ValueError("Response Gemini thiếu candidates[0].content.parts[0].text")
+        raise ValueError("Response thiếu choices[0].message.content")
+
+    if not isinstance(text, str) or not text.strip():
+        raise ValueError("Model không trả JSON hợp lệ trong text: nội dung rỗng")
 
     try:
         cards = json.loads(text)
@@ -53,12 +59,28 @@ def parse_response(raw_response_text):
     return cards
 
 
-def call_gemini(prompt_text, api_key, model="gemini-3.5-flash"):
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
-    body = json.dumps({"contents": [{"parts": [{"text": prompt_text}]}]}).encode("utf-8")
-    req = urllib.request.Request(url, data=body, headers={"Content-Type": "application/json"}, method="POST")
+def call_llm(prompt_text, api_key, base_url, model):
+    """Gọi bất kỳ endpoint nào tương thích chuẩn OpenAI chat-completions
+    (POST {base_url}/chat/completions, header Authorization: Bearer <key>).
+    base_url không có dấu "/" ở cuối, ví dụ: "https://api.openai.com/v1" hoặc
+    "http://localhost:20128/v1"."""
+    url = f"{base_url.rstrip('/')}/chat/completions"
+    body = json.dumps({
+        "model": model,
+        "messages": [{"role": "user", "content": prompt_text}],
+        "stream": False,
+    }).encode("utf-8")
+    req = urllib.request.Request(
+        url,
+        data=body,
+        headers={
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {api_key}",
+        },
+        method="POST",
+    )
     try:
         with urllib.request.urlopen(req, timeout=30) as resp:
             return resp.read().decode("utf-8")
     except urllib.error.HTTPError as e:
-        raise RuntimeError(f"Gemini API lỗi {e.code}: {e.read().decode('utf-8')}")
+        raise RuntimeError(f"LLM API lỗi {e.code}: {e.read().decode('utf-8')}")
