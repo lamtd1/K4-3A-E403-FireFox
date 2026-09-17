@@ -1,7 +1,12 @@
 import json
 import os
+import re
 import sys
+import time
 from gemini_client import build_prompt, call_gemini, parse_response, filter_messages_by_channel
+
+RETRY_DELAYS_S = [3, 5, 8]  # dùng làm lịch mặc định nếu response 429 không kèm retryDelay
+MAX_RETRY_DELAY_S = 8  # trần thời gian chờ — bỏ qua retryDelay dài mà API gợi ý để chạy nhanh hơn
 
 PROMPT_TEXT = open(os.path.join(os.path.dirname(__file__), "..", "codebase", "PROMPT.md"), encoding="utf-8").read()
 # ĐỒNG BỘ TAY: nội dung này phải khớp codebase/PROMPT.md dùng trong ai-client.js — sửa 1 chỗ phải sửa chỗ kia (spec-cp3.md §7).
@@ -49,16 +54,37 @@ def grade_case(case, actual_cards):
     return {"id": case["id"], "passed": len(reasons) == 0, "reasons": reasons}
 
 
+def _retry_delay_seconds(error_message, fallback):
+    """Rút retryDelay (giây) từ body lỗi 429 của Gemini nếu có, ngược lại dùng lịch mặc định.
+    Luôn giới hạn ở MAX_RETRY_DELAY_S để chạy nhanh hơn, chấp nhận rủi ro bị 429 lại."""
+    match = re.search(r'"retryDelay":\s*"(\d+)s"', error_message)
+    delay = int(match.group(1)) if match else fallback
+    return min(delay, MAX_RETRY_DELAY_S)
+
+
 def run_one_case(case, api_key):
     messages = filter_messages_by_channel(case["messages"], case["selected_channels"])
     if case.get("filter_only") or not messages:
         return []
     prompt = build_prompt(PROMPT_TEXT, messages)
-    try:
-        raw = call_gemini(prompt, api_key)
-        return parse_response(raw)
-    except (ValueError, RuntimeError, OSError) as e:
-        return {"__error__": str(e)}
+
+    last_error = None
+    # Lượt đầu (không delay) + tối đa len(RETRY_DELAYS_S) lượt retry khi gặp 429 (rate limit free-tier).
+    for attempt in range(1 + len(RETRY_DELAYS_S)):
+        if attempt > 0:
+            time.sleep(_retry_delay_seconds(last_error, RETRY_DELAYS_S[attempt - 1]))
+        try:
+            raw = call_gemini(prompt, api_key)
+            return parse_response(raw)
+        except (ValueError, RuntimeError, OSError) as e:
+            last_error = str(e)
+            if "429" not in last_error:
+                # Lỗi khác 429 (404, JSON hỏng, network...) — không có lý do để retry, trả lỗi ngay.
+                return {"__error__": last_error}
+            # 429 — thử lại theo lịch backoff ở vòng lặp tiếp theo.
+            continue
+
+    return {"__error__": last_error}
 
 
 def write_results_md(golden_set, graded, out_path):
