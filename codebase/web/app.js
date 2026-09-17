@@ -1,4 +1,4 @@
-// Actionable Digest — UI phía trình duyệt.
+// Sentinel — UI phía trình duyệt.
 // Gọi AI thật qua server nội bộ (POST /api/extract), không bao giờ chạm API key trực tiếp.
 
 const state = {

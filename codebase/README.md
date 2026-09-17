@@ -1,4 +1,4 @@
-# Actionable Digest — codebase
+# Sentinel — codebase
 
 - `core/`: module AI lõi (trích xuất Deadline/Task/Lịch-Phòng từ tin nhắn Discord bằng LLM thật, tuân thủ hợp đồng dữ liệu tại Mục 0 trong `CP3_TASKS.md`).
 - `web/`: giao diện người dùng (HTML + JS thuần), gọi AI thật qua server, không lộ API key ra trình duyệt.

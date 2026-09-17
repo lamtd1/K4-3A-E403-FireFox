@@ -1,4 +1,4 @@
-# AI SPEC — Bản tin Việc cần làm từ Discord (Actionable Digest) · Nhóm FireFox · Zone 5
+# AI SPEC — Sentinel: Bản tin Việc cần làm từ Discord · Nhóm FireFox · Zone 5
 
 - **Hướng:** [ ] A — VLearn · [X] B — Trợ lý Học viên · [ ] C — Làn mở
 - **Loại:** [ ] Tối ưu tính năng có sẵn · [X] Tính năng mới

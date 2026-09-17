@@ -191,7 +191,7 @@ def evaluate_case(case: Dict[str, Any], actual: Dict[str, Any]) -> Dict[str, Any
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Runner eval chất lượng Actionable Digest")
+    parser = argparse.ArgumentParser(description="Runner eval chất lượng Sentinel")
     parser.add_argument("--golden-set", default="eval/golden_set.json", help="Đường dẫn file golden set")
     parser.add_argument("--output", default="eval/runs/run1_raw.json", help="Đường dẫn file kết quả raw")
     parser.add_argument("--case-id", default=None, help="Chạy riêng 1 case (ví dụ G01)")

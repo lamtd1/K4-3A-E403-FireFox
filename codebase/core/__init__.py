@@ -1,5 +1,5 @@
 """
-Core AI Extractor Module for Actionable Digest
+Core AI Extractor Module for Sentinel
 Export hàm extract(messages: list[dict], now: str) -> dict
 """
 
