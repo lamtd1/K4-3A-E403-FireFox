@@ -392,12 +392,27 @@ Theo báo cáo kiểm thử tại [`eval/runs/run1_raw.json`](eval/runs/run1_raw
    Prompt hiện tại nhấn mạnh quy tắc *"bỏ qua tin tán gẫu/câu hỏi"*, dẫn đến việc AI lọc bỏ luôn các tin nhắc nhở có tính quy tắc nhưng thiếu mốc ngày cụ thể (ví dụ: bot nhắc "deadline thường là 23:59 cùng ngày", học viên bảo "dùng lịch có chữ UPDATED", BTC nhắc "trước 12h hôm sau"). AI trả về `items = []` thay vì tạo thẻ với `confidence = "low"` và `due = null`.
 2. **Lỗi bỏ sót mốc sự kiện trong tin phức tạp (Multi-item Extraction — 1 case: `G09`):**  
    Thông báo của BTC chứa 2 mốc quan trọng (22:00 13/09: Mở ngân hàng đề tài; 23:59 20/09: Hạn đăng ký đề tài Gate 1). AI chỉ trích xuất được 1 deadline cuối cùng mà bỏ sót mốc lịch sự kiện đầu tiên $\rightarrow$ vi phạm tiêu chí C1.
-3. **Lỗi phân loại type và quy tắc gán nhãn cho deadline lặp lại / nguồn Bot (3 case: `G10`, `G18`, `G21`):**  
-   - `G10`: Quy định khung giờ nộp daily standup bị AI phân loại thành `TASK` thay vì `DEADLINE` lặp lại.
-   - `G21`: Khung giờ daily standup "0h-10h sáng hàng ngày" bị AI tự ý gán mốc giờ ngày hôm sau (`2026-09-14T10:00`) thay vì giữ `due = null`.
-   - `G18`, `G21`: Nguồn tin từ Bot nhưng AI thấy đưa deadline rõ ràng nên tự tin gán `confidence = "high"` (trong khi quy ước golden set yêu cầu bot phải là `low`).
+3. **Lỗi phân loại type, nhầm lẫn mốc cộng XP với deadline, và quy tắc nguồn Bot (3 case: `G10`, `G18`, `G21`):**  
+   - **Bản chất nghiệp vụ daily standup (`G10`, `G21`):** Khung giờ "0h–10h sáng hàng ngày" thực chất chỉ là **khung giờ để được thưởng điểm kinh nghiệm (+XP)** cho bản thân, còn hạn chót (due) nộp bài thực tế của ngày là **24h cùng ngày** (sau 10h nộp muộn hệ thống vẫn ghi nhận bình thường, chỉ không được cộng XP). AI đã hiểu nhầm khung giờ thưởng thành mốc hạn chót đóng cổng nộp bài.
+   - **Lỗi ở `G10`:** Quy định khung giờ daily standup và mentor duty bị AI phân loại thành `TASK` (việc chuẩn bị) thay vì nhận diện đây là một quy định mốc thời gian (`DEADLINE` lặp lại) $\rightarrow$ vi phạm tiêu chí C2.
+   
+   **Ví dụ minh họa chi tiết cho `G18` và `G21`:**
 
-> **Kế hoạch khắc phục cho Lượt 2:** Tinh chỉnh `codebase/core/prompt.py` nhằm: (a) Hướng dẫn AI nhận diện tin nhắc nhở thường lệ để trích xuất với `due = null` & `confidence = "low"`; (b) Thêm chỉ dẫn bóc tách danh sách nhiều sự kiện khi một thông báo chứa $\ge 2$ mốc thời gian; (c) Quy định rõ mọi thông tin từ tác giả bot mặc định nhận `confidence = "low"`.
+   - **Ví dụ Case `G18` (Bot hiển thị Gate 1 với deadline tuyệt đối và tài liệu hướng dẫn):**
+     - *Nội dung tin gốc (`M01982` - tác giả `bot`):* Thông báo mốc `Gate 1 — Chốt đề tài: · Deadline 23:59:00 20/9/2026` kèm hướng dẫn cài đặt kỹ thuật `Setup AI Log càng sớm càng tốt (ngay tuần 1)`.
+     - *Kỳ vọng (`expected`):* Chỉ có **1 item** `DEADLINE` nộp Gate 1 (`due: "2026-09-20T23:59"`), và vì người gửi là `bot` (không phải thông báo trực tiếp từ người thật của BTC) nên quy ước nghiệp vụ bắt buộc gán `confidence = "low"`.
+     - *Thực tế AI trả về (`actual`):*
+       + AI sinh thừa thành **2 items**: 1 DEADLINE Gate 1 + 1 TASK "Setup AI Log tự động submit prompt" $\rightarrow$ **C1 Fail** (số lượng item thực tế 2 $\ne$ kỳ vọng 1).
+       + AI tự tin gán `confidence = "high"` cho cả 2 item vì thấy thời gian rõ ràng, vi phạm quy ước: *mọi thông tin xuất phát từ bot không được coi là nguồn sự thật tuyệt đối, bắt buộc phải hạ xuống "low"* $\rightarrow$ **C4 Fail**.
+
+   - **Ví dụ Case `G21` (Hai câu trả lời bot trùng nhau về hạn daily standup):**
+     - *Nội dung tin gốc (`M71036`, `M01313` - tác giả `bot`):* *"Khung giờ nộp daily hàng ngày là từ 0h-10h sáng nhé. Nộp muộn vẫn được ghi nhận nhưng không +XP"*.
+     - *Kỳ vọng (`expected`):* **1 item** `DEADLINE`. Vì đây là quy định khung giờ thưởng lặp lại hàng ngày (nộp muộn vẫn ghi nhận, hạn chót nộp là 24h cùng ngày) chứ không phải deadline đóng cổng của một ngày cụ thể, nên kỳ vọng `due = null` và nguồn từ `bot` nên `confidence = "low"`.
+     - *Thực tế AI trả về (`actual`):*
+       + AI tự ý suy diễn quy đổi thành mốc ngày hôm sau: `due: "2026-09-14T10:00"` $\rightarrow$ **C3 Fail** (nhầm lẫn giữa mốc thưởng XP và deadline thực tế của một ngày; tự bịa ngày cụ thể cho quy định lặp lại).
+       + AI tiếp tục gán `confidence = "high"` thay vì `"low"` $\rightarrow$ **C4 Fail** (không tuân thủ quy tắc hạ cấp độ tin cậy với nguồn bot).
+
+> **Kế hoạch khắc phục cho Lượt 2:** Tinh chỉnh `codebase/core/prompt.py` nhằm: (a) Bổ sung chỉ dẫn phân biệt mốc thưởng incentive/XP với deadline đóng cổng thực tế (hạn lặp lại hàng ngày để `due = null`); (b) Hướng dẫn AI nhận diện tin nhắc nhở thường lệ để trích xuất với `due = null` & `confidence = "low"`; (c) Thêm quy tắc bóc tách đúng việc chính, không sinh thẻ task rác từ các đoạn hướng dẫn phụ trong thông báo; (d) **Quy định dứt khoát: Mọi tin nhắn có `author_role = "bot"` bắt buộc phải gán `confidence = "low"`**.
 
 ---
 
