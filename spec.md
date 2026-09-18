@@ -506,18 +506,21 @@ Toàn bộ 4 điểm khắc phục trên đã được đưa vào `codebase/core
 
 ---
 
-### 8.2 Khai báo Willing Users & Kế hoạch Thử nghiệm Thực tế (Validation — R6)
+### 8.2 Khai báo Willing Users & Kết quả Thử nghiệm Thực tế (Validation — R6)
 
 Nhóm đã khai báo và kết nối với **2 Willing Users** từ mốc CP1 (đáp ứng điều kiện tiên quyết của khối R6):
 
 1. **Willing User 1:** **Vũ Mạnh Cường** — Mã HV: `2A202602812` (Lớp 3A · Phòng E403 · Nhóm 2).
 2. **Willing User 2:** **Lê Thị Thu Phương** — Mã HV: `2A202602955` (Lớp 3A · Phòng E402 · Nhóm 4).
-3. **Người dùng mở rộng cho vòng CP5 (dự kiến đủ $\ge 5$ người):** Đỗ Hoàng Nam (Nhóm 1), Phạm Quỳnh Nga (Nhóm 3), Trần Quốc Tuấn (Nhóm 6).
+3. **Người dùng mở rộng dự kiến cho vòng CP5:** Đỗ Hoàng Nam (Nhóm 1), Phạm Quỳnh Nga (Nhóm 3), Trần Quốc Tuấn (Nhóm 6).
 
-**Kế hoạch kiểm thử người dùng tại CP5:**
-- **Phương pháp phỏng vấn The Mom Test:** Không hỏi xã giao "Sản phẩm này có hay không?", mà giao cho người dùng một nhiệm vụ cụ thể: *"Bạn hãy mở bản tin, lọc các kênh học tập của bạn, tìm xem hôm nay có những việc gì cần nộp hoặc cần chuẩn bị, sau đó thêm việc đó vào lịch cá nhân"*.
-- **Quan sát & Ghi nhận:** Quan sát thao tác thực tế, ghi lại chính xác thời gian hoàn thành tác vụ so với quy trình cũ (đọc lướt Discord thủ công mất $\ge 5$ phút), ghi nhận nguyên văn lời nói (verbatim quotes) khi người dùng lúng túng hoặc gặp lỗi.
-- **Biên bản bàn giao:** Lưu toàn bộ nhật ký kiểm thử tại thư mục `validation/` và cập nhật ít nhất 1 thay đổi thiết kế vào §9 Changelog.
+**Kết quả thu thập tại CP5 (18/09/2026):**
+- Google Form sau trải nghiệm ghi nhận **3 phản hồi** trong khoảng 09:46–09:57. Form không thu tên/vai trò hoặc trạng thái willing user, do đó chưa thể đối chiếu ba phản hồi với danh sách dự kiến ở trên và không tuyên bố đã xác minh hai willing users CP1.
+- **3/3** phản hồi coi trích dẫn gốc hoặc sự khớp nội dung/thời gian là tín hiệu tạo tin cậy; **2/3** đề nghị có luồng lọc kênh và bổ sung thủ công khi AI bỏ sót.
+- Một người tự báo cáo quy trình kiểm tra 3–4 channel trước đây mất **15–30 phút**; một người khác báo cáo cách cũ mất **15–20 phút**, còn xem bảng tin mất **3–4 phút**. Đây là số liệu tự báo cáo, chưa phải phép đo thời gian do nhóm quan sát.
+- Phản hồi đáng chú ý nhất là một số nút chưa trực quan, khiến người dùng phải dừng lại suy nghĩ; đồng thời 1/3 người vẫn muốn mở Discord để kiểm tra vì chưa đủ căn cứ.
+- Nhóm giữ thiết kế source-first, badge độ tin cậy, chỉnh sửa trực tiếp và bước xác nhận của con người; đưa việc rà soát nhãn nút cùng luồng lọc kênh/bổ sung thủ công vào backlog. Nhật ký và quote nguyên văn nằm tại `validation/README.md`.
+- **Giới hạn R6:** chưa có log quan sát hành vi, thời gian hoàn thành task, số lần cứu hộ và danh tính người trả lời; dữ liệu hiện tại chưa đủ để khẳng định đạt trọn rubric 5 người/2 willing users.
 
 ---
 
@@ -542,4 +545,5 @@ Nhóm đã khai báo và kết nối với **2 Willing Users** từ mốc CP1 (�
 | **17/09 · 17:00 (Evidences)** | Bổ sung minh chứng chi tiết toàn văn từ `evidences/survey_log.csv` (log 10 câu hỏi, bảng 10 chỉ số, chi tiết loại thông tin bỏ lỡ, khó khăn, 4 câu chuyện thực tế nguyên văn, bảng log 9 phản hồi nguyên văn); đối chiếu toàn diện tin nhắn từ `k4_messages.csv; cập nhật quy trình bảo mật dữ liệu. | Chuẩn hóa minh chứng định tính & định lượng theo quy chuẩn Chuẩn A & Chuẩn B của AI Spec. |
 | **17/09 · 21:00 (CP4)** | Bổ sung phân tích 2 sản phẩm tương tự (§3); hoàn thiện định nghĩa 5 tiêu chí C1–C5 (§7); **chính thức khóa cứng cam kết Quality Bar $\ge 75.0\%$**; tự khai báo nguyên nhân 8 case trượt Lượt 1; chốt phân công nhân sự và kế hoạch validation (§8). | Hoàn thiện toàn diện tài liệu AI Spec và đóng băng ngưỡng chất lượng phục vụ nghiệm thu Checkpoint 4. |
 | **17/09 · 21:00 (CP4 — cập nhật cuối)** | Vá `codebase/core/prompt.py` (Prompt v2) theo đúng kế hoạch khắc phục đã ghi ở Lượt 1; chạy lại Golden Set 22 case 4 lần độc lập: 100%, 100%, 100%, 95.45% (trung bình ~98.9%), vượt xa mốc $\ge 75.0\%$ đã khóa; cập nhật §7.4 với số liệu Lượt 2 thật và tự khai báo 4 hạn chế còn tồn đọng (dao động non-deterministic ở `G17`, golden set chưa phủ hết edge-case §5, chưa có retry tự động khi router LLM mất kết nối, chưa đo latency chính thức). | Ghi nhận kết quả thật sau khi sửa prompt trước khi khóa cứng spec.md và nộp form CP4; không hạ ngưỡng đã cam kết, chỉ báo cáo trung thực số liệu vượt ngưỡng. |
+| **18/09 · 10:00 (CP5 — R6 Validation)** | Tổng hợp 3 phản hồi sau trải nghiệm vào `validation/README.md`: 3/3 nhắc tới trích dẫn gốc hoặc sự khớp nội dung/thời gian như tín hiệu tin cậy; 2/3 đề nghị lọc kênh và bổ sung thủ công; ghi nhận vấn đề nhãn nút chưa trực quan. Giữ thiết kế source-first, badge độ tin cậy, chỉnh sửa trực tiếp và bước xác nhận; đưa nhãn nút cùng luồng bổ sung khi AI bỏ sót vào backlog. | Quyết định dựa trên quote nguyên văn trong Google Form. Không suy diễn thành hành vi quan sát và không khẳng định đạt trọn R6 vì Form chưa thu danh tính/vai trò, willing-user status hoặc log thao tác. |
 
