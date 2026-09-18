@@ -133,19 +133,21 @@ function renderCards() {
     const channel = msg ? msg.channel : '';
 
     const el = document.createElement('div');
-    el.className = 'action-card';
+    el.className = 'action-card ' + (item.confidence === 'low' ? 'card-low-confidence' : 'card-high-confidence');
     el.id = `card-${index}`;
     el.dataset.channel = channel;
     el.dataset.type = item.type;
 
     const confClass = item.confidence === 'high' ? 'conf-high' : 'conf-low';
-    const confIcon = item.confidence === 'high' ? ICONS.check : ICONS.alertCircle;
-    const confLabel = item.confidence === 'high' ? 'Độ tin cậy cao' : 'Cần kiểm tra lại';
-    const dueLabel = due ? escapeHtml(due) : 'Chưa xác định';
+    const confIcon = item.confidence === 'high' ? ICONS.check : ICONS.alertTriangle;
+    const confLabel = item.confidence === 'high' ? 'Độ tin cậy cao (BTC/Staff)' : 'Cần kiểm tra lại (Học viên)';
+    const editBtnClass = item.confidence === 'low' ? 'btn btn-edit btn-set-time' : 'btn btn-edit';
+    const editBtnText = item.confidence === 'low' ? 'Đặt giờ chính xác' : 'Sửa';
+    const dueLabel = due ? escapeHtml(due) : (item.confidence === 'low' ? 'Thời hạn gợi ý: Chưa chốt mốc' : 'Chưa xác định');
     const locationLine = item.location
       ? `<div class="meta-row">${ICONS.pin}<span>${escapeHtml(item.location)}</span></div>` : '';
     const reviewLine = item.review_reason
-      ? `<div class="review-reason">${ICONS.alertTriangle}<span>${escapeHtml(item.review_reason)}</span></div>` : '';
+      ? `<div class="review-reason" style="color: #b45309; font-weight: 500;">${ICONS.alertTriangle}<span>${escapeHtml(item.review_reason)}</span></div>` : '';
 
     el.innerHTML = `
       <div class="card-top">
@@ -167,7 +169,7 @@ function renderCards() {
         <div class="edit-inline" id="edit-box-${index}">
           <div class="edit-inputs">
             <input type="text" class="edit-input" id="input-title-${index}" value="${escapeHtml(title)}">
-            <input type="text" class="edit-input" id="input-due-${index}" value="${escapeHtml(due || '')}">
+            <input type="text" class="edit-input" id="input-due-${index}" value="${escapeHtml(due || '')}" placeholder="YYYY-MM-DDTHH:MM">
           </div>
           <button class="btn btn-confirm" style="padding: 5px 11px; font-size: 11.5px;" onclick="saveEdit(${index})">Lưu thay đổi</button>
         </div>
@@ -176,7 +178,7 @@ function renderCards() {
         <div class="action-feedback" id="feedback-${index}">${ICONS.check}<span>Đã xác nhận, đã thêm vào lịch</span></div>
         <div class="btn-group" id="actions-${index}">
           <button class="btn btn-confirm" onclick="verifyCard(${index})">${ICONS.check}<span>Xác nhận vào lịch</span></button>
-          <button class="btn btn-edit" onclick="toggleEdit(${index})">${ICONS.edit}<span>Sửa</span></button>
+          <button class="${editBtnClass}" onclick="toggleEdit(${index})">${ICONS.edit}<span>${editBtnText}</span></button>
           <button class="btn btn-dismiss" onclick="dismissCard(${index})">${ICONS.x}<span>Bỏ qua</span></button>
         </div>
       </div>
@@ -333,4 +335,10 @@ async function runScan() {
   }
 }
 
-loadDemoMessages();
+async function init() {
+  await loadDemoMessages();
+  // Tự động quét bằng AI ngay khi mở trang để hiển thị bảng tin việc cần làm
+  runScan();
+}
+
+init();
