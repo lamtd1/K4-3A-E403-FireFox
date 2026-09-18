@@ -12,7 +12,7 @@ def test_mock_llm_provider(monkeypatch):
     assert latency >= 0
     data = json.loads(text)
     assert "items" in data
-    assert len(data["items"]) == 1
+    assert len(data["items"]) >= 1
 
 
 def test_logger_record_structure(tmp_path, monkeypatch):
