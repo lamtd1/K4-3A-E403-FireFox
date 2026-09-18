@@ -15,12 +15,39 @@ else:
 
 
 def get_llm_config() -> dict:
-    """Lấy cấu hình LLM từ biến môi trường (chuẩn OpenAI-compatible)."""
+    """Lấy cấu hình LLM từ biến môi trường (chuẩn OpenAI-compatible, tự động fallback với các khóa có sẵn)."""
+    provider = os.getenv("LLM_PROVIDER", "").strip().lower()
+    base_url = os.getenv("LLM_BASE_URL", "").strip()
+    model = os.getenv("LLM_MODEL", "").strip()
+    api_key = os.getenv("LLM_API_KEY", "").strip()
+
+    # Tự động tương thích nếu người dùng cấu hình GEMINI_API_KEY hoặc OPENAI_API_KEY trong .env
+    if not api_key:
+        if os.getenv("GEMINI_API_KEY"):
+            api_key = os.getenv("GEMINI_API_KEY").strip()
+            if not base_url or "openai.com" in base_url:
+                base_url = "https://generativelanguage.googleapis.com/v1beta/openai"
+            if not model or model == "gpt-4o-mini":
+                model = "gemini-flash-latest"
+        elif os.getenv("OPENAI_API_KEY"):
+            api_key = os.getenv("OPENAI_API_KEY").strip()
+            if not base_url:
+                base_url = "https://api.openai.com/v1"
+            if not model:
+                model = "gpt-4o-mini"
+
+    if not provider:
+        provider = "openai-compatible"
+    if not base_url:
+        base_url = "https://api.openai.com/v1"
+    if not model:
+        model = "gpt-4o-mini"
+
     return {
-        "provider": os.getenv("LLM_PROVIDER", "openai-compatible").strip().lower(),
-        "base_url": os.getenv("LLM_BASE_URL", "https://api.openai.com/v1").strip(),
-        "model": os.getenv("LLM_MODEL", "gpt-4o-mini").strip(),
-        "api_key": os.getenv("LLM_API_KEY", "").strip(),
+        "provider": provider,
+        "base_url": base_url,
+        "model": model,
+        "api_key": api_key,
     }
 
 
