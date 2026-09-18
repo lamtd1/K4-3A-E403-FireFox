@@ -99,16 +99,20 @@ def call_llm(prompt: str, system_prompt: str = "", temperature: float = 0.1) -> 
             messages.append({"role": "system", "content": system_prompt})
         messages.append({"role": "user", "content": prompt})
 
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {api_key}",
+            "HTTP-Referer": "https://github.com/lamtd1/K4-3A-E403-FireFox",
+            "X-Title": "Sentinel Discord AI Assistant",
+        }
         resp = requests.post(
             f"{base_url}/chat/completions",
-            headers={
-                "Content-Type": "application/json",
-                "Authorization": f"Bearer {api_key}",
-            },
+            headers=headers,
             json={
                 "model": model,
                 "messages": messages,
                 "temperature": temperature,
+                "max_tokens": 1500,
                 "stream": False,
             },
             timeout=30,

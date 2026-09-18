@@ -24,5 +24,9 @@ venv/
 env/
 .pytest_cache/
 
-# Logs: không commit nội dung log gọi LLM
-codebase/logs/
+# Logs: cho phép codebase/logs/ được lưu
+!codebase/logs/
+
+# Binary tools
+cloudflared.exe
+*.exe
